@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyApp.Threads
 {
+    /// <summary>
+    /// スレッド管理クラス
+    /// </summary>
     public abstract class ThreadManager : ThreadBase
     {
         protected sealed override void ThreadRun()
@@ -14,11 +17,11 @@ namespace MyApp.Threads
             {
                 if (RunInit())
                 {
-                    Console.WriteLine("RunInit() => 正常終了");
+                    Console.WriteLine($"RunInit() => 正常終了{ThreadName}");
                 }
                 else
                 {
-                    Console.WriteLine("RunInit() => 異常終了");
+                    Console.WriteLine($"RunInit() => 異常終了{ThreadName}");
                 }
             }
             catch

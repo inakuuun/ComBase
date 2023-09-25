@@ -10,6 +10,9 @@ using System.Xml.XPath;
 
 namespace MyApp.Init
 {
+    /// <summary>
+    /// 起動クラス
+    /// </summary>
     public class BootManager
     {
         /// <summary>

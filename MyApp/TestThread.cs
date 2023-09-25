@@ -11,6 +11,8 @@ namespace MyApp
     {
         protected override bool RunInit()
         {
+            // 自身のクラス名をスレッド名にセット
+            base.ThreadName = this.GetType().Name;
             return true;
         }
     }
