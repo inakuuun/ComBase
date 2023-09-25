@@ -1,5 +1,5 @@
 # MyApp
-## 主要なディレクトリ構成
+- ディレクトリ構成
 ```
 MyApp
 ├── App.cs
@@ -26,3 +26,4 @@ MyApp
     ├── ThreadBase.cs
     └── ThreadManager.cs
                     └── SQLite.Interop.dll
+```
