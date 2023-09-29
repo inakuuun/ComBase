@@ -10,8 +10,6 @@ namespace MyApp.Db
 {
     public class DbFactory : DbBase
     {
-        protected override string ConnectionString { set => base.ConnectionString = value; }
-
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -25,7 +23,7 @@ namespace MyApp.Db
                 {
                     Directory.CreateDirectory("./db");
                 }
-                ConnectionString = PropertyReader.GetProperty(PropertyDef.Prop_ConnectionString);
+                base.ConnectionString = PropertyReader.GetProperty(PropertyDef.Prop_ConnectionString);
             }
         }
     }

@@ -11,7 +11,7 @@ using System.Xml.XPath;
 namespace MyApp.Init
 {
     /// <summary>
-    /// 起動クラス
+    /// スレッド起動クラス
     /// </summary>
     public class BootManager
     {
@@ -20,6 +20,9 @@ namespace MyApp.Init
         /// </summary>
         private static Dictionary<string, ThreadManager> _programInfoDic = new();
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public BootManager()
         {
             SetProgramInfo();
@@ -41,11 +44,13 @@ namespace MyApp.Init
                 {
                     if (item != null)
                     {
-                        string key = item.Attribute("className")?.Value ?? string.Empty;
-                        string value = item.Attribute("classPath")?.Value ?? string.Empty;
+                        // スレッドのキーを取得
+                        string threadKey = item.Attribute("threadKey")?.Value ?? string.Empty;
+                        // クラス名を名前空間も含めて取得
+                        string className = item.Attribute("className")?.Value ?? string.Empty;
 
                         // クラス名からTypeオブジェクトを取得
-                        Type? testThread = Type.GetType(value);
+                        Type? testThread = Type.GetType(className);
                         if (testThread != null)
                         {
                             // Typeオブジェクトを使用してクラスのインスタンスを生成
@@ -53,10 +58,10 @@ namespace MyApp.Init
                             if (instance != null && instance is ThreadManager obj)
                             {
                                 // 同じキーが存在しない場合
-                                if (!_programInfoDic.ContainsKey(key))
+                                if (!_programInfoDic.ContainsKey(threadKey))
                                 {
                                     // classNameをキーにして、スレッド実行体をディクショナリに格納
-                                    _programInfoDic.Add(key, obj);
+                                    _programInfoDic.Add(threadKey, obj);
                                 }
                             }
                         }

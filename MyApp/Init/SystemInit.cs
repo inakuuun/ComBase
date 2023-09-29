@@ -9,14 +9,15 @@ using System.Xml.Linq;
 
 namespace MyApp.Init
 {
+    /// <summary>
+    /// 起動準備クラス
+    /// </summary>
+    /// <remarks>プロパティの読み込みなど、システム起動時に必要な情報を事前にメモリに積んでおく</remarks>
     public class SystemInit
     {
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <remarks>
-        /// プロパティの読み込みなど、システム起動時に必要な情報を事前にメモリに積んでおく
-        /// </remarks>
         public SystemInit() 
         {
             try
