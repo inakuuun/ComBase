@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ProgramInfo>
     <Threads>
-        <Item threadKey="TestThread" className="MyApp.TestThread" />
-        <Item threadKey="TestThread2" className="MyApp.TestThread2" />
+        <Item threadName="TestThread" className="MyApp.TestThread" />
+        <Item threadName="TestThread2" className="MyApp.TestThread2" />
     </Threads>
 </ProgramInfo>

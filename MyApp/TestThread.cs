@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyApp.Logs;
 using MyApp.Threads;
 
 namespace MyApp
 {
     public class TestThread : ThreadManager
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
+
         protected override bool RunInit()
         {
-            // 自身のクラス名をスレッド名にセット
-            base.ThreadName = this.GetType().Name;
+            Log.Trace(_logFileName, "呼び出し元が合っているかテスト");
             return true;
         }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MyApp.Threads
 {
     /// <summary>
-    /// スレッドBaseクラス
+    /// スレッド基底クラス
     /// </summary>
     public abstract class ThreadBase
     {

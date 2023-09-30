@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyApp.Logs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,36 @@ namespace MyApp.Threads
     /// </summary>
     public abstract class ThreadManager : ThreadBase
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
+
+        /// <summary>
+        /// スレッド名設定処理
+        /// </summary>
+        /// <remarks>BootManagerで実施するスレッドクラス生成時にスレッド名を設定</remarks>
+        public void SetThreadName(string threadName)
+        {
+            base.ThreadName = threadName;
+        }
+
+        /// <summary>
+        /// スレッドの実行
+        /// </summary>
+        /// <remarks>下位クラスのメソッド呼び出し</remarks>
+        /// <exception cref="NotImplementedException"></exception>
         protected sealed override void ThreadRun()
         {
             try
             {
                 if (RunInit())
                 {
-                    Console.WriteLine($"RunInit() => 正常終了{ThreadName}");
+                    Log.Trace(_logFileName, $"正常終了{base.ThreadName}");
                 }
                 else
                 {
-                    Console.WriteLine($"RunInit() => 異常終了{ThreadName}");
+                    Log.Trace(_logFileName, $"異常終了{base.ThreadName}");
                 }
             }
             catch

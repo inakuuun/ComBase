@@ -45,7 +45,7 @@ namespace MyApp.Init
                     if (item != null)
                     {
                         // スレッドのキーを取得
-                        string threadKey = item.Attribute("threadKey")?.Value ?? string.Empty;
+                        string threadName = item.Attribute("threadName")?.Value ?? string.Empty;
                         // クラス名を名前空間も含めて取得
                         string className = item.Attribute("className")?.Value ?? string.Empty;
 
@@ -58,10 +58,13 @@ namespace MyApp.Init
                             if (instance != null && instance is ThreadManager obj)
                             {
                                 // 同じキーが存在しない場合
-                                if (!_programInfoDic.ContainsKey(threadKey))
+                                if (!_programInfoDic.ContainsKey(threadName))
                                 {
+                                    // 格納するインスタンスのスレッド名をここで設定しておく
+                                    // ※RunInit()時に呼び出すのを避けたいため
+                                    obj.SetThreadName(threadName);
                                     // classNameをキーにして、スレッド実行体をディクショナリに格納
-                                    _programInfoDic.Add(threadKey, obj);
+                                    _programInfoDic.Add(threadName, obj);
                                 }
                             }
                         }

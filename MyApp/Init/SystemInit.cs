@@ -22,6 +22,9 @@ namespace MyApp.Init
         {
             try
             {
+                // ログ出力先ディレクトリを作成
+                Logs.Log.CreateLogDirectory();
+
                 // DB定義ファイル設定
                 PropertyReader.SetPropertyAll("./Config/DbProperties.xml");
             }

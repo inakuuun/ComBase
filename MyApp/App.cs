@@ -15,5 +15,5 @@ _ = new SystemInit();
 var bootMgr = new BootManager();
 bootMgr.SystemStart();
 
-var dbFactory = new MyApp.Db.DbFactory(StractDef.Db.SQlite);
-dbFactory.Open();
+//var dbFactory = new MyApp.Db.DbFactory(StractDef.Db.SQlite);
+//dbFactory.Open();
