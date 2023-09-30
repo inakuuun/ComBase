@@ -1,7 +1,6 @@
 # MyApp
 - ディレクトリ構成
 ```
-修正
 MyApp
 ├── App.cs
 ├── Common
