@@ -23,6 +23,15 @@ namespace MyApp.Threads
         protected string? ThreadName { get; set; }
 
         /// <summary>
+        /// スレッド名設定処理
+        /// </summary>
+        /// <remarks>BootManagerで実施するスレッドクラス生成時にスレッド名を設定</remarks>
+        public void SetThreadName(string threadName)
+        {
+            this.ThreadName = threadName;
+        }
+
+        /// <summary>
         /// スレッド実行
         /// </summary>
         public void ThreadStart()

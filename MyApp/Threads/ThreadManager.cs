@@ -18,15 +18,6 @@ namespace MyApp.Threads
         private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
 
         /// <summary>
-        /// スレッド名設定処理
-        /// </summary>
-        /// <remarks>BootManagerで実施するスレッドクラス生成時にスレッド名を設定</remarks>
-        public void SetThreadName(string threadName)
-        {
-            base.ThreadName = threadName;
-        }
-
-        /// <summary>
         /// スレッドの実行
         /// </summary>
         /// <remarks>下位クラスのメソッド呼び出し</remarks>

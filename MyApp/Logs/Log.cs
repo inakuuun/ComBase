@@ -15,9 +15,9 @@ namespace MyApp.Logs
     public class Log
     {
         /// <summary>
-        /// ログ出力先ディレクトリ
+        /// ログ出力先ディレクトリパス
         /// </summary>
-        private static string _logDirectory = string.Empty;
+        private static string _logDirectoryPath = string.Empty;
 
         /// <summary>
         /// ログ出力先ディレクトリの作成
@@ -25,12 +25,12 @@ namespace MyApp.Logs
         public static void CreateLogDirectory()
         {
             // ログ出力先ディレクトリ
-            _logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "trace");
+            _logDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "trace");
 
             // 対象のディレクトリが存在しない場合は作成
-            if (!Directory.Exists(_logDirectory))
+            if (!Directory.Exists(_logDirectoryPath))
             {
-                Directory.CreateDirectory(_logDirectory);
+                Directory.CreateDirectory(_logDirectoryPath);
             }
         }
 
@@ -76,7 +76,7 @@ namespace MyApp.Logs
                     // ログファイル名を生成
                     string logFileName = $"{fileName}.log";
                     // ログ出力ファイルパスを生成
-                    string logFilePath = Path.Combine(_logDirectory, logFileName);
+                    string logFilePath = Path.Combine(_logDirectoryPath, logFileName);
 
                     // ファイルへの書き込み
                     // ※ファイルが存在しない場合は作成し、末尾にログを追加
