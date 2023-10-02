@@ -40,6 +40,9 @@ namespace MyApp.Threads
             _thread.Start();
         }
 
+        /// <summary>
+        /// 派生クラスの全スレッドを実行
+        /// </summary>
         protected abstract void ThreadRun();
     }
 }

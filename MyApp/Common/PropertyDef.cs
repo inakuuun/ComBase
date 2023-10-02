@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyApp.Common
 {
+    /// <summary>
+    /// プロパティ定義クラス
+    /// </summary>
     public class PropertyDef
     {
         /// <summary>

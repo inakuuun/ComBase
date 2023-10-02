@@ -41,6 +41,9 @@ namespace MyApp.Threads
             }
         }
 
+        /// <summary>
+        /// 初期処理
+        /// </summary>
         protected abstract bool RunInit();
     }
 }
