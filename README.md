@@ -1,5 +1,9 @@
-# MyApp
-- ディレクトリ構成
+## MyApp
+#### 環境
+- Windows 10 Pro
+- Visual Studio 2022
+- .NET6.0
+#### ディレクトリ構成
 ```
 MyApp
 ├── App.cs
