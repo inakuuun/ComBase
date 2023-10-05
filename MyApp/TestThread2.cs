@@ -13,7 +13,7 @@ namespace MyApp
         /// <summary>
         /// ログファイル名
         /// </summary>
-        private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
+        private string _logFileName { get => base.ThreadName ?? string.Empty; }
 
         protected override bool RunInit()
         {
