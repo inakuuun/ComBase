@@ -73,6 +73,7 @@ App.cs
 - TcpClientBase.cs => クライアントのTCP接続で必要な処理を用意した抽象クラス
   - https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpClientBase.cs
 - TcpServerBase.cs => サーバーのTCP接続で必要な処理を用意した抽象クラス
+  - https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpServerBase.cs
 - ThreadBase.cs => スレッド処理に必要な処理を用意する抽象クラス
   - https://github.com/inakuuun/MyApp/blob/main/MyApp/Threads/ThreadBase.cs
 - ThreadManager.cs => 拡張可能なスレッド管理クラス
