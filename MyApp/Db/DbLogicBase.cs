@@ -7,7 +7,10 @@ using System.Data.SQLite;
 
 namespace MyApp.Db
 {
-    public abstract class DbBase
+    /// <summary>
+    /// DBロジック基底クラス
+    /// </summary>
+    public abstract class DbLogicBase
     {
         protected virtual string ConnectionString { get; set; } = "";
 

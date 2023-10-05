@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyApp.Db
 {
-    public class DbFactory : DbBase
+    public class DbFactory : DbLogicBase
     {
         /// <summary>
         /// コンストラクタ
