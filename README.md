@@ -40,20 +40,6 @@ App.cs
 ```
 
 #### 機能の概要
-- Common
-    - PropertyDef.cs
-      - 定義ファイルをプロパティとして格納するクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Common/PropertyDef.cs
-    - StractDef.cs
-      - 構造体系をまとめるクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Common/StractDef.cs
-- Config
-    - DbProperties.xml
-      - DB接続時に使用する値を定義  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Config/DbProperties.xml
-    - ProgramInfo.xml
-      - 定義が必要なクラスを定義  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Config/ProgramInfo.xml
 - Db
     - DbControllerInfo.cs
       - DB接続時に必要な情報を保持するクラス  
@@ -71,9 +57,6 @@ App.cs
       - DB操作に必要な処理を持つインターフェース  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/IDbController.cs
 - FileUtil
-    - FileUtil.cs
-      - 汎用的なファイル操作系の処理  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/FileUtil/FileUtil.cs
     - PropertyReader.cs
       - プロパティ定義ファイル情報を管理するクラス  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/FileUtil/PropertyReader.cs
