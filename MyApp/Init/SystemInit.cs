@@ -1,4 +1,5 @@
-﻿using MyApp.FileUtil;
+﻿using MyApp.Common;
+using MyApp.FileUtil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,12 +24,17 @@ namespace MyApp.Init
             try
             {
                 // ログ出力先ディレクトリを作成
+                // ※システム起動後一番最初にログ出力先ディレクトリを作成しておく
                 Logs.Log.CreateLogDirectory();
 
                 // DB定義ファイル設定
                 PropertyReader.SetPropertyAll("./Config/DbProperties.xml");
+
+                // データベース実行クラスを生成
+                // ※DB定義ファイル情報取得後に実施する必要あり
+                new MyApp.Db.DbControllerFactory(StractDef.DB.SQLite);
             }
-            catch(Exception ex) 
+            catch (Exception ex) 
             {
                 Console.WriteLine(ex.Message);
             }
