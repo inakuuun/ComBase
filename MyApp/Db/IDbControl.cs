@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyApp.Db
 {
+    /// <summary>
+    /// DBコントローラーインタフェース
+    /// </summary>
     public interface IDbControl : IDisposable
     {
         /// <summary>

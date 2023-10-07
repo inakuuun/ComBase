@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace MyApp.Db
 {
+    /// <summary>
+    /// DBコントローラークラス
+    /// </summary>
+    /// <typeparam name="TDbConnection"></typeparam>
+    /// <typeparam name="TDbCommand"></typeparam>
     public class DbController<TDbConnection, TDbCommand> : IDbControl
         where TDbConnection : DbConnection
         where TDbCommand : DbCommand
