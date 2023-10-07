@@ -12,7 +12,7 @@ namespace MyApp.Db
     public interface IDbControl : IDisposable
     {
         /// <summary>
-        /// コネクション確立
+        /// DB接続
         /// </summary>
         void Open();
 

@@ -62,21 +62,14 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// コネクション確立
+        /// DB接続
         /// </summary>
         public void Open()
         {
-            try
+            _dbConnection?.Open();
+            if (_dbConnection?.State == ConnectionState.Open)
             {
-                _dbConnection?.Open();
-                if (_dbConnection?.State == ConnectionState.Open)
-                {
-                    Log.Trace(_logFileName, "DB接続に成功しました。");
-                }
-            }
-            catch(Exception e)
-            {
-                Log.Trace(_logFileName, "DB接続に失敗しました。");
+                Log.Trace(_logFileName, "DB接続に成功しました。");
             }
         }
         
