@@ -12,6 +12,10 @@ namespace MyApp.Db
     /// </summary>
     public abstract class DbLogicBase
     {
+        /// <summary>
+        /// SQL実行処理
+        /// </summary>
+        /// <param name="action"></param>
         protected void SQLCommand(Action<IDbControl> action)
         {
             var ctrl = DbControllerFactory.GetControl();

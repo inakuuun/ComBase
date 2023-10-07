@@ -22,6 +22,10 @@ namespace MyApp.Db
             ChatDaoAccess = new DbController(this);
         }
 
+        /// <summary>
+        /// SQL実行処理
+        /// </summary>
+        /// <param name="action"></param>
         public new void SQLCommand(Action<IDbControl> action)
         {
             base.SQLCommand(action);

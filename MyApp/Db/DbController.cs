@@ -16,7 +16,7 @@ namespace MyApp.Db
         /// <summary>
         /// ログファイル名
         /// </summary>
-        private string _logFileName { get => typeof(DbController<TDbConnection, TDbCommand>).Name ?? string.Empty; }
+        private string _logFileName { get => typeof(IDbControl).Name ?? string.Empty; }
 
         /// <summary>
         /// DB接続文字列
@@ -57,14 +57,14 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// コネクションを確立
+        /// コネクション確立
         /// </summary>
         public void Open()
         {
             try
             {
                 _dbConnection?.Open();
-                if (_dbConnection?.State == ConnectionState.Connecting)
+                if (_dbConnection?.State == ConnectionState.Open)
                 {
                     Log.Trace(_logFileName, "DB接続に成功しました。");
                 }
