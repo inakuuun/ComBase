@@ -12,14 +12,14 @@ namespace MyApp.Db
         /// <summary>
         /// チャットDaoアクセスクラス
         /// </summary>
-        public DbController ChatDaoAccess { get; set; }
+        public ChatDaoAccess ChatDaoAccess { get; set; }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public DbLogic()
         {
-            ChatDaoAccess = new DbController(this);
+            ChatDaoAccess = new ChatDaoAccess(this);
         }
 
         /// <summary>

@@ -82,11 +82,20 @@ namespace MyApp.Db
         }
 
         /// <summary>
+        /// SQL読み取り処理
+        /// </summary>
+        public DbDataReader ExecuteReader(SqlBuilder sql)
+        {
+            _dbCommand.CommandText = sql.GetCommandText();
+            return _dbCommand.ExecuteReader();
+        }
+
+        /// <summary>
         /// SQLコマンド実行
         /// </summary>
-        public void ExecuteNonQuery(string str)
+        public void ExecuteNonQuery(SqlBuilder sql)
         {
-            _dbCommand.CommandText = str;
+            _dbCommand.CommandText = sql.GetCommandText(); ;
             _dbCommand.ExecuteNonQuery();
         }
 
@@ -110,6 +119,8 @@ namespace MyApp.Db
         {
             _dbConnection.Close();
             _dbConnection.Dispose();
+            _dbTransaction?.Dispose();
+            _dbCommand.Dispose();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,14 @@ namespace MyApp.Db
         void TransactionStart();
 
         /// <summary>
+        /// SQL実行結果読み取り
+        /// </summary>
+        DbDataReader ExecuteReader(SqlBuilder sql);
+        
+        /// <summary>
         /// SQLコマンド実行
         /// </summary>
-        void ExecuteNonQuery(string str);
+        void ExecuteNonQuery(SqlBuilder str);
 
         /// <summary>
         /// トランザクションコミット

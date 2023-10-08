@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MyApp.Db.Dao
 {
-    public class DbController
+    public class ChatDaoAccess
     {
         /// <summary>
         /// ログファイル名
         /// </summary>
-        private string _logFileName { get => typeof(DbController).Name ?? string.Empty; }
+        private string _logFileName { get => typeof(ChatDaoAccess).Name ?? string.Empty; }
 
         /// <summary>
         /// DBロジック
@@ -23,7 +23,7 @@ namespace MyApp.Db.Dao
         /// コンストラクタ
         /// </summary>
         /// <param name="obj"></param>
-        public DbController(DbLogic obj)
+        public ChatDaoAccess(DbLogic obj)
         {
             _dbLogic = obj;
         }
@@ -37,9 +37,6 @@ namespace MyApp.Db.Dao
             {
                 try
                 {
-                    //// トランザクション開始
-                    //control.TransactionStart();
-
                     ////// 接続先やSQL実行に必要なインスタンスの作成
                     ////using (var connection = new SQLiteConnection(ConnectionString))
                     ////using (var command = connection.CreateCommand())
@@ -73,15 +70,40 @@ namespace MyApp.Db.Dao
                     ////    }
                     ////}
 
-                    //string sql = @"INSERT INTO users(id, name, age) VALUES(1, 'Mike', 30);";
+                    //SqlBuilder sql = new();
+
+                    //// トランザクション開始
+                    //control.TransactionStart();
+
+                    //sql.Add("INSERT INTO users (");
+                    //sql.Add("  id");
+                    //sql.Add(", name");
+                    //sql.Add(") VALUES (");
+                    //sql.Add(" 1");
+                    //sql.Add(",'Mike');");
 
                     //// SQL実行
                     //control.ExecuteNonQuery(sql);
 
                     //// トランザクションコミット
                     //control.TransactionCommit();
+                    int ids = 2;
+
+                    SqlBuilder sql = new();
+                    sql.Add("SELECT * FROM users", ids);
+
+                    SqlReader rd = new(control.ExecuteReader(sql));
+                    while (rd.Reader.Read())
+                    {
+                        short id = rd.ToShort("id");
+                        string name = rd.ToStr("name");
+                        int age = rd.ToInt("age");
+
+                        Console.WriteLine($"ID:{id} 名前:{name}　年齢:{age}");
+                    }
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Trace(_logFileName, $"SQL実行時異常 => {ex}");
                     control.TransactionRollback();
