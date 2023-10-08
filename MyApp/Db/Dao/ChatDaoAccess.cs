@@ -83,15 +83,8 @@ namespace MyApp.Db.Dao
                 }
                 catch(Exception ex)
                 {
-                    try
-                    {
-                        Log.Trace(_logFileName, $"SQL実行時異常 => {ex}");
-                        control.TransactionRollback();
-                    }
-                    catch(Exception ex2)
-                    {
-                        Log.Trace(_logFileName, $"ロールバック実行時異常 => {ex}");
-                    }
+                    Log.Trace(_logFileName, $"SQL実行時異常 => {ex}");
+                    control.TransactionRollback();
                 }
             });
         }
