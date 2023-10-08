@@ -70,29 +70,35 @@ namespace MyApp.Db.Dao
                     ////    }
                     ////}
 
-                    //SqlBuilder sql = new();
+                    //var insert = new SqlBuilder(control);
 
                     //// トランザクション開始
                     //control.TransactionStart();
 
-                    //sql.Add("INSERT INTO users (");
-                    //sql.Add("  id");
-                    //sql.Add(", name");
-                    //sql.Add(") VALUES (");
-                    //sql.Add(" 1");
-                    //sql.Add(",'Mike');");
+                    //insert.Add("INSERT INTO users (");
+                    //insert.Add("  id");
+                    //insert.Add(", name");
+                    //insert.Add(", age");
+                    //insert.Add(") VALUES (");
+                    //insert.Add(" 1");
+                    //insert.Add(",'Mike'");
+                    //insert.Add(",50);");
 
                     //// SQL実行
-                    //control.ExecuteNonQuery(sql);
+                    //control.ExecuteNonQuery(insert);
 
                     //// トランザクションコミット
                     //control.TransactionCommit();
-                    int ids = 2;
 
-                    SqlBuilder sql = new();
-                    sql.Add("SELECT * FROM users", ids);
+                    var br = new SqlBuilder(control);
+                    br.Add("SELECT * FROM users");
+                    //br.Add("WHERE id = :id;", 1);
 
-                    SqlReader rd = new(control.ExecuteReader(sql));
+                    // SQL実行
+                    var result = control.ExecuteReader(br);
+
+                    // 実行結果を取得
+                    using var rd = new SqlReader(result);
                     while (rd.Reader.Read())
                     {
                         short id = rd.ToShort("id");

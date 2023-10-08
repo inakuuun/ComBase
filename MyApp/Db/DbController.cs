@@ -82,11 +82,31 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// SQL読み取り処理
+        /// パラメーターインスタンス取得
+        /// </summary>
+        /// <returns></returns>
+        public DbParameter GetDbParameter()
+        {
+            return _dbCommand.CreateParameter();
+        }
+        
+        /// <summary>
+        /// パラメーターインスタンス取得
+        /// </summary>
+        /// <returns></returns>
+        public DbParameterCollection GetDbParameterCollection()
+        {
+            return _dbCommand.Parameters;
+        }
+
+        /// <summary>
+        /// SQL実行結果読み取り
         /// </summary>
         public DbDataReader ExecuteReader(SqlBuilder sql)
         {
+            // 実行するSQL文を設定
             _dbCommand.CommandText = sql.GetCommandText();
+            // SQL読み取り処理実行後インスタンスを返却
             return _dbCommand.ExecuteReader();
         }
 
@@ -95,7 +115,9 @@ namespace MyApp.Db
         /// </summary>
         public void ExecuteNonQuery(SqlBuilder sql)
         {
-            _dbCommand.CommandText = sql.GetCommandText(); ;
+            // 実行するSQL文を設定
+            _dbCommand.CommandText = sql.GetCommandText();
+            // SQL書き込み処理実行後インスタンスを返却
             _dbCommand.ExecuteNonQuery();
         }
 
@@ -119,8 +141,8 @@ namespace MyApp.Db
         {
             _dbConnection.Close();
             _dbConnection.Dispose();
-            _dbTransaction?.Dispose();
             _dbCommand.Dispose();
+            _dbTransaction?.Dispose();
         }
     }
 }

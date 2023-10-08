@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,17 @@ namespace MyApp.Db
         /// トランザクション開始
         /// </summary>
         void TransactionStart();
+
+        /// <summary>
+        /// パラメーターインスタンス取得
+        /// </summary>
+        DbParameter GetDbParameter();
+
+        /// <summary>
+        /// パラメーターコレクションインスタンス取得
+        /// </summary>
+        /// <returns></returns>
+        DbParameterCollection GetDbParameterCollection();
 
         /// <summary>
         /// SQL実行結果読み取り
