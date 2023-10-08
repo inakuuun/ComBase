@@ -59,7 +59,7 @@ namespace MyApp.Db.Dao
 
                     var br = new SqlBuilder(control);
                     br.Add("SELECT * FROM users");
-                    //br.Add("WHERE id = :id;", 1);
+                    br.Add("WHERE id = :id;", 1);
 
                     // SQL実行
                     var result = control.ExecuteReader(br);

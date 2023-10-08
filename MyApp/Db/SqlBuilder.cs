@@ -23,18 +23,12 @@ namespace MyApp.Db
         private IDbControl _control;
 
         /// <summary>
-        /// DBパラメーターコレクション
-        /// </summary>
-        private DbParameterCollection _parameters;
-
-        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="control"></param>
         public SqlBuilder(IDbControl control)
         {
             _control = control;
-            _parameters = _control.GetDbParameterCollection();
         }
 
         /// <summary>
@@ -69,36 +63,38 @@ namespace MyApp.Db
             // 構文置換処理
             sql = SyntaxReplace(sql);
 
-            // TODO：SQL文から対象文字を抽出するために考える必要あり
-            //// ループ処理を実施
-            //foreach (object obj in objects)
-            //{
-            //    // コントローラーのパラメーターインスタンス取得
-            //    // ※パラメーターを設定する度にインスタンス化する必要あり
-            //    var param = _control.GetDbParameter();
-            //    // 数値型の場合
-            //    if (long.TryParse(obj.ToString(), out long result))
-            //    {
-            //        if (!_parameters.Contains(":id"))
-            //        {
-            //            // シングルクォーテーションを付けずに設定
-            //            param.ParameterName = ":id";
-            //            param.Value = result;
-            //            _parameters.Add(param);
-            //        }
-            //    }
-            //    // 数値型以外の場合
-            //    else
-            //    {
-            //        if (!_parameters.Contains(":id"))
-            //        {
-            //            // シングルクォーテーションを付けて設定
-            //            param.ParameterName = ":id";
-            //            param.Value = $@"'{result}'";
-            //            _parameters.Add(param);
-            //        }
-            //    }
-            //}
+            //TODO：SQL文から対象文字を抽出するために考える必要あり
+            // ループ処理を実施
+            foreach (object obj in objects)
+            {
+                // パラメーター名を取得
+                string paramName = "id";
+                // コントローラーのパラメーターインスタンス取得
+                // ※パラメーターを設定する度にインスタンス化する必要あり
+                var param = _control.GetDbParameter();
+                // 数値型の場合
+                if (long.TryParse(obj.ToString(), out long result))
+                {
+                    if (!_control.DbParameters.Contains(paramName))
+                    {
+                        // シングルクォーテーションを付けずに設定
+                        param.ParameterName = paramName;
+                        param.Value = result;
+                        _control.DbParameters.Add(param);
+                    }
+                }
+                // 数値型以外の場合
+                else
+                {
+                    if (!_control.DbParameters.Contains(paramName))
+                    {
+                        // シングルクォーテーションを付けて設定
+                        param.ParameterName = paramName;
+                        param.Value = $@"'{result}'";
+                        _control.DbParameters.Add(param);
+                    }
+                }
+            }
             // SQL実行用文字列として格納
             _builder.AppendLine(sql);
         }

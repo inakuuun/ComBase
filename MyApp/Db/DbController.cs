@@ -19,14 +19,22 @@ namespace MyApp.Db
         where TDbCommand : DbCommand
     {
         /// <summary>
-        /// ログファイル名
-        /// </summary>
-        private string _logFileName { get => typeof(IDbControl).Name ?? string.Empty; }
-
-        /// <summary>
         /// DB接続文字列
         /// </summary>
         public string ConnectionString { get; set; } = string.Empty;
+
+        /// <summary>
+        /// SQLパラメーター設定変数
+        /// </summary>
+        public DbParameterCollection DbParameters
+        { 
+            get => _dbCommand.Parameters;
+        }
+
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get => typeof(IDbControl).Name ?? string.Empty; }
 
         /// <summary>
         /// DB接続変数
@@ -84,15 +92,6 @@ namespace MyApp.Db
             return _dbCommand.CreateParameter();
         }
         
-        /// <summary>
-        /// パラメーターインスタンス取得
-        /// </summary>
-        /// <returns></returns>
-        public DbParameterCollection GetDbParameterCollection()
-        {
-            return _dbCommand.Parameters;
-        }
-
         /// <summary>
         /// SQL実行結果読み取り
         /// </summary>

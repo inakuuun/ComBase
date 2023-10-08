@@ -14,6 +14,11 @@ namespace MyApp.Db
     public interface IDbControl : IDisposable
     {
         /// <summary>
+        /// SQLパラメーター設定変数
+        /// </summary>
+        DbParameterCollection DbParameters { get; }
+
+        /// <summary>
         /// DB接続
         /// </summary>
         void Open();
@@ -27,12 +32,6 @@ namespace MyApp.Db
         /// パラメーターインスタンス取得
         /// </summary>
         DbParameter GetDbParameter();
-
-        /// <summary>
-        /// パラメーターコレクションインスタンス取得
-        /// </summary>
-        /// <returns></returns>
-        DbParameterCollection GetDbParameterCollection();
 
         /// <summary>
         /// SQL実行結果読み取り
