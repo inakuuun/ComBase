@@ -39,11 +39,6 @@ namespace MyApp.Db
         private DbCommand _dbCommand;
 
         /// <summary>
-        /// DBパラメーター
-        /// </summary>
-        private DbParameter? _dbParameter;
-
-        /// <summary>
         /// DBトランザクション
         /// </summary>
         private DbTransaction? _dbTransaction;
@@ -57,7 +52,6 @@ namespace MyApp.Db
         {
             _dbConnection = connection;
             _dbCommand = command;
-            _dbParameter = null;
             _dbTransaction = null;
         }
 

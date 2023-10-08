@@ -37,39 +37,6 @@ namespace MyApp.Db.Dao
             {
                 try
                 {
-                    ////// 接続先やSQL実行に必要なインスタンスの作成
-                    ////using (var connection = new SQLiteConnection(ConnectionString))
-                    ////using (var command = connection.CreateCommand())
-                    ////{
-                    ////    // 接続開始
-                    ////    connection.Open();
-
-                    ////    // usersテーブルの作成
-                    ////    command.CommandText =
-                    ////    @"CREATE TABLE users("
-                    ////     + "id int,"
-                    ////     + "name varchar(10),"
-                    ////     + "age int)";
-                    ////    command.ExecuteNonQuery();
-
-                    ////    // データの挿入
-                    ////    command.CommandText = @"
-                    ////    INSERT INTO users(id, name, age) VALUES(1, 'Mike', 30);
-                    ////    INSERT INTO users(id, name, age) VALUES(2, 'Lisa', 24);
-                    ////    INSERT INTO users(id, name, age) VALUES(3, 'Taro', 35);";
-                    ////    command.ExecuteNonQuery();
-
-                    ////    // データの抽出
-                    ////    command.CommandText = "SELECT * FROM users";
-                    ////    using (var reader = command.ExecuteReader())
-                    ////    {
-                    ////        while (reader.Read())
-                    ////        {
-                    ////            Console.WriteLine($"ID:{reader["id"]} 名前:{reader["name"]}　年齢:{reader["age"]}");
-                    ////        }
-                    ////    }
-                    ////}
-
                     //var insert = new SqlBuilder(control);
 
                     //// トランザクション開始
