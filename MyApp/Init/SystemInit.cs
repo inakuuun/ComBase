@@ -31,8 +31,8 @@ namespace MyApp.Init
                 PropertyReader.SetPropertyAll("./Config/DbProperties.xml");
 
                 // データベース実行クラスを生成
-                // ※DB定義ファイル情報取得後に実施する必要あり
-                new MyApp.Db.DbControllerFactory(StractDef.DB.SQLite);
+                // ※DB接続情報をDB定義ファイルから取得するため、DB定義ファイル取得後に実施
+                _ = new MyApp.Db.DbControllerFactory(StractDef.DB.SQLite);
             }
             catch (Exception ex) 
             {

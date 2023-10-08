@@ -11,19 +11,16 @@ namespace MyApp.Db
     /// <summary>
     /// SQL実行結果読み取りクラス
     /// </summary>
-    public class SqlReader
+    public class SqlReader : IDisposable
     {
         /// <summary>
         /// SQL実行結果管理用変数
         /// </summary>
         public DbDataReader Reader;
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public SqlReader(DbDataReader sqlReader)
+        public SqlReader(DbDataReader reader) 
         {
-            Reader = sqlReader;
+            Reader = reader;
         }
 
         public string ToStr(string value)
@@ -144,6 +141,12 @@ namespace MyApp.Db
             }
             _ = DateTime.TryParse(val.ToString(), out DateTime result);
             return result;
+        }
+
+        public void Dispose()
+        {
+            Reader.Close();
+            Reader.Dispose();
         }
     }
 }

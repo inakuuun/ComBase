@@ -18,9 +18,8 @@ namespace MyApp.Db
         /// <param name="action"></param>
         protected void SQLCommand(Action<IDbControl> action)
         {
-            var ctrl = DbControllerFactory.GetControl();
+            using var ctrl = DbControllerFactory.GetControl();
             action(ctrl);
-            ctrl.Dispose();
         }
     }
 }
