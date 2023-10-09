@@ -37,25 +37,25 @@ namespace MyApp.Db.Dao
             {
                 try
                 {
-                    var insert = new SqlBuilder(control);
+                    //var insert = new SqlBuilder(control);
 
-                    // トランザクション開始
-                    control.TransactionStart();
+                    //// トランザクション開始
+                    //control.TransactionStart();
 
-                    insert.Add("INSERT INTO users (");
-                    insert.Add("  id");
-                    insert.Add(", name");
-                    insert.Add(", age");
-                    insert.Add(") VALUES (");
-                    insert.Add(" :id", 3);
-                    insert.Add(",:name", "KATSUO");
-                    insert.Add(",:age);", 42);
+                    //insert.Add("INSERT INTO users (");
+                    //insert.Add("  id");
+                    //insert.Add(", name");
+                    //insert.Add(", age");
+                    //insert.Add(") VALUES (");
+                    //insert.Add(" :id", 3);
+                    //insert.Add(",:name", "KATSUO");
+                    //insert.Add(",:age);", 42);
 
-                    // SQL実行
-                    control.ExecuteNonQuery(insert);
+                    //// SQL実行
+                    //control.ExecuteNonQuery(insert);
 
-                    // トランザクションコミット
-                    control.TransactionCommit();
+                    //// トランザクションコミット
+                    //control.TransactionCommit();
 
                     var br = new SqlBuilder(control);
                     br.Add("SELECT * FROM users");

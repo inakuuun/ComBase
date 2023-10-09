@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyApp.Common;
 using MyApp.Db;
 using MyApp.Logs;
 using MyApp.Threads;
@@ -23,7 +24,7 @@ namespace MyApp
 
         protected override bool RunInit()
         {
-            _dbLogic = new DbLogic();
+            _dbLogic = CommonDef.DbLogic;
             _dbLogic.ChatDaoAccess.ChatInsert();
             Log.Trace(_logFileName, "呼び出し元が合っているかテスト");
             return true;

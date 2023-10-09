@@ -10,12 +10,18 @@ namespace MyApp.Common
     /// <summary>
     /// 共通定義クラス
     /// </summary>
-    public static class CommonDef
+    public class CommonDef
     {
         /// <summary>
         /// DBコントローラー取得用デリゲート
         /// </summary>
         /// <returns></returns>
         public delegate IDbControl DbControlDelegate();
+
+        /// <summary>
+        /// DBロジッククラス
+        /// </summary>
+        /// <returns></returns>
+        public static DbLogic DbLogic { get; set; } = new DbLogic();
     }
 }
