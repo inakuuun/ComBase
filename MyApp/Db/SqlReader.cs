@@ -18,6 +18,10 @@ namespace MyApp.Db
         /// </summary>
         public DbDataReader Reader;
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="reader"></param>
         public SqlReader(DbDataReader reader) 
         {
             Reader = reader;
