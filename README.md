@@ -50,6 +50,9 @@ App.cs
     - DbControllerFactory.cs
       - DBロジッククラスで利用する必要なリソースを用意  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerFactory.cs
+    - DbLogic.cs
+      - Daoアクセスクラスの管理(Daoパターンにおけるデータアクセスロジッククラスを管理)  
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogic.cs
     - DbLogicBase.cs
       - DBロジッククラスの必要な処理を抽象化  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogicBase.cs
