@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyApp.Db
 {
+    /// <summary>
+    /// DBロジッククラス
+    /// </summary>
     public class DbLogic : DbLogicBase
     {
         /// <summary>
