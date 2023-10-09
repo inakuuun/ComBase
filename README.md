@@ -46,10 +46,10 @@ App.cs
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerInfo.cs
     - DbController.cs
       - DB操作(接続、処理の実行、トランザクション)で必要なリソースを用意  
-        => ※TODO：これから作成
-    - DbFactory.cs
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbController.cs
+    - DbControllerFactory.cs
       - DBロジッククラスで利用する必要なリソースを用意  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbFactory.cs
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerFactory.cs
     - DbLogicBase.cs
       - DBロジッククラスの必要な処理を抽象化  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogicBase.cs
