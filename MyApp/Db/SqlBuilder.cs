@@ -56,7 +56,7 @@ namespace MyApp.Db
         /// <summary>
         /// SQL文追加処理
         /// </summary>
-        /// <param name="sql"></param>
+        /// <param name="sql">SQL文字列</param>
         public void Add(string sql)
         {
             // 文字列が空の場合は処理を終了
@@ -73,8 +73,8 @@ namespace MyApp.Db
         /// <summary>
         /// SQL文追加処理(パラメータを含む)
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="objects"></param>
+        /// <param name="sql">SQL文字列</param>
+        /// <param name="objects">置換用パラメーター</param>
         public void Add(string sql, params object[] objects)
         {
             try
