@@ -17,7 +17,7 @@ namespace MyApp.Db.Dao
         /// <summary>
         /// DBロジック
         /// </summary>
-        DbLogic _dbLogic;
+        DbLogic _pObject;
 
         /// <summary>
         /// コンストラクタ
@@ -25,7 +25,7 @@ namespace MyApp.Db.Dao
         /// <param name="obj"></param>
         public ChatDaoAccess(DbLogic obj)
         {
-            _dbLogic = obj;
+            _pObject = obj;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace MyApp.Db.Dao
         /// </summary>
         public void ChatInsert()
         {
-            _dbLogic.SQLCommand((control) =>
+            _pObject.SQLCommand((control) =>
             {
                 try
                 {

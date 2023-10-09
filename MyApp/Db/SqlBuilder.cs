@@ -26,12 +26,12 @@ namespace MyApp.Db
         /// <summary>
         /// パラメーターキー抽出用
         /// </summary>
-        private char[] PARAMKEY_MATCH_CHAR = { ' ', ';', ')', ',' };
+        private readonly char[] PARAMKEY_MATCH_CHAR = { ' ', ';', ')', ',' };
 
         /// <summary>
         /// パラメーターキー開始文字
         /// </summary>
-        private char PARAMKEY_START_CHAR = ':';
+        private readonly char PARAMKEY_START_CHAR = ':';
 
         /// <summary>
         /// コンストラクタ
