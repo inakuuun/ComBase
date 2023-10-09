@@ -44,6 +44,16 @@ namespace MyApp.Db
         }
 
         /// <summary>
+        /// コマンド実行用SQL文を取得
+        /// </summary>
+        /// <remarks>コントローラークラスからSQL実行時に呼び出される関数</remarks>
+        /// <returns>Add関数により格納されたSQL文</returns>
+        public string GetCommandText()
+        {
+            return _builder.ToString();
+        }
+
+        /// <summary>
         /// SQL文追加処理
         /// </summary>
         /// <param name="sql"></param>
@@ -101,15 +111,6 @@ namespace MyApp.Db
             {
                 Console.WriteLine($"パラメータを含むSQL文追加時異常 => {e}");
             }
-        }
-
-        /// <summary>
-        /// コマンド実行用SQL文を取得
-        /// </summary>
-        /// <returns></returns>
-        public string GetCommandText()
-        {
-            return _builder.ToString();
         }
 
         /// <summary>
