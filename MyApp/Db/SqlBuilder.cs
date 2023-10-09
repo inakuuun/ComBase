@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyApp.Logs;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -23,16 +24,27 @@ namespace MyApp.Db
         private IDbControl _control;
 
         /// <summary>
+        /// パラメーターキー抽出用
+        /// </summary>
+        private char[] PARAMKEY_MATCH_CHAR = { ' ', ';', ')', ',' };
+
+        /// <summary>
+        /// パラメーターキー開始文字
+        /// </summary>
+        private char PARAMKEY_START_CHAR = ':';
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="control"></param>
         public SqlBuilder(IDbControl control)
         {
             _control = control;
+            _control.DbParameters.Clear();
         }
 
         /// <summary>
-        /// SQL文追加
+        /// SQL文追加処理
         /// </summary>
         /// <param name="sql"></param>
         public void Add(string sql)
@@ -42,69 +54,70 @@ namespace MyApp.Db
             {
                 return;
             }
-            // 構文置換処理
+            // 構文補正処理
             sql = SyntaxReplace(sql);
             // SQL実行用文字列として格納
             _builder.AppendLine(sql);
         }
 
         /// <summary>
-        /// パラメータを含むSQL文追加
+        /// SQL文追加処理(パラメータを含む)
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="objects"></param>
         public void Add(string sql, params object[] objects)
         {
-            // 文字列が空の場合は処理を終了
-            if (string.IsNullOrEmpty(sql))
+            try
             {
-                return;
-            }
-            // 構文置換処理
-            sql = SyntaxReplace(sql);
-
-            //TODO：SQL文から対象文字を抽出するために考える必要あり
-            // ループ処理を実施
-            foreach (object obj in objects)
-            {
-                // パラメーター名を取得
-                string paramName = "id";
-                // コントローラーのパラメーターインスタンス取得
-                // ※パラメーターを設定する度にインスタンス化する必要あり
-                var param = _control.GetDbParameter();
-                // 数値型の場合
-                if (long.TryParse(obj.ToString(), out long result))
+                // 文字列が空の場合は処理を終了
+                if (string.IsNullOrEmpty(sql))
                 {
-                    if (!_control.DbParameters.Contains(paramName))
-                    {
-                        // シングルクォーテーションを付けずに設定
-                        param.ParameterName = paramName;
-                        param.Value = result;
-                        _control.DbParameters.Add(param);
-                    }
+                    return;
                 }
-                // 数値型以外の場合
-                else
+                // 構文補正処理
+                sql = SyntaxReplace(sql);
+                // SQL実行用文字列として格納
+                _builder.AppendLine(sql);
+                // パラメーター設定処理
+                // パラメーターキー配列取得
+                string[] paramKeys = ExtractParam(sql);
+                // パラメーター配列分ループ処理を実施
+                for (int i = 0; i < objects.Length; i++)
                 {
-                    if (!_control.DbParameters.Contains(paramName))
+                    // コントローラーのパラメーターインスタンス取得
+                    // ※パラメーターを設定する度にインスタンス化する必要あり
+                    var param = _control.GetDbParameter();
+                    // パラメーターが未設定の場合
+                    if (!_control.DbParameters.Contains(paramKeys[i]))
                     {
-                        // シングルクォーテーションを付けて設定
-                        param.ParameterName = paramName;
-                        param.Value = $@"'{result}'";
+                        // パラメーターをセット
+                        param.ParameterName = paramKeys[i];
+                        param.Value = objects[i];
                         _control.DbParameters.Add(param);
                     }
                 }
             }
-            // SQL実行用文字列として格納
-            _builder.AppendLine(sql);
+            catch (Exception e) 
+            {
+                Console.WriteLine($"パラメータを含むSQL文追加時異常 => {e}");
+            }
         }
 
         /// <summary>
-        /// 構文置換処理
+        /// コマンド実行用SQL文を取得
         /// </summary>
-        /// <remarks>SQL文に含みたくない文字列の置換を実施</remarks>
+        /// <returns></returns>
+        public string GetCommandText()
+        {
+            return _builder.ToString();
+        }
+
+        /// <summary>
+        /// 構文補正処理
+        /// </summary>
+        /// <remarks>SQL文に含みたくない文字列を無効化</remarks>
         /// <returns>置換後文字列</returns>
-        public string SyntaxReplace(string sql)
+        private string SyntaxReplace(string sql)
         {
             // 前後空白スペース削除
             string result = sql.Trim();
@@ -115,12 +128,73 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// コマンド実行用SQL文を取得
+        /// パラメーターキー抽出処理
         /// </summary>
-        /// <returns></returns>
-        public string GetCommandText()
+        /// <param name="sql">抽出対象SQL</param>
+        /// <param name="paramKeys">パラメーターキー配列</param>
+        /// <param name="arrayIndex">配列格納用インデックス値</param>
+        /// <remarks>パラメーターキーを対象文字列から抽出し、配列に格納</remarks>
+        /// <returns>パラメーターキー格納後配列</returns>
+        private string[] ExtractParam(string sql, string[]? paramKeys = null, int arrayIndex = 0)
         {
-            return _builder.ToString();
+            // 抽出対象SQLを退避
+            string str = sql;
+            // ※初回呼び出しの場合
+            if (paramKeys == null)
+            {
+                // パラメーターキー配列を「:」の出現回数で初期化
+                // ※「:」の出現回数＝パラメーター数
+                paramKeys = new string[str.Count(ch => ch == PARAMKEY_START_CHAR)];
+            }
+            // 文字列抽出開始位置
+            // ※2つ以上対象文字がある場合、再帰呼び出し時にひっかからないように「対象文字＋1」を開始位置とする
+            int startIndex = str.IndexOf(PARAMKEY_START_CHAR) + 1;
+            // 文字列抽出終了位置
+            int endIndex = -1;
+            // 指定の文字から末尾までを抽出
+            str = str[startIndex..];
+            // 定義配列の中から一致する文字インデックスを文字列抽出終了位置とする
+            foreach (char ch in PARAMKEY_MATCH_CHAR)
+            {
+                // 一致する文字列が存在する場合
+                if (str.IndexOf(ch) > -1)
+                {
+                    // 全ての文字インデックスをチェックして、インデックスが小さい方を選択
+                    // ※文字列抽出終了位置初回設定時は-1
+                    if (endIndex == -1 || endIndex > str.IndexOf(ch))
+                    {
+                        // 文字列抽出終了位置を設定
+                        endIndex = str.IndexOf(ch);
+                    }
+                }
+            }
+            // パラメーターキー
+            string paramKey;
+            // 文字列抽出終了位置が取得出来た場合
+            if (endIndex > -1)
+            {
+                // 抽出対象文字列からパラメーターキーを抽出
+                paramKey = str.Substring(0, endIndex);
+            }
+            // 文字列抽出終了位置が取得出来なかった場合
+            // ※既にパラメーターキーを抽出済みとして判定
+            else
+            {
+                // 末尾まで全て取得
+                paramKey = str;
+            }
+
+            // パラメーターキー配列に格納
+            paramKeys[arrayIndex] = paramKey;
+            // パラメーターキー配列に追加可能な場合
+            if (paramKeys.Length > arrayIndex + 1)
+            {
+                // 配列格納用インデックスをカウントアップ
+                arrayIndex++;
+                // 切り出し後の文字列で再帰呼び出し
+                ExtractParam(str, paramKeys, arrayIndex);
+            }
+            return paramKeys;
         }
     }
 }
