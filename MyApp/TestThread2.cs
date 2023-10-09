@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp
 {
@@ -17,7 +18,7 @@ namespace MyApp
 
         protected override bool RunInit()
         {
-            Log.Trace(_logFileName, "呼び出し元が合っているかテスト2");
+            Log.Trace(_logFileName, LOGLEVEL.INFO, "呼び出し元が合っているかテスト2");
             return true;
         }
     }

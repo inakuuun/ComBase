@@ -1,5 +1,6 @@
 ﻿using MyApp.Common;
 using MyApp.FileUtil;
+using MyApp.Logs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Init
 {
@@ -16,6 +18,11 @@ namespace MyApp.Init
     /// <remarks>プロパティの読み込みなど、システム起動時に必要な情報を事前にメモリに積んでおく</remarks>
     public class SystemInit
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get => typeof(SystemInit).Name ?? string.Empty; }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -34,9 +41,9 @@ namespace MyApp.Init
                 // ※DB接続情報をDB定義ファイルから取得するため、DB定義ファイル取得後に実施
                 _ = new MyApp.Db.DbControllerFactory(StractDef.DB.SQLite);
             }
-            catch (Exception ex) 
+            catch (Exception e) 
             {
-                Console.WriteLine(ex.Message);
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"初期処理異常 => {e}");
             }
         }
     }

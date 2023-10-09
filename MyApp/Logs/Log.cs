@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Logs
 {
@@ -39,51 +40,67 @@ namespace MyApp.Logs
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="message"></param>
-        public static void Trace(string? fileName, string message)
+        public static void Trace(string? fileName, LOGLEVEL level, string message)
         {
             try
             {
-                // 出力先ファイル名が存在する場合にのみ処理を実施
-                if (!string.IsNullOrEmpty(fileName))
-                {
-                    // 呼び出し元情報を取得
-                    StackTrace stacTrace = new StackTrace();
-                    StackFrame? stackFrame = stacTrace?.GetFrame(1);
-                    // 呼び出し元のメソッド名を取得
-                    string? methodName = stackFrame?.GetMethod()?.Name;
-                    // 呼び出し元メソッドのパラメータ(仮引数)を取得
-                    ParameterInfo[]? parameters = stackFrame?.GetMethod()?.GetParameters();
+                // 呼び出し元情報を取得
+                StackTrace stacTrace = new StackTrace();
+                StackFrame? stackFrame = stacTrace?.GetFrame(1);
+                // 呼び出し元のメソッド名を取得
+                string? methodName = stackFrame?.GetMethod()?.Name;
+                // 呼び出し元メソッドのパラメータ(仮引数)を取得
+                ParameterInfo[]? parameters = stackFrame?.GetMethod()?.GetParameters();
 
-                    // メソッド名生成処理
-                    methodName += "(";
-                    if (parameters != null && parameters.Length > 0)
+                // メソッド名生成処理
+                methodName += "(";
+                if (parameters != null && parameters.Length > 0)
+                {
+                    foreach (var parameter in parameters)
                     {
-                        foreach (var parameter in parameters)
+                        // 型名
+                        string paramType = parameter.ParameterType.Name.ToLower();
+                        // 仮引数名
+                        string? paramName = parameter.Name;
+                        methodName += $"{paramType} {paramName},";
+                    }
+                }
+                methodName = methodName.TrimEnd(',');
+                methodName += ")";
+
+                // ログエントリの生成（出力するメッセージ）
+                string logEntory = $"{level}：[{DateTime.Now}] {methodName} => {message}{Environment.NewLine}";
+
+                // ログファイル生成処理
+                if(!string.IsNullOrEmpty(fileName))
+                {
+                    // ログレベルが「INFO」または「ERROR」の場合にのみファイルを生成
+                    // ※「DEBUG」の場合はファイルを生成しない
+                    if (level == LOGLEVEL.INFO || level == LOGLEVEL.ERROR)
+                    {
+                        // ログファイル名を生成
+                        string logFileName = $"{fileName}.log";
+                        // ログ出力ファイルパスを生成
+                        string logFilePath = Path.Combine(_logDirectoryPath, logFileName);
+                        // ファイルへの書き込み
+                        // ※ファイルが存在しない場合は作成し、末尾にログを追加
+                        File.AppendAllText(logFilePath, logEntory);
+                        // ログレベルが「ERROR」の場合はエラーファイルも作成
+                        if (level == LOGLEVEL.ERROR)
                         {
-                            // 型名
-                            string paramType = parameter.ParameterType.Name.ToLower();
-                            // 仮引数名
-                            string? paramName = parameter.Name;
-                            methodName += $"{paramType} {paramName},";
+                            // エラーファイル名を生成
+                            string errFileName = $"{fileName}.err";
+                            // エラー出力ファイルパスを生成
+                            string errFilePath = Path.Combine(_logDirectoryPath, errFileName);
+                            // ファイルへの書き込み
+                            // ※ファイルが存在しない場合は作成し、末尾にログを追加
+                            File.AppendAllText(errFilePath, logEntory);
                         }
                     }
-                    methodName = methodName.TrimEnd(',');
-                    methodName += ")";
-
-                    // ログエントリの生成（出力するメッセージ）
-                    string logEntory = $"[{DateTime.Now}] {methodName} => {message}{Environment.NewLine}";
-
-                    // ログファイル名を生成
-                    string logFileName = $"{fileName}.log";
-                    // ログ出力ファイルパスを生成
-                    string logFilePath = Path.Combine(_logDirectoryPath, logFileName);
-
-                    // ファイルへの書き込み
-                    // ※ファイルが存在しない場合は作成し、末尾にログを追加
-                    File.AppendAllText(logFilePath, logEntory);
-                    // コンソールに出力
-                    Console.WriteLine(logEntory);
                 }
+                
+                // コンソールに出力
+                Console.WriteLine(logEntory);
             }
             catch(Exception e)
             {

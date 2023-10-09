@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyApp.Tcp;
 using MyApp.Logs;
+using static MyApp.Common.StractDef;
 
 namespace MyApp
 {
@@ -47,7 +48,7 @@ namespace MyApp
             }
             catch (Exception e)
             {
-                Log.Trace(_logFileName, $"異常終了 => {e}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => { e }");
             }
         }
 

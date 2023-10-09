@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Db.Dao
 {
@@ -75,9 +76,9 @@ namespace MyApp.Db.Dao
                         Console.WriteLine($"ID:{id} 名前:{name}　年齢:{age}");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Log.Trace(_logFileName, $"SQL実行時異常 => {ex}");
+                    Log.Trace(_logFileName, LOGLEVEL.ERROR, $"SQL実行時異常 => {e}");
                     control.TransactionRollback();
                 }
             });

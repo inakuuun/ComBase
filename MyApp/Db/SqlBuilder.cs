@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Db
 {
@@ -109,7 +110,7 @@ namespace MyApp.Db
             }
             catch (Exception e) 
             {
-                Console.WriteLine($"パラメータを含むSQL文追加時異常 => {e}");
+                Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"パラメータを含むSQL文追加時異常 => {e}");
             }
         }
 

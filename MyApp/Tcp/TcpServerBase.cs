@@ -5,11 +5,18 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using MyApp.Logs;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Tcp
 {
     public abstract class TcpServerBase : TcpBase
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get => typeof(TcpServerBase).Name ?? string.Empty; }
+
         /// <summary>
         /// TCPリスナー
         /// </summary>
@@ -36,7 +43,7 @@ namespace MyApp.Tcp
                 _client = _listener?.AcceptTcpClient();
                 if (_client != null)
                 {
-                    Console.WriteLine("A client connected.");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, "A client connected.");
 
                     // データを読み書きするインスタンスを取得
                     NetworkStream netStream = _client.GetStream();
@@ -47,14 +54,14 @@ namespace MyApp.Tcp
                     int bytesRead = netStream.Read(receiveBytes, 0, _client.ReceiveBufferSize);
                     // 取得したデータを文字列に変換
                     string receivedData = Encoding.UTF8.GetString(receiveBytes, 0, bytesRead);
-                    Console.WriteLine($"Received Data: {receivedData}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 
                     // クライアントへ送信するデータ
                     string sendData = "Hello, Client!";
                     byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
                     // このタイミングでクライアントへデータを送信
                     netStream.Write(sendBytes, 0, sendBytes.Length);
-                    Console.WriteLine($"Sent Data: {sendData}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
                 }
             }
         }
@@ -77,14 +84,13 @@ namespace MyApp.Tcp
                 {
                     _listener = new TcpListener(ipAddress, portNum);
                     _listener.Start();
-                    Console.WriteLine($"Server is listening on {ipAddress}:{portNum}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {ipAddress}:{portNum}");
                     result = true;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Server is not listening on {ipAddress}:{portNum}");
-                Console.WriteLine($"{e}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"コネクション確立時異常 => {ipAddress}:{portNum} {e}");
             }
             return result;
         }
@@ -95,6 +101,7 @@ namespace MyApp.Tcp
         protected override void Close()
         {
             _client?.Close();
+            _client?.Dispose();
             _listener?.Stop();
         }
     }

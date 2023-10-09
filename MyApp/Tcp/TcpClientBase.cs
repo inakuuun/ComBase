@@ -1,15 +1,22 @@
-﻿using System;
+﻿using MyApp.Db.Dao;
+using MyApp.Logs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Tcp
 {
     public abstract class TcpClientBase : TcpBase
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
 
         /// <summary>
         /// TCPクライアント
@@ -37,7 +44,7 @@ namespace MyApp.Tcp
                     byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
                     // このタイミングでサーバへデータを送信処理
                     netStream.Write(sendBytes, 0, sendBytes.Length);
-                    Console.WriteLine($"Sent Data: {sendData}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
 
                     // 受信するデータのバッファサイズを指定して初期化
                     byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
@@ -46,7 +53,7 @@ namespace MyApp.Tcp
                     int bytesRead = netStream.Read(receiveBytes, 0, _client.ReceiveBufferSize);
                     // 取得したデータを文字列に変換
                     string receivedData = Encoding.UTF8.GetString(receiveBytes, 0, bytesRead);
-                    Console.WriteLine($"Received Data: {receivedData}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
                 }
             }
         }
@@ -69,14 +76,13 @@ namespace MyApp.Tcp
                 {
                     _client = new TcpClient();
                     _client.Connect(ipAddress, portNum);
-                    Console.WriteLine($"Server is listening on {ipAddress}:{portNum}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {ipAddress}:{portNum}");
                     result = true;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Server is not listening {ipAddress}:{portNum}");
-                Console.WriteLine($"{e}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"コネクション確立時異常 => {ipAddress}:{portNum} {e}");
             }
             return result;
         }
@@ -88,6 +94,7 @@ namespace MyApp.Tcp
         {
             // TcpClient をクローズする
             _client?.Close();
+            _client?.Dispose();
         }
     }
 }

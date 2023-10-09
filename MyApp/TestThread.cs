@@ -7,6 +7,7 @@ using MyApp.Common;
 using MyApp.Db;
 using MyApp.Logs;
 using MyApp.Threads;
+using static MyApp.Common.StractDef;
 
 namespace MyApp
 {
@@ -26,7 +27,7 @@ namespace MyApp
         {
             _dbLogic = CommonDef.DbLogic;
             _dbLogic.ChatDaoAccess.ChatInsert();
-            Log.Trace(_logFileName, "呼び出し元が合っているかテスト");
+            Log.Trace(_logFileName, LOGLEVEL.INFO, "呼び出し元が合っているかテスト");
             return true;
         }
     }

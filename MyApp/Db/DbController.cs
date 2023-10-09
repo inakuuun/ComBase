@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Db
 {
@@ -71,7 +72,7 @@ namespace MyApp.Db
             _dbConnection?.Open();
             if (_dbConnection?.State == ConnectionState.Open)
             {
-                Log.Trace(_logFileName, "DB接続に成功しました。");
+                Log.Trace(_logFileName, LOGLEVEL.INFO, "DB接続に成功しました。");
             }
         }
         

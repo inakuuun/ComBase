@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Threads
 {
@@ -28,11 +29,11 @@ namespace MyApp.Threads
             {
                 if (RunInit())
                 {
-                    Log.Trace(_logFileName, $"正常終了{base.ThreadName}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"正常終了{base.ThreadName}");
                 }
                 else
                 {
-                    Log.Trace(_logFileName, $"異常終了{base.ThreadName}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"異常終了{base.ThreadName}");
                 }
             }
             catch
