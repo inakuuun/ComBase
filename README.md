@@ -53,9 +53,15 @@ App.cs
     - DbLogicBase.cs
       - DBロジッククラスの必要な処理を抽象化  
         => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogicBase.cs
-    - IDbController.cs
+    - IDbControl.cs
       - DB操作に必要な処理を持つインターフェース  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/IDbController.cs
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/IDbControl.cs
+    - SqlBuilder.cs
+      - SQL実行用文字列生成クラス  
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/SqlBuilder.cs
+    - SqlReader.cs
+      - SQL実行結果読み取りクラス  
+        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/SqlReader.cs
 - FileUtil
     - PropertyReader.cs
       - プロパティ定義ファイル情報を管理するクラス  
