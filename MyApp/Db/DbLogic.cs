@@ -10,6 +10,7 @@ namespace MyApp.Db
     /// <summary>
     /// DBロジッククラス
     /// </summary>
+    /// <remarks>Daoアクセスクラスの管理</remarks>
     public class DbLogic : DbLogicBase
     {
         /// <summary>
