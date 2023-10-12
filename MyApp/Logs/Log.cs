@@ -69,7 +69,7 @@ namespace MyApp.Logs
                 methodName += ")";
 
                 // ログエントリの生成（出力するメッセージ）
-                string logEntory = $"{level}：[{DateTime.Now}] {methodName} => {message}{Environment.NewLine}";
+                string logEntory = $"{level}：[{DateTime.Now}] {fileName} {methodName} => {message}{Environment.NewLine}";
 
                 // ログファイル生成処理
                 if(!string.IsNullOrEmpty(fileName))
