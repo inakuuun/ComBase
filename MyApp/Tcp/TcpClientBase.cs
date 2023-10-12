@@ -14,6 +14,11 @@ namespace MyApp.Tcp
     public abstract class TcpClientBase : TcpBase
     {
         /// <summary>
+        /// TCP接続情報
+        /// </summary>
+        private TcpConnectInfo _connectInfo { get; set; } = new();
+
+        /// <summary>
         /// ログファイル名
         /// </summary>
         private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
@@ -27,64 +32,71 @@ namespace MyApp.Tcp
         /// <summary>
         /// 接続開始
         /// </summary>
-        /// <param name="ipAddress"></param>
-        /// <param name="portNum"></param>
-        protected override void ConnectStart(IPAddress? ipAddress, int portNum)
+        protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
-            // コネクションの確立に成功した場合に以降の処理を実施
-            if (Connection(ipAddress, portNum))
-            {
-                if (_client != null)
-                {
-                    // データを読み書きするインスタンスを取得
-                    NetworkStream netStream = _client.GetStream();
-
-                    // サーバーへ送信するデータ
-                    string sendData = "Hello, Server!";
-                    byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
-                    // このタイミングでサーバへデータを送信処理
-                    netStream.Write(sendBytes, 0, sendBytes.Length);
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
-
-                    // 受信するデータのバッファサイズを指定して初期化
-                    byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
-
-                    // サーバからデータの送信があるまで処理を待機
-                    int bytesRead = netStream.Read(receiveBytes, 0, _client.ReceiveBufferSize);
-                    // 取得したデータを文字列に変換
-                    string receivedData = Encoding.UTF8.GetString(receiveBytes, 0, bytesRead);
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
-                }
-            }
+            _connectInfo = connectInfo;
         }
 
         /// <summary>
         /// コネクション確立
         /// </summary>
-        /// <param name="ipAddress"></param>
-        /// <param name="portNum"></param>
-        protected override sealed bool Connection(IPAddress? ipAddress, int portNum)
+        protected override sealed void Connection()
         {
-            bool result = false;
             try
             {
                 // -------------------------------------------------
                 // サーバーとTCP接続確立
                 // サーバーへ接続開始
                 // -------------------------------------------------
-                if(ipAddress != null)
+                while (true)
                 {
-                    _client = new TcpClient();
-                    _client.Connect(ipAddress, portNum);
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {ipAddress}:{portNum}");
-                    result = true;
+                    if (_client == null)
+                    {
+                        _client = new TcpClient();
+                        _client.Connect(_connectInfo.IpAddress, _connectInfo.Port);
+                    }
+
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {_connectInfo.IpAddress}:{_connectInfo.Port}");
+
+                    while (true)
+                    {
+                        if (_client != null)
+                        {
+                            // データを読み書きするインスタンスを取得
+                            using NetworkStream netStream = _client.GetStream();
+
+                            // サーバーへ送信するデータ
+                            string sendData = "Hello, Server!";
+                            byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
+                            // このタイミングでサーバへデータを送信処理
+                            netStream.Write(sendBytes, 0, sendBytes.Length);
+                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
+
+                            // 受信するデータのバッファサイズを指定して初期化
+                            byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
+
+                            // サーバからデータの送信があるまで処理を待機
+                            int bytesRead = netStream.Read(receiveBytes, 0, _client.ReceiveBufferSize);
+                            // 取得したデータを文字列に変換
+                            string receivedData = Encoding.UTF8.GetString(receiveBytes, 0, bytesRead);
+                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+                        }
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"コネクション確立時異常 => {ipAddress}:{portNum} {e}");
+                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} { ex }");
+                _ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
             }
-            return result;
+        }
+
+        /// <summary>
+        /// 再接続処理
+        /// </summary>
+        private void ReConnect(object? state)
+        {
+            this.Connection();
         }
 
         /// <summary>

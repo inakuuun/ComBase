@@ -17,16 +17,12 @@ namespace MyApp.Tcp
         /// <summary>
         /// 接続開始
         /// </summary>
-        /// <param name="ipAddress"></param>
-        /// <param name="portNum"></param>
-        protected abstract void ConnectStart(IPAddress ipAddress, int portNum);
+        protected abstract void ConnectStart(TcpConnectInfo connectInfo);
 
         /// <summary>
         /// コネクション確立
         /// </summary>
-        /// <param name="ipAddress"></param>
-        /// <param name="portNum"></param>
-        protected abstract bool Connection(IPAddress ipAddress, int portNum);
+        protected abstract void Connection();
 
         /// <summary>
         /// 接続解除

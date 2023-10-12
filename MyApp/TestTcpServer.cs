@@ -19,36 +19,43 @@ namespace MyApp
         private string _logFileName { get => base.ThreadName ?? string.Empty; }
 
         /// <summary>
-        /// 接続先IPアドレス
+        /// TCP接続情報
         /// </summary>
-        /// <returns></returns>
-        private IPAddress? _ipAddress;
-
-        /// <summary>
-        /// 宛先ポート番号
-        /// </summary>
-        /// <returns></returns>
-        private int _portNum;
+        private TcpConnectInfo _connectInfo { get; set; } = new();
 
         protected override bool RunInit()
         {
-            // 接続先IPアドレス
-            _ipAddress = IPAddress.Parse("127.0.0.1");
-            // 宛先ポート番号
-            _portNum = 50000;
-            ConnectStart();
+            try
+            {
+                _connectInfo = new TcpConnectInfo()
+                {
+                    // 接続先IPアドレス
+                    IpAddress = IPAddress.Parse("127.0.0.1"),
+                    // 待受けポート番号
+                    Port = 50000
+                };
+                this.ConnectStart(_connectInfo);
+            }
+            catch(Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => {_logFileName} {ex}");
+                return false;
+            }
             return true;
         }
 
-        public void ConnectStart()
+        /// <summary>
+        /// TCP接続開始
+        /// </summary>
+        public new void ConnectStart(TcpConnectInfo connectInfo)
         {
             try
             {
-                base.ConnectStart(_ipAddress, _portNum);
+                base.ConnectStart(connectInfo);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => { e }");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => {ex}");
             }
         }
 
