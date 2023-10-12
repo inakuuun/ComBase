@@ -102,9 +102,9 @@ namespace MyApp.Logs
                 // コンソールに出力
                 Console.WriteLine(logEntory);
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(ex);
             }
         }
     }

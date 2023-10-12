@@ -108,9 +108,9 @@ namespace MyApp.Db
                     }
                 }
             }
-            catch (Exception e) 
+            catch (Exception ex) 
             {
-                Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"パラメータを含むSQL文追加時異常 => {e}");
+                Log.Trace(string.Empty, LOGLEVEL.WARNING, $"パラメータを含むSQL文追加時異常 => {ex}");
             }
         }
 

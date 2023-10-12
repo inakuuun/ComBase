@@ -76,9 +76,9 @@ namespace MyApp.Db.Dao
                         Console.WriteLine($"ID:{id} 名前:{name}　年齢:{age}");
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Log.Trace(_logFileName, LOGLEVEL.ERROR, $"SQL実行時異常 => {e}");
+                    Log.Trace(_logFileName, LOGLEVEL.ERROR, $"SQL実行時異常 => {ex}");
                     control.TransactionRollback();
                 }
             });

@@ -29,11 +29,11 @@ namespace MyApp.Threads
             {
                 if (RunInit())
                 {
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"正常終了{base.ThreadName}");
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"正常終了 => {base.ThreadName}");
                 }
                 else
                 {
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"異常終了{base.ThreadName}");
+                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"異常終了 => {base.ThreadName}");
                 }
             }
             catch

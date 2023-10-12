@@ -41,9 +41,9 @@ namespace MyApp.Init
                 // ※DB接続情報をDB定義ファイルから取得するため、DB定義ファイル取得後に実施
                 _ = new MyApp.Db.DbControllerFactory(StractDef.DB.SQLite);
             }
-            catch (Exception e) 
+            catch (Exception ex) 
             {
-                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"初期処理異常 => {e}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"初期処理異常 => {ex}");
             }
         }
     }

@@ -27,6 +27,7 @@ namespace MyApp.Common
         {
             DEBUG,
             INFO,
+            WARNING,
             ERROR,
         }
     }

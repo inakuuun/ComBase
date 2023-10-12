@@ -26,7 +26,7 @@ namespace MyApp
         protected override bool RunInit()
         {
             _dbLogic = CommonDef.DbLogic;
-            _dbLogic.ChatDaoAccess.ChatInsert();
+            //_dbLogic.ChatDaoAccess.ChatInsert();
             Log.Trace(_logFileName, LOGLEVEL.INFO, "呼び出し元が合っているかテスト");
             return true;
         }
