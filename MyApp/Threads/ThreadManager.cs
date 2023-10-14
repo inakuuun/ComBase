@@ -1,4 +1,5 @@
 ﻿using MyApp.Logs;
+using MyApp.Msg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,21 @@ namespace MyApp.Threads
         /// ログファイル名
         /// </summary>
         private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
+
+        /// <summary>
+        /// メッセージイベント
+        /// </summary>
+        private event EventHandler<MsgBase>? _msgEvent;
+
+        /// <summary>
+        /// メッセージ送信
+        /// </summary>
+        /// <param name="msg">送信メッセージ情報</param>
+        public void Send(object msg)
+        {
+            // イベントを発生させる
+            _msgEvent?.Invoke(this, (MsgBase)msg);
+        }
 
         /// <summary>
         /// スレッドの実行
