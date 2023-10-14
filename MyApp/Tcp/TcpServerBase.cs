@@ -12,6 +12,9 @@ using System.Net.NetworkInformation;
 
 namespace MyApp.Tcp
 {
+    /// <summary>
+    /// TCPサーバー基底クラス
+    /// </summary>
     public abstract class TcpServerBase : TcpBase
     {
         /// <summary>
@@ -25,6 +28,12 @@ namespace MyApp.Tcp
         private TcpListener? _listener;
 
         /// <summary>
+        /// TCPクライアント
+        /// </summary>
+        /// <remarks>電文の送信に利用</remarks>
+        private TcpClient? _client;
+
+        /// <summary>
         /// TCP接続情報
         /// </summary>
         private TcpConnectInfo _connectInfo { get; set; } = new();
@@ -32,8 +41,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// 接続開始
         /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <param name="connectInfo">TCP接続情報</param>
         protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
             _connectInfo = connectInfo;
