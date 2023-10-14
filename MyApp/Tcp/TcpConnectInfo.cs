@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyApp.Tcp
 {
+    /// <summary>
+    /// TCP接続情報クラス
+    /// </summary>
     public class TcpConnectInfo
     {
         /// <summary>
@@ -26,5 +29,11 @@ namespace MyApp.Tcp
         /// </summary>
         /// <returns></returns>
         public int DestPort;
+
+        /// <summary>
+        /// ヘルスチェック間隔(ミリ秒)
+        /// </summary>
+        /// <returns></returns>
+        public int HelthCheckInterval;
     }
 }

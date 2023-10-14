@@ -29,7 +29,9 @@ namespace MyApp
                 // 接続先IPアドレス
                 IpAddress = IPAddress.Parse("127.0.0.1"),
                 // 宛先ポート
-                Port = 50000
+                Port = 50000,
+                // ヘルスチェック間隔(ミリ秒)
+                HelthCheckInterval = 5000
             };
             this.ConnectStart(_connectInfo);
             return true;
