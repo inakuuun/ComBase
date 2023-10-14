@@ -93,8 +93,11 @@ namespace MyApp.Tcp
                             Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 
                             // エラーからの復帰の場合にフラグを更新する必要あり
-                            // ※while文中の処理が正常の場合は常に「false」
-                            wasErr = false;
+                            // ※while文中の処理が正常の場合は「false」を維持
+                            if (wasErr)
+                            {
+                                wasErr = false;
+                            }
                         }
                     }
                 }
