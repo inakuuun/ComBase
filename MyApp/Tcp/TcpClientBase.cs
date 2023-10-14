@@ -1,5 +1,6 @@
 ﻿using MyApp.Db.Dao;
 using MyApp.Logs;
+using MyApp.Msg.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,9 +66,9 @@ namespace MyApp.Tcp
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {_connectInfo.IpAddress}:{_connectInfo.Port}");
                     }
                     // データを読み書きするインスタンスを取得
-                    using NetworkStream netStream = _client.GetStream();
+                    using NetworkStream stream = _client.GetStream();
                     // 受信するデータのバッファサイズを指定して初期化
-                    byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
+                    byte[] buffer = new byte[_client.ReceiveBufferSize];
                     while (true)
                     {
                         if (_client != null)
@@ -79,17 +80,21 @@ namespace MyApp.Tcp
                                 // サーバーへデータを送信する時間を指定時間遅らせる
                                 System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
                             }
+
                             // サーバーへ送信するデータ
-                            string sendData = "Hello, Server!";
-                            byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
+                            HelthCheckReq req = new()
+                            {
+                                Message = "Hello, Server!"
+                            };
+                            byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
                             // このタイミングでサーバへデータを送信処理
-                            netStream.Write(sendBytes, 0, sendBytes.Length);
-                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
+                            stream.Write(sendBytes, 0, sendBytes.Length);
+                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
 
                             // サーバからデータの送信があるまで処理を待機
-                            int bytesRead = netStream.Read(receiveBytes, 0, _client.ReceiveBufferSize);
+                            int bytesRead = stream.Read(buffer, 0, _client.ReceiveBufferSize);
                             // 取得したデータを文字列に変換
-                            string receivedData = Encoding.UTF8.GetString(receiveBytes, 0, bytesRead);
+                            string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                             Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 
                             // エラーからの復帰の場合にフラグを更新する必要あり
@@ -114,8 +119,19 @@ namespace MyApp.Tcp
         /// <summary>
         /// 再接続処理
         /// </summary>
-        private void ReConnect(object? state)
+        private void TcpSend(object? state)
         {
+            // データを読み書きするインスタンスを取得
+            using NetworkStream netStream = _client.GetStream();
+            // 受信するデータのバッファサイズを指定して初期化
+            byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
+            // サーバーへ送信するデータ
+            string sendData = "Hello, Server!";
+            byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
+            // このタイミングでサーバへデータを送信処理
+            netStream.Write(sendBytes, 0, sendBytes.Length);
+            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
+
             this.Connection();
         }
 

@@ -19,6 +19,11 @@ namespace MyApp.Msg
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        public MsgBase() { }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         /// <param name="message"></param>
         public MsgBase(string message)
         {
