@@ -44,61 +44,16 @@ App.cs
 
 #### 機能の概要
 - Db
-    - DbControllerInfo.cs
-      - DB接続時に必要な情報を保持するクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerInfo.cs
-    - DbController.cs
-      - DB操作(接続、処理の実行、トランザクション)で必要なリソースを用意  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbController.cs
-    - DbControllerFactory.cs
-      - DBロジッククラスで利用する必要なリソースを用意  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerFactory.cs
-    - DbLogic.cs
-      - Daoアクセスクラスの管理(Daoパターンにおけるデータアクセスロジッククラスを管理)  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogic.cs
-    - DbLogicBase.cs
-      - DBロジッククラスの必要な処理を抽象化  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbLogicBase.cs
-    - IDbControl.cs
-      - DB操作に必要な処理を持つインターフェース  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/IDbControl.cs
-    - SqlBuilder.cs
-      - SQL実行用文字列生成クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/SqlBuilder.cs
-    - SqlReader.cs
-      - SQL実行結果読み取りクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/SqlReader.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
 - FileUtil
-    - PropertyReader.cs
-      - プロパティ定義ファイル情報を管理するクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/FileUtil/PropertyReader.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
 - Init
-    - BootManager.cs
-      - スレッドを実行するクラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Init/BootManager.cs
-    - SystemInit.cs
-      - システムで使用するリソースを事前準備(格納など)する処理クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Init/SystemInit.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
 - Logs
-    - Log.cs
-      - ログ生成クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Logs/Log.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
 - Tcp
-    - TcpBase.cs
-      - TCPに必要な処理を用意した抽象クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpBase.cs
-    - TcpClientBase.cs
-      - クライアントのTCP接続で必要な処理を用意した抽象クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpClientBase.cs
-    - TcpServerBase.cs
-      - サーバーのTCP接続で必要な処理を用意した抽象クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpServerBase.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
 - Threads
-    - ThreadBase.cs
-      - スレッド処理に必要な処理を用意する抽象クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Threads/ThreadBase.cs
-    - ThreadManager.cs
-      - 拡張可能なスレッド管理クラス  
-        => https://github.com/inakuuun/MyApp/blob/main/MyApp/Threads/ThreadManager.cs
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Threads  
 
 
