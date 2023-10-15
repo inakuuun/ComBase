@@ -9,7 +9,7 @@ namespace MyApp.Common
     /// <summary>
     /// プロパティ定義クラス
     /// </summary>
-    public class PropertyDef
+    public static class PropertyDef
     {
         /// <summary>SQLite_接続文字列</summary>
         public const string Property_SQLiteConnectionString = "SQLite.ConnectionString";

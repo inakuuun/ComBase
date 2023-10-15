@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyApp.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,11 @@ namespace MyApp.Msg.Messages
     public class HelthCheckReq : MsgBase
     {
         /// <summary>
+        /// 電文ID
+        /// </summary>
+        public short MessageId = MsgDef.MSG_HELTHCHECK_REQ;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public HelthCheckReq() { }
@@ -24,6 +30,10 @@ namespace MyApp.Msg.Messages
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private int GetMaxLength()
         {
             int size = 0;
@@ -39,10 +49,10 @@ namespace MyApp.Msg.Messages
         private int GetSize(object variable, int size)
         {
             int result = size;
-            if (variable is string) result += 1024;
-            if (variable is int) result += sizeof(int);
-            if (variable is short) result += sizeof(short);
-            if (variable is bool) result += sizeof(bool);
+            if (variable is string) return result += 1024;
+            if (variable is int) return result += sizeof(int);
+            if (variable is short) return result += sizeof(short);
+            if (variable is bool) return result += sizeof(bool);
             return result;
         }
     }

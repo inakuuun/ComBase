@@ -45,13 +45,13 @@ namespace MyApp.Tcp
         protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
             _connectInfo = connectInfo;
-            this.Connection();
+            this.HelthCheck();
         }
 
         /// <summary>
         /// コネクション確立
         /// </summary>
-        protected override sealed void Connection()
+        protected override sealed void HelthCheck()
         {
             // -------------------------------------------------
             // クライアントとTCP接続確立

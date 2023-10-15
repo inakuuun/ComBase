@@ -20,9 +20,9 @@ namespace MyApp.Tcp
         protected abstract void ConnectStart(TcpConnectInfo connectInfo);
 
         /// <summary>
-        /// コネクション確立
+        /// ヘルスチェック処理
         /// </summary>
-        protected abstract void Connection();
+        protected abstract void HelthCheck();
 
         /// <summary>
         /// 接続解除

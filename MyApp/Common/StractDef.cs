@@ -30,5 +30,14 @@ namespace MyApp.Common
             WARNING,
             ERROR,
         }
+
+        /// <summary>
+        /// TCPサービス識別子
+        /// </summary>
+        public enum TCP
+        {
+            SERVER,
+            CLIENT,
+        }
     }
 }

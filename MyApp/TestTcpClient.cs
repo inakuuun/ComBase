@@ -31,7 +31,7 @@ namespace MyApp
                 // 宛先ポート
                 Port = 50000,
                 // ヘルスチェック間隔(ミリ秒)
-                HelthCheckInterval = 5000
+                HelthCheckInterval = 10000
             };
             this.ConnectStart(_connectInfo);
             return true;
@@ -50,14 +50,6 @@ namespace MyApp
             {
                 Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => { ex }");
             }
-        }
-
-        /// <summary>
-        /// 接続解除
-        /// </summary>
-        public void TcpClose()
-        {
-            base.Close();
         }
     }
 }

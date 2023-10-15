@@ -1,4 +1,5 @@
 ﻿using MyApp.Db;
+using MyApp.Tcp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,19 @@ namespace MyApp.Common
     /// <summary>
     /// 共通定義クラス
     /// </summary>
-    public class CommonDef
+    public static class CommonDef
     {
         /// <summary>
         /// DBコントローラー取得用デリゲート
         /// </summary>
         /// <returns></returns>
         public delegate IDbControl DbControlDelegate();
+
+        /// <summary>
+        /// TCPコントローラー取得用デリゲート
+        /// </summary>
+        /// <returns></returns>
+        public delegate void TcpControllerDelegate(TcpConnectInfo connectInfo);
 
         /// <summary>
         /// DBロジッククラス

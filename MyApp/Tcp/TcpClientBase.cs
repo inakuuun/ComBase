@@ -1,5 +1,6 @@
 ﻿using MyApp.Db.Dao;
 using MyApp.Logs;
+using MyApp.Msg;
 using MyApp.Msg.Messages;
 using System;
 using System.Collections.Generic;
@@ -23,116 +24,102 @@ namespace MyApp.Tcp
         private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
 
         /// <summary>
-        /// TCPクライアント
-        /// </summary>
-        /// <remarks>電文の送信に利用</remarks>
-        private TcpClient? _client;
-
-        /// <summary>
         /// TCP接続情報
         /// </summary>
-        private TcpConnectInfo _connectInfo { get; set; } = new();
+        private TcpConnectInfo _connectInfo = new();
+        
+        /// <summary>
+        /// クライアントコントローラー
+        /// </summary>
+        private TcpController? _tcpController;
 
         /// <summary>
         /// 接続開始
         /// </summary>
         protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
+            // -------------------------------------------------
+            // サーバーとTCP接続
+            // -------------------------------------------------
+            // 接続情報インスタンスを設定
             _connectInfo = connectInfo;
-            this.Connection();
+            // ヘルスチェック処理
+            this.HelthCheck();
         }
 
         /// <summary>
-        /// コネクション確立
+        /// ヘルスチェック処理
         /// </summary>
-        protected override sealed void Connection()
+        protected override sealed void HelthCheck()
         {
-            // -------------------------------------------------
-            // サーバーとTCP接続確立
-            // サーバーへ接続開始
-            // -------------------------------------------------
-            // エラー復帰フラグ
-            bool wasErr = false;
+            // 遅延判定フラグ
+            // ※遅延が必要かを判定するフラグ
+            bool needDelay = true;
+            // クライアントコントローラーを生成
+            _tcpController = new TcpController(TCP.CLIENT);
+            // 接続を維持するためにwhile文が必要そう
             while (true)
             {
                 try
                 {
-                    // サーバーと接続出来ていない場合
-                    if (_client == null || !_client.Connected)
-                    {
-                        // サーバーへの接続要求
-                        _client = new TcpClient();
-                        _client.Connect(_connectInfo.IpAddress, _connectInfo.Port);
-                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {_connectInfo.IpAddress}:{_connectInfo.Port}");
-                    }
-                    // データを読み書きするインスタンスを取得
-                    using NetworkStream stream = _client.GetStream();
-                    // 受信するデータのバッファサイズを指定して初期化
-                    byte[] buffer = new byte[_client.ReceiveBufferSize];
+                    // TCPコネクション確立
+                    _tcpController?.Connect(_connectInfo);
+                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {_connectInfo.IpAddress}:{_connectInfo.Port}");
+                    // 通信異常がない間ループ処理を実施
                     while (true)
                     {
-                        if (_client != null)
+                        // 遅延が必要な場合
+                        // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
+                        if (needDelay)
                         {
-                            // エラーからの復帰ではない場合
-                            // ※エラー時に指定時間処理を遅らせるため、ここでは遅延処理を実施しない
-                            if (!wasErr)
-                            {
-                                // サーバーへデータを送信する時間を指定時間遅らせる
-                                System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
-                            }
+                            // サーバーへデータを送信する時間を指定時間遅らせる
+                            System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
+                        }
 
-                            // サーバーへ送信するデータ
-                            HelthCheckReq req = new()
-                            {
-                                Message = "Hello, Server!"
-                            };
-                            byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
-                            // このタイミングでサーバへデータを送信処理
-                            stream.Write(sendBytes, 0, sendBytes.Length);
-                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
+                        // サーバーへ送信するデータ
+                        HelthCheckReq req = new()
+                        {
+                            Message = "Hello, Server!"
+                        };
 
-                            // サーバからデータの送信があるまで処理を待機
-                            int bytesRead = stream.Read(buffer, 0, _client.ReceiveBufferSize);
-                            // 取得したデータを文字列に変換
-                            string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+                        // TCP電文送信処理
+                        byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
+                        _tcpController?.TcpSend(sendBytes);
+                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
 
-                            // エラーからの復帰の場合にフラグを更新する必要あり
-                            // ※while文中の処理が正常の場合は「false」を維持
-                            if (wasErr)
-                            {
-                                wasErr = false;
-                            }
+                        // TCP電文取得処理
+                        string? receivedData = _tcpController?.TcpRead();
+                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+
+                        // エラーからの復帰の場合にフラグを更新する必要あり
+                        // ※while文中の処理が正常の場合は「true」を維持
+                        if (!needDelay)
+                        {
+                            needDelay = true;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
+                    // 正常処理の遅延処理を実施しないようにfalseを設定
+                    needDelay = false;
+                    // 電文送受信用インスタンスを開放
+                    _tcpController?.Close();
+                    // サーバーへデータを送信する時間を指定時間遅らせる
+                    // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
                     //_ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
                     System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
-                    wasErr = true;
                 }
             }
         }
 
         /// <summary>
-        /// 再接続処理
+        /// TCP電文送信処理
         /// </summary>
-        private void TcpSend(object? state)
+        protected void TcpSend(byte[] sendBytes)
         {
-            // データを読み書きするインスタンスを取得
-            using NetworkStream netStream = _client.GetStream();
-            // 受信するデータのバッファサイズを指定して初期化
-            byte[] receiveBytes = new byte[_client.ReceiveBufferSize];
-            // サーバーへ送信するデータ
-            string sendData = "Hello, Server!";
-            byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
-            // このタイミングでサーバへデータを送信処理
-            netStream.Write(sendBytes, 0, sendBytes.Length);
-            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
-
-            this.Connection();
+            _tcpController?.TcpSend(sendBytes);
         }
 
         /// <summary>
@@ -140,9 +127,8 @@ namespace MyApp.Tcp
         /// </summary>
         protected override void Close()
         {
-            // TcpClient をクローズする
-            _client?.Close();
-            _client?.Dispose();
+            // TODO：不要な処理であれば後で削除
+            // 現状呼び出し元から接続解除する予定はないが、念のため残しておく
         }
     }
 }
