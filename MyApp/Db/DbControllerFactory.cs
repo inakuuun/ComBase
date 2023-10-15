@@ -41,6 +41,7 @@ namespace MyApp.Db
 
             // DBコントローラー情報生成クラスをインスタンス化
             DbControllerInfo dbControlInfo = new();
+            // SQLite
             if (db == StractDef.DB.SQLite)
             {
                 // SQLiteのDB接続用文字列を取得
@@ -48,7 +49,8 @@ namespace MyApp.Db
                 // SQLiteのコントローラー取得デリゲートを登録
                 _GetDbControl = GetDbControlSQLite;
             }
-            else if (db == StractDef.DB.PostgreSQL)
+            // PostgreSQL
+            else
             {
                 // PostgreSQLのDB接続用文字列を取得
                 _connectString = dbControlInfo.GetConnectionStringPostgreSQL();
@@ -58,7 +60,7 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// SQLiteのDBコントローラー取得
+        /// DBコントローラー取得(SQLite)
         /// </summary>
         private IDbControl GetDbControlSQLite()
         {
@@ -78,7 +80,7 @@ namespace MyApp.Db
         }
 
         /// <summary>
-        /// PostgreSQLのDBコントローラー取得
+        /// DBコントローラー取得(PostgreSQL)
         /// </summary>
         private IDbControl GetDbControlPostgreSQL()
         {
