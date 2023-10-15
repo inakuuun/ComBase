@@ -31,16 +31,13 @@ namespace MyApp.Tcp
         /// <summary>
         /// クライアントコントローラー
         /// </summary>
-        private TcpController? _tcpController;
+        private TcpController? _tcpClient;
 
         /// <summary>
         /// 接続開始
         /// </summary>
         protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
-            // -------------------------------------------------
-            // サーバーとTCP接続
-            // -------------------------------------------------
             // 接続情報インスタンスを設定
             _connectInfo = connectInfo;
             // ヘルスチェック処理
@@ -52,18 +49,22 @@ namespace MyApp.Tcp
         /// </summary>
         protected override sealed void HelthCheck()
         {
+            // -------------------------------------------------
+            // サーバーとTCP接続
+            // サーバーへ接続要求を送信する
+            // -------------------------------------------------
             // 遅延判定フラグ
             // ※遅延が必要かを判定するフラグ
             bool needDelay = true;
             // クライアントコントローラーを生成
-            _tcpController = new TcpController(TCP.CLIENT);
+            _tcpClient = new TcpController(TCP.CLIENT);
             // 接続を維持するためにwhile文が必要そう
             while (true)
             {
                 try
                 {
                     // TCPコネクション確立
-                    _tcpController?.Connect(_connectInfo);
+                    _tcpClient?.Connect(_connectInfo);
                     // 通信異常がない間ループ処理を実施
                     while (true)
                     {
@@ -83,11 +84,11 @@ namespace MyApp.Tcp
 
                         // TCP電文送信処理
                         byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
-                        _tcpController?.TcpSend(sendBytes);
+                        _tcpClient?.TcpSend(sendBytes);
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
 
                         // TCP受信電文取得処理
-                        string? receivedData = _tcpController?.TcpRead();
+                        string? receivedData = _tcpClient?.TcpRead();
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 
                         // エラーからの復帰の場合にフラグを更新する必要あり
@@ -104,7 +105,7 @@ namespace MyApp.Tcp
                     // 正常処理の遅延処理を実施しないようにfalseを設定
                     needDelay = false;
                     // 電文送受信用インスタンスを開放
-                    _tcpController?.Close();
+                    _tcpClient?.Close();
                     // サーバーへデータを送信する時間を指定時間遅らせる
                     // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
                     //_ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
@@ -118,7 +119,7 @@ namespace MyApp.Tcp
         /// </summary>
         protected void TcpSend(byte[] sendBytes)
         {
-            _tcpController?.TcpSend(sendBytes);
+            _tcpClient?.TcpSend(sendBytes);
         }
 
         /// <summary>

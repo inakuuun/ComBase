@@ -26,23 +26,12 @@ namespace MyApp.Tcp
         /// <summary>
         /// サーバーコントローラー
         /// </summary>
-        private TcpController? _tcpController;
-
-        /// <summary>
-        /// TCPリスナー
-        /// </summary>
-        private TcpListener? _listener;
-
-        /// <summary>
-        /// TCPクライアント
-        /// </summary>
-        /// <remarks>電文の送信に利用</remarks>
-        private TcpClient? _client;
+        private TcpController? _tcpServer;
 
         /// <summary>
         /// TCP接続情報
         /// </summary>
-        private TcpConnectInfo _connectInfo { get; set; } = new();
+        private TcpConnectInfo _connectInfo = new();
 
         /// <summary>
         /// 接続開始
@@ -61,14 +50,14 @@ namespace MyApp.Tcp
         {
             // -------------------------------------------------
             // クライアントとTCP接続確立
-            // 接続を待機
+            // クライアントから接続があるまで待機
             // -------------------------------------------------
             // サーバーコントローラーを生成
-            _tcpController = new TcpController(TCP.SERVER);
+            _tcpServer = new TcpController(TCP.SERVER);
             while (true)
             {
                 // TCPコネクション初期処理
-                _tcpController?.Connect(_connectInfo);
+                _tcpServer?.Connect(_connectInfo);
                 while (true)
                 {
                     try
@@ -80,12 +69,12 @@ namespace MyApp.Tcp
                         };
 
                         // TCP受信電文取得処理
-                        string? receivedData = _tcpController?.TcpRead();
+                        string? receivedData = _tcpServer?.TcpRead();
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 
                         // TCP電文送信処理
                         byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
-                        _tcpController?.TcpSend(sendBytes);
+                        _tcpServer?.TcpSend(sendBytes);
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
                     }
                     catch (Exception ex)
