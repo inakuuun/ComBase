@@ -1,0 +1,9 @@
+- TcpBase.cs
+  - TCPに必要な処理を用意した抽象クラス  
+    => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpBase.cs
+- TcpClientBase.cs
+  - クライアントのTCP接続で必要な処理を用意した抽象クラス  
+    => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpClientBase.cs
+- TcpServerBase.cs
+  - サーバーのTCP接続で必要な処理を用意した抽象クラス  
+    => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpServerBase.cs
