@@ -43,17 +43,15 @@ App.cs
 ```
 
 #### 機能の概要
-- Db
+- Db(DB操作系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
-- FileUtil
+- FileUtil(ファイル操作系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
-- Init
+- Init(初期処理系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
-- Logs
+- Logs(ログ機能系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
-- Tcp
+- Tcp(TCP通信系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
-- Threads
+- Threads(スレッド系)
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Threads  
-
-
