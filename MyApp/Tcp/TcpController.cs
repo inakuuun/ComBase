@@ -14,6 +14,9 @@ using static MyApp.Common.StractDef;
 
 namespace MyApp.Tcp
 {
+    /// <summary>
+    /// TCPコントローラークラス
+    /// </summary>
     public class TcpController
     {
         /// <summary>
