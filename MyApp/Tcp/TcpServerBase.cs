@@ -44,7 +44,7 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
-        /// コネクション確立
+        /// ヘルスチェック処理
         /// </summary>
         protected override sealed void HelthCheck()
         {
@@ -79,6 +79,7 @@ namespace MyApp.Tcp
                     }
                     catch (Exception ex)
                     {
+                        _tcpServer?.Close();
                         Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
                         break;
                     }
