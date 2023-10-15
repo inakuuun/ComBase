@@ -64,7 +64,6 @@ namespace MyApp.Tcp
                 {
                     // TCPコネクション確立
                     _tcpController?.Connect(_connectInfo);
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, $"Server is listening on {_connectInfo.IpAddress}:{_connectInfo.Port}");
                     // 通信異常がない間ループ処理を実施
                     while (true)
                     {
@@ -87,7 +86,7 @@ namespace MyApp.Tcp
                         _tcpController?.TcpSend(sendBytes);
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
 
-                        // TCP電文取得処理
+                        // TCP受信電文取得処理
                         string? receivedData = _tcpController?.TcpRead();
                         Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
 

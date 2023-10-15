@@ -36,6 +36,11 @@ namespace MyApp.Tcp
         private NetworkStream? _stream;
 
         /// <summary>
+        /// 
+        /// </summary>
+        private byte[]? _buffer;
+
+        /// <summary>
         /// TCPコントローラー取得用デリゲート
         /// </summary>
         /// <returns></returns>
@@ -60,13 +65,14 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
-        /// コネクション確立処理
+        /// TCPコネクション初期処理
         /// </summary>
         /// <param name="connectInfo"></param>
         public void Connect(TcpConnectInfo connectInfo)
         {
             try
             {
+                // コネクション確立
                 _Connect(connectInfo);
             }
             catch
@@ -84,8 +90,6 @@ namespace MyApp.Tcp
         {
             try
             {
-                // データを読み書きするインスタンスを取得
-                _stream = _client?.GetStream();
                 _stream?.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
@@ -96,25 +100,27 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
-        /// TCP電文取得処理
+        /// TCP受信電文取得処理
         /// </summary>
         public string TcpRead()
         {
             string resultData = string.Empty;
             try
             {
-                if (_client != null && _stream != null)
+                if (_stream != null && _buffer != null)
                 {
-                    // 受信データのバッファサイズを指定して初期化
-                    byte[] buffer = new byte[_client.ReceiveBufferSize];
                     // サーバからデータの送信があるまで処理を待機
-                    int bytesRead = _stream.Read(buffer, 0, buffer.Length);
+                    int bytesRead = _stream.Read(_buffer, 0, _buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        throw new Exception("クライアントが切断しました。");
+                    }
                     // 取得したデータを文字列に変換
-                    resultData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    resultData = Encoding.UTF8.GetString(_buffer, 0, bytesRead);
                 }
                 else
                 {
-                    _ = new Exception("TCP電文取得処理異常 => ハンドルのnull値を検出");
+                    throw new Exception("TCP電文取得処理異常 => ハンドルのnull値を検出");
                 }
             }
             catch
@@ -156,6 +162,17 @@ namespace MyApp.Tcp
                 _listener = new TcpListener(connectInfo.IpAddress, connectInfo.Port);
                 _listener.Start();
             }
+
+            if(_listener != null)
+            {
+                Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
+                // クライアントからの接続要求待ち
+                _client = _listener.AcceptTcpClient();
+                // データを読み書きするインスタンスを取得
+                _stream = _client.GetStream();
+                // 受信するデータのバッファサイズを指定して初期化
+                _buffer = new byte[_client.ReceiveBufferSize];
+            }
         }
 
         /// <summary>
@@ -168,8 +185,17 @@ namespace MyApp.Tcp
             {
                 // サーバーへの接続要求
                 _client = new TcpClient();
-                _client.Connect(connectInfo.IpAddress, connectInfo.Port);
+                _client.Connect(connectInfo.IpAddress, connectInfo.Port);;
             }
+
+            if (_client != null)
+            {
+                // データを読み書きするインスタンスを取得
+                _stream = _client.GetStream();
+                // 受信するデータのバッファサイズを指定して初期化
+                _buffer = new byte[_client.ReceiveBufferSize];
+            }
+            Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"Server is listening on {connectInfo.IpAddress}:{connectInfo.Port}");
         }
 
         /// <summary>

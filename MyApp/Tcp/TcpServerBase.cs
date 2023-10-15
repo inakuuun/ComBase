@@ -9,6 +9,7 @@ using MyApp.Logs;
 using static MyApp.Common.StractDef;
 using System.IO;
 using System.Net.NetworkInformation;
+using MyApp.Msg.Messages;
 
 namespace MyApp.Tcp
 {
@@ -21,6 +22,11 @@ namespace MyApp.Tcp
         /// ログファイル名
         /// </summary>
         private string _logFileName { get => typeof(TcpServerBase).Name ?? string.Empty; }
+
+        /// <summary>
+        /// サーバーコントローラー
+        /// </summary>
+        private TcpController? _tcpController;
 
         /// <summary>
         /// TCPリスナー
@@ -55,73 +61,37 @@ namespace MyApp.Tcp
         {
             // -------------------------------------------------
             // クライアントとTCP接続確立
-            // 指定のポート番号で接続待機
+            // 接続を待機
             // -------------------------------------------------
+            // サーバーコントローラーを生成
+            _tcpController = new TcpController(TCP.SERVER);
             while (true)
             {
-                // ====================================================
-                // 使用されているポートの判定処理
-                // C#でリスニング状態のポートを取得する方法
-                // https://usefuledge.com/csharp-check-port-open.html
-                // 使用済みポート判定フラグ
-                bool isUsePort = false;
-                // ネットワーク関連のグローバルなプロパティと設定情報を取得
-                IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-                // アクティブなTCPリスナーポートの情報を取得
-                IPEndPoint[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpListeners();
-                // 指定したポート番号がTCP/IPリスナーポートとして使用されているかチェック
-                foreach (IPEndPoint endpoint in tcpConnInfoArray)
+                // TCPコネクション初期処理
+                _tcpController?.Connect(_connectInfo);
+                while (true)
                 {
-                    // 使用しているポートがある場合ONを設定
-                    if (endpoint.Port == _connectInfo.Port)
+                    try
                     {
-                        isUsePort = true;
+                        // サーバーへ送信するデータ
+                        HelthCheckReq req = new()
+                        {
+                            Message = "Hello, Client!"
+                        };
+
+                        // TCP受信電文取得処理
+                        string? receivedData = _tcpController?.TcpRead();
+                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+
+                        // TCP電文送信処理
+                        byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
+                        _tcpController?.TcpSend(sendBytes);
+                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
                     }
-                }
-                // TCP/IPリスナーポートを使用していない場合にリッスンする
-                if (!isUsePort)
-                {
-                    _listener = new TcpListener(_connectInfo.IpAddress, _connectInfo.Port);
-                    _listener.Start();
-                }
-
-                if(_listener != null)
-                {
-                    Log.Trace(_logFileName, LOGLEVEL.INFO, "Waiting for connection...");
-                    // クライアントからの接続要求待ち
-                    using TcpClient client = _listener.AcceptTcpClient();
-                    // データを読み書きするインスタンスを取得
-                    using NetworkStream stream = client.GetStream();
-                    // 受信するデータのバッファサイズを指定して初期化
-                    byte[] buffer = new byte[client.ReceiveBufferSize];
-                    while (true)
+                    catch (Exception ex)
                     {
-                        try
-                        {
-                            // サーバからデータの送信があるまで処理を待機
-                            int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead == 0)
-                            {
-                                throw new Exception("クライアントが切断しました。");
-                            }
-
-                            // ここで受信したデータを処理
-                            // 取得したデータを文字列に変換
-                            string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
-
-                            // クライアントへ送信するデータ
-                            string sendData = "Hello, Client!";
-                            byte[] sendBytes = Encoding.UTF8.GetBytes(sendData);
-                            // このタイミングでクライアントへデータを送信処理
-                            stream.Write(sendBytes, 0, sendBytes.Length);
-                            Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {sendData}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
-                            break;
-                        }
+                        Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
+                        break;
                     }
                 }
             }
