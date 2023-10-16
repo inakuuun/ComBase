@@ -60,9 +60,10 @@ namespace MyApp.Logs
                     {
                         // 型名
                         string paramType = parameter.ParameterType.Name.ToLower();
-                        // 仮引数名
-                        string? paramName = parameter.Name;
-                        methodName += $"{paramType} {paramName},";
+                        //// 仮引数名
+                        //string? paramName = parameter.Name;
+                        //methodName += $"{paramType} {paramName},";
+                        methodName += $"{paramType},";
                     }
                 }
                 methodName = methodName.TrimEnd(',');

@@ -7,6 +7,7 @@
 - Visual Studio 2022
 - .NET6.0
 #### ディレクトリ構成
+※作成途中のため変動
 ```
 App.cs
 ├── Common
