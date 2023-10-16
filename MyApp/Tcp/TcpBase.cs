@@ -17,6 +17,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// 接続開始
         /// </summary>
+        /// <param name="connectInfo">TCP接続情報インスタンス</param>
         protected abstract void ConnectStart(TcpConnectInfo connectInfo);
 
         /// <summary>

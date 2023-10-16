@@ -37,7 +37,7 @@ namespace MyApp.Db
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="control"></param>
+        /// <param name="control">DBコントロール</param>
         public SqlBuilder(IDbControl control)
         {
             _control = control;

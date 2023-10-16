@@ -74,7 +74,7 @@ namespace MyApp.Db
         /// <summary>
         /// SQLite接続文字列取得処理
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DB接続文字列</returns>
         public string GetConnectionStringSQLite()
         {
             return string.Format(_SQLiteConnectionString, _SQLiteDataSource, _SQLiteVersion);
@@ -83,7 +83,7 @@ namespace MyApp.Db
         /// <summary>
         /// PostgreSQL接続文字列取得処理
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DB接続文字列</returns>
         public string GetConnectionStringPostgreSQL()
         {
             return string.Format(_PostgreSQLConnectionString, _PostgreSQLServer, _PostgreSQLPort, _PostgreSQLUsername, _PostgreSQLPassword, _PostgreSQLDatabase);

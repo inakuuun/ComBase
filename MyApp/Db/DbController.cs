@@ -131,6 +131,9 @@ namespace MyApp.Db
             _dbTransaction?.Rollback();
         }
 
+        /// <summary>
+        /// メモリ開放
+        /// </summary>
         public void Dispose()
         {
             _dbConnection.Close();

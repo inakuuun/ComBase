@@ -30,6 +30,7 @@ namespace MyApp.Db
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        /// <param name="db">データベース識別子</param>
         public DbControllerFactory(StractDef.DB db)
         {
             // dbディレクトリが存在しない場合は作成
@@ -62,6 +63,7 @@ namespace MyApp.Db
         /// <summary>
         /// DBコントローラー取得(SQLite)
         /// </summary>
+        /// <return>SQLite接続後インスタンス</return>
         private IDbControl GetDbControlSQLite()
         {
             // コネクションクラスをインスタンス化
@@ -82,6 +84,7 @@ namespace MyApp.Db
         /// <summary>
         /// DBコントローラー取得(PostgreSQL)
         /// </summary>
+        /// <return>PostgreSQL接続後インスタンス</return>
         private IDbControl GetDbControlPostgreSQL()
         {
             // コネクションクラスをインスタンス化

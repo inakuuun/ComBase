@@ -36,7 +36,7 @@ namespace MyApp.Tcp
         private NetworkStream? _stream;
 
         /// <summary>
-        /// 
+        /// 受信データ読み取りバッファ設定変数
         /// </summary>
         private byte[]? _buffer;
 
@@ -67,7 +67,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCPコネクション初期処理
         /// </summary>
-        /// <param name="connectInfo"></param>
+        /// <param name="connectInfo">TCP接続情報格納インスタンス</param>
         public void Connect(TcpConnectInfo connectInfo)
         {
             try
@@ -85,13 +85,13 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP電文送信処理
         /// </summary>
-        /// <param name="reqObj">送信要求メッセージクラス</param>
+        /// <param name="msgObj">送信要求メッセージオブジェクト</param>
         public void TcpSend(object msgObj)
         {
             try
             {
                 var msg = (MsgBase)msgObj;
-                byte[] sendBytes = msg.Read();
+                byte[] sendBytes = msg.BytesRead();
                 _stream?.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
@@ -106,7 +106,7 @@ namespace MyApp.Tcp
         /// </summary>
         public string TcpRead()
         {
-            string resultData = string.Empty;
+            string readData;
             try
             {
                 if (_stream != null && _buffer != null)
@@ -118,7 +118,7 @@ namespace MyApp.Tcp
                         throw new Exception("クライアントが切断しました。");
                     }
                     // 取得したデータを文字列に変換
-                    resultData = Encoding.UTF8.GetString(_buffer, 0, bytesRead);
+                    readData = Encoding.UTF8.GetString(_buffer, 0, bytesRead);
                 }
                 else
                 {
@@ -130,13 +130,13 @@ namespace MyApp.Tcp
                 // エラーハンドリングは呼び出し元で実装
                 throw;
             }
-            return resultData;
+            return readData;
         }
 
         /// <summary>
         /// コネクションの確立(サーバー)
         /// </summary>
-        /// <param name="connectInfo"></param>
+        /// <param name="connectInfo">TCP接続情報格納インスタンス</param>
         private void TcpServerConnect(TcpConnectInfo connectInfo)
         {
             // ====================================================
@@ -180,7 +180,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// コネクションの確立(クライアント)
         /// </summary>
-        /// <param name="connectInfo"></param>
+        /// <param name="connectInfo">TCP接続情報格納インスタンス</param>
         private void TcpClientConnect(TcpConnectInfo connectInfo)
         {
             if (_client == null || !_client.Connected)

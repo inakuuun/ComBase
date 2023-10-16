@@ -16,7 +16,7 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// 電文ID
         /// </summary>
-        public short MessageId = MsgDef.MSG_HELTHCHECK_REQ;
+        public short MessageId { get => MsgDef.MSG_HELTHCHECK_REQ; }
 
         /// <summary>
         /// コンストラクタ
@@ -38,7 +38,7 @@ namespace MyApp.Msg.Messages
         /// 電文データ取得
         /// </summary>
         /// <returns>プロパティ値をbyte配列に変換した値</returns>
-        public override byte[] Read()
+        public override byte[] BytesRead()
         {
             var builder = new StringBuilder();
             builder.Append(this.MessageId);
@@ -48,27 +48,12 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// 電文長取得
         /// </summary>
-        /// <returns></returns>
+        /// <returns>プロパティのサイズを全て加算した電文長</returns>
         private int GetLength()
         {
             int size = 0;
-            size = GetSize(MessageId);
+            size = base.GetSize(MessageId, size);
             return size;
-        }
-
-        /// <summary>
-        /// 変数ごとに確保するサイズを取得
-        /// </summary>
-        /// <param name="variable">変数</param>
-        /// <returns></returns>
-        private int GetSize(object variable, int size = 0)
-        {
-            int result = size;
-            if (variable is string) return result += 1024;
-            if (variable is int) return result += sizeof(int);
-            if (variable is short) return result += sizeof(short);
-            if (variable is bool) return result += sizeof(bool);
-            return result;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MyApp.Db
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="reader">DB情報読み取りインスタンス</param>
         public SqlReader(DbDataReader reader) 
         {
             Reader = reader;

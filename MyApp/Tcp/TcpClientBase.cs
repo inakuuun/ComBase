@@ -36,6 +36,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// 接続開始
         /// </summary>
+        /// <param name="connectInfo">TCP接続情報インスタンス</param>
         protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
             // 接続情報インスタンスを設定

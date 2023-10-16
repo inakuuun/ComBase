@@ -81,6 +81,7 @@ namespace MyApp.Init
             // スレッドを実行するインスタンス分ループ処理
             foreach (ThreadManager instance in _programInfoDic.Values)
             {
+                // スレッドを実行
                 instance.ThreadStart();
             }
         }
