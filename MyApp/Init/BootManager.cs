@@ -46,7 +46,7 @@ namespace MyApp.Init
                     {
                         // スレッド名を取得
                         string threadName = item.Attribute("threadName")?.Value ?? string.Empty;
-                        // クラス名を名前空間も含めて取得
+                        // スレッドを実行するクラス名を名前空間も含めて取得
                         string className = item.Attribute("className")?.Value ?? string.Empty;
 
                         // クラス名からTypeオブジェクトを取得
