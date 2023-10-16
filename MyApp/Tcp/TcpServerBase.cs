@@ -10,6 +10,7 @@ using static MyApp.Common.StractDef;
 using System.IO;
 using System.Net.NetworkInformation;
 using MyApp.Msg.Messages;
+using MyApp.Msg;
 
 namespace MyApp.Tcp
 {
@@ -63,19 +64,16 @@ namespace MyApp.Tcp
                     try
                     {
                         // サーバーへ送信するデータ
-                        HelthCheckReq req = new()
-                        {
-                            Message = "Hello, Client!"
-                        };
-
+                        HelthCheckReq req = new();
                         // TCP受信電文取得処理
                         string? receivedData = _tcpServer?.TcpRead();
-                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Received Data: {receivedData}");
+                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック要求受信");
 
                         // TCP電文送信処理
-                        byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
-                        _tcpServer?.TcpSend(sendBytes);
-                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
+                        _tcpServer?.TcpSend(req);
+                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Sent Data: {req.MessageId}");
+                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答送信");
                     }
                     catch (Exception ex)
                     {
@@ -88,10 +86,20 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
+        /// TCP電文送信処理
+        /// </summary>
+        protected void TcpSend(object msgObj)
+        {
+            var req = (MsgBase)msgObj;
+            _tcpServer?.TcpSend(req);
+        }
+
+        /// <summary>
         /// 接続解除
         /// </summary>
         protected override void Close()
         {
+
         }
     }
 }

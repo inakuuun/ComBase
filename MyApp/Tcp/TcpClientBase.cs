@@ -77,19 +77,16 @@ namespace MyApp.Tcp
                         }
 
                         // サーバーへ送信するデータ
-                        HelthCheckReq req = new()
-                        {
-                            Message = "Hello, Server!"
-                        };
-
+                        HelthCheckReq req = new();
                         // TCP電文送信処理
-                        byte[] sendBytes = Encoding.UTF8.GetBytes(req.Message);
-                        _tcpClient?.TcpSend(sendBytes);
-                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
+                        _tcpClient?.TcpSend(req);
+                        //Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
+                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック要求送信");
 
                         // TCP受信電文取得処理
                         string? receivedData = _tcpClient?.TcpRead();
-                        Log.Trace(_logFileName, LOGLEVEL.INFO, $"Received Data: {receivedData}");
+                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Received Data: {receivedData}");
+                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答受信");
 
                         // エラーからの復帰の場合にフラグを更新する必要あり
                         // ※while文中の処理が正常の場合は「true」を維持
@@ -108,8 +105,9 @@ namespace MyApp.Tcp
                     _tcpClient?.Close();
                     // サーバーへデータを送信する時間を指定時間遅らせる
                     // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
+                    // ※エラー発生時、待機時間が平均的に2秒遅いため「インターバル - 2秒」を設定
                     //_ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
-                    System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
+                    System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval - 2000);
                 }
             }
         }
@@ -117,9 +115,10 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP電文送信処理
         /// </summary>
-        protected void TcpSend(byte[] sendBytes)
+        protected void TcpSend(object msgObj)
         {
-            _tcpClient?.TcpSend(sendBytes);
+            var req = (MsgBase)msgObj;
+            _tcpClient?.TcpSend(req);
         }
 
         /// <summary>

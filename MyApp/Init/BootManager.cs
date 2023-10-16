@@ -50,11 +50,11 @@ namespace MyApp.Init
                         string className = item.Attribute("className")?.Value ?? string.Empty;
 
                         // クラス名からTypeオブジェクトを取得
-                        Type? testThread = Type.GetType(className);
-                        if (testThread != null)
+                        Type? threadClass = Type.GetType(className);
+                        if (threadClass != null)
                         {
                             // Typeオブジェクトを使用してクラスのインスタンスを生成
-                            object? instance = Activator.CreateInstance(testThread);
+                            object? instance = Activator.CreateInstance(threadClass);
                             if (instance != null && instance is ThreadManager obj)
                             {
                                 // 同じキーが存在しない場合

@@ -9,7 +9,7 @@ namespace MyApp.Msg
     /// <summary>
     /// メッセージ基底クラス
     /// </summary>
-    public class MsgBase : System.EventArgs
+    public abstract class MsgBase : System.EventArgs
     {
         /// <summary>
         /// 電文メッセージ
@@ -22,12 +22,9 @@ namespace MyApp.Msg
         public MsgBase() { }
 
         /// <summary>
-        /// コンストラクタ
+        /// 電文データ取得
         /// </summary>
-        /// <param name="message"></param>
-        public MsgBase(string message)
-        {
-            Message = message;
-        }
+        /// <returns></returns>
+        public abstract byte[] Read();
     }
 }

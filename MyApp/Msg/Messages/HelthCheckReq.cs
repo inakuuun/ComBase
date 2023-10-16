@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,24 +21,38 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public HelthCheckReq() { }
-
+        public HelthCheckReq()
+        {
+            byte[] result = new byte[GetLength()];
+        }
+        
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="message"></param>
-        public HelthCheckReq(string message) : base(message)
+        public HelthCheckReq(HelthCheckReq req)
         {
+
         }
 
         /// <summary>
-        /// 
+        /// 電文データ取得
+        /// </summary>
+        /// <returns>プロパティ値をbyte配列に変換した値</returns>
+        public override byte[] Read()
+        {
+            var builder = new StringBuilder();
+            builder.Append(this.MessageId);
+            return Encoding.UTF8.GetBytes(builder.ToString());
+        }
+
+        /// <summary>
+        /// 電文長取得
         /// </summary>
         /// <returns></returns>
-        private int GetMaxLength()
+        private int GetLength()
         {
             int size = 0;
-            size = GetSize(Message, size);
+            size = GetSize(MessageId);
             return size;
         }
 
@@ -46,7 +61,7 @@ namespace MyApp.Msg.Messages
         /// </summary>
         /// <param name="variable">変数</param>
         /// <returns></returns>
-        private int GetSize(object variable, int size)
+        private int GetSize(object variable, int size = 0)
         {
             int result = size;
             if (variable is string) return result += 1024;

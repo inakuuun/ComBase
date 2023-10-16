@@ -86,10 +86,12 @@ namespace MyApp.Tcp
         /// TCP電文送信処理
         /// </summary>
         /// <param name="reqObj">送信要求メッセージクラス</param>
-        public void TcpSend(byte[] sendBytes)
+        public void TcpSend(object msgObj)
         {
             try
             {
+                var msg = (MsgBase)msgObj;
+                byte[] sendBytes = msg.Read();
                 _stream?.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
