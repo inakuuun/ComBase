@@ -44,7 +44,7 @@ namespace MyApp.Init
                 {
                     if (item != null)
                     {
-                        // スレッドのキーを取得
+                        // スレッド名を取得
                         string threadName = item.Attribute("threadName")?.Value ?? string.Empty;
                         // クラス名を名前空間も含めて取得
                         string className = item.Attribute("className")?.Value ?? string.Empty;
