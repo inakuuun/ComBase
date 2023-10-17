@@ -118,8 +118,11 @@ namespace MyApp.Tcp
         /// </summary>
         protected void TcpSend(object msgObj)
         {
-            var req = (MsgBase)msgObj;
-            _tcpClient?.TcpSend(req);
+            // 型判定とキャスト
+            if(msgObj is MsgBase req)
+            {
+                _tcpClient?.TcpSend(req);
+            }
         }
 
         /// <summary>

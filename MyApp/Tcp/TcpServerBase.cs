@@ -11,6 +11,7 @@ using System.IO;
 using System.Net.NetworkInformation;
 using MyApp.Msg.Messages;
 using MyApp.Msg;
+using System.Net.Http;
 
 namespace MyApp.Tcp
 {
@@ -92,8 +93,11 @@ namespace MyApp.Tcp
         /// </summary>
         protected void TcpSend(object msgObj)
         {
-            var req = (MsgBase)msgObj;
-            _tcpServer?.TcpSend(req);
+            // 型判定とキャスト
+            if (msgObj is MsgBase req)
+            {
+                _tcpServer?.TcpSend(req);
+            }
         }
 
         /// <summary>
