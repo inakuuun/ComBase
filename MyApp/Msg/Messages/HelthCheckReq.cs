@@ -1,10 +1,8 @@
-﻿using MyApp.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
-using System.Threading.Tasks;
+using MyApp.Msg.Deffine;
 
 namespace MyApp.Msg.Messages
 {
@@ -16,7 +14,8 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// 電文ID
         /// </summary>
-        public short MessageId { get => MsgDef.MSG_HELTHCHECK_REQ; }
+        public override short MessageId { get => _messageId; }
+        private short _messageId = MsgDef.MSG_HELTHCHECK_REQ;
 
         /// <summary>
         /// コンストラクタ
@@ -41,7 +40,7 @@ namespace MyApp.Msg.Messages
         public override byte[] BytesRead()
         {
             var builder = new StringBuilder();
-            builder.Append(this.MessageId);
+            builder.Append(_messageId);
             return Encoding.UTF8.GetBytes(builder.ToString());
         }
 
@@ -52,7 +51,7 @@ namespace MyApp.Msg.Messages
         private int GetLength()
         {
             int size = 0;
-            size = base.GetSize(MessageId, size);
+            size = base.GetSize(_messageId, size);
             return size;
         }
     }

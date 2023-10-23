@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyApp.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,11 @@ namespace MyApp.Msg
     /// </summary>
     public abstract class MsgBase : System.EventArgs
     {
+        /// <summary>
+        /// 電文ID
+        /// </summary>
+        public abstract short MessageId { get; }
+
         /// <summary>
         /// 電文メッセージ
         /// </summary>

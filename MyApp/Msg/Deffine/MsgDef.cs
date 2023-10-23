@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyApp.Common
+namespace MyApp.Msg.Deffine
 {
     /// <summary>
     /// 電文メッセージ定義クラス

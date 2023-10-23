@@ -1,5 +1,6 @@
 ﻿using MyApp.Logs;
 using MyApp.Msg;
+using MyApp.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,11 @@ namespace MyApp.Threads
         /// <summary>
         /// メッセージイベント
         /// </summary>
-        private event EventHandler<MsgBase>? _msgEvent;
+        /// <remarks>内部電文生成イベント</remarks>
+        /// メモ => クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnReceive処理が走る
+        private static event EventHandler<MessageEventArgs>? _msgEvent;
 
-        /// <summary>
-        /// メッセージ送信
-        /// </summary>
-        /// <param name="msg">送信メッセージ情報</param>
-        public void Send(object msg)
-        {
-            // イベントを発生させる
-            _msgEvent?.Invoke(this, (MsgBase)msg);
-        }
+
 
         /// <summary>
         /// スレッドの実行
@@ -43,6 +38,9 @@ namespace MyApp.Threads
         {
             try
             {
+                // 初期処理時にイベントの登録
+                _msgEvent += OnReceive;
+
                 if (RunInit())
                 {
                     Log.Trace(_logFileName, LOGLEVEL.INFO, $"正常終了 => {base.ThreadName}");
@@ -59,8 +57,26 @@ namespace MyApp.Threads
         }
 
         /// <summary>
+        /// メッセージ送信
+        /// </summary>
+        /// <param name="msgObj">送信メッセージ情報</param>
+        protected void Send(object msgObj)
+        {
+            if (msgObj is MsgBase msg)
+            {
+                // イベントを発生させる
+                _msgEvent?.Invoke(this, new MessageEventArgs(msg));
+            }
+        }
+
+        /// <summary>
         /// 初期処理
         /// </summary>
         protected abstract bool RunInit();
+
+        /// <summary>
+        /// 内部電文受信処理
+        /// </summary>
+        protected abstract void OnReceive(object? sender, MessageEventArgs e);
     }
 }

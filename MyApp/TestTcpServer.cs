@@ -4,10 +4,11 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using MyApp.Tcp;
 using MyApp.Logs;
 using static MyApp.Common.StractDef;
+using MyApp.Events;
+using MyApp.Msg.Deffine;
 
 namespace MyApp
 {
@@ -56,6 +57,20 @@ namespace MyApp
             catch (Exception ex)
             {
                 Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => {ex}");
+            }
+        }
+
+        /// <summary>
+        /// 内部電文受信処理
+        /// </summary>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override void OnReceive(object? sender, MessageEventArgs e)
+        {
+            // ヘルスチェックの場合
+            if (e.MessageId == MsgDef.MSG_HELTHCHECK_REQ)
+            {
+                var ab = "";
             }
         }
 
