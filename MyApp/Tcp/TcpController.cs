@@ -104,9 +104,8 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP受信電文取得処理
         /// </summary>
-        public string TcpRead()
+        public byte[] TcpRead()
         {
-            string readData;
             try
             {
                 if (_stream != null && _buffer != null)
@@ -117,8 +116,6 @@ namespace MyApp.Tcp
                     {
                         throw new Exception("クライアントが切断しました。");
                     }
-                    // 取得したデータを文字列に変換
-                    readData = Encoding.UTF8.GetString(_buffer, 0, bytesRead);
                 }
                 else
                 {
@@ -130,7 +127,7 @@ namespace MyApp.Tcp
                 // エラーハンドリングは呼び出し元で実装
                 throw;
             }
-            return readData;
+            return _buffer;
         }
 
         /// <summary>

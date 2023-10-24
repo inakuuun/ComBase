@@ -54,6 +54,14 @@ namespace MyApp
         }
 
         /// <summary>
+        /// ヘルスチェック内部電文処理
+        /// </summary>
+        protected override void OnHelthCheck()
+        {
+            Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答受信");
+        }
+
+        /// <summary>
         /// 内部電文受信処理
         /// </summary>
         /// <param name="e"></param>

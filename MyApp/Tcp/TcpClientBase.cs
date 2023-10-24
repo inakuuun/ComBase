@@ -76,19 +76,14 @@ namespace MyApp.Tcp
                             // サーバーへデータを送信する時間を指定時間遅らせる
                             System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
                         }
-
                         // サーバーへ送信するデータ
                         HelthCheckReq req = new();
                         // TCP電文送信処理
                         _tcpClient?.TcpSend(req);
-                        //Log.Trace(_logFileName, LOGLEVEL.INFO, $"Sent Data: {req.Message}");
-                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック要求送信");
-
                         // TCP受信電文取得処理
-                        string? receivedData = _tcpClient?.TcpRead();
-                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Received Data: {receivedData}");
-                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答受信");
-
+                        byte[]? receivedData = _tcpClient?.TcpRead();
+                        // ヘルスチェック内部電文処理
+                        this.OnHelthCheck();
                         // エラーからの復帰の場合にフラグを更新する必要あり
                         // ※while文中の処理が正常の場合は「true」を維持
                         if (!needDelay)
@@ -133,5 +128,11 @@ namespace MyApp.Tcp
             // TODO：不要な処理であれば後で削除
             // 現状呼び出し元から接続解除する予定はないが、念のため残しておく
         }
+
+        /// <summary>
+        /// ヘルスチェック内部電文
+        /// </summary>
+        protected abstract override void OnHelthCheck();
+
     }
 }

@@ -69,14 +69,11 @@ namespace MyApp.Tcp
                         // サーバーへ送信するデータ
                         HelthCheckReq req = new();
                         // TCP受信電文取得処理
-                        string? receivedData = _tcpServer?.TcpRead();
-                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Received Data: {receivedData}");
-                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック要求受信");
-
+                        byte[]? receivedData = _tcpServer?.TcpRead();
                         // TCP電文送信処理
                         _tcpServer?.TcpSend(req);
-                        //Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"Sent Data: {req.MessageId}");
-                        Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答送信");
+                        // ヘルスチェック内部電文処理
+                        this.OnHelthCheck();
                     }
                     catch (Exception ex)
                     {
@@ -107,5 +104,10 @@ namespace MyApp.Tcp
         {
 
         }
+
+        /// <summary>
+        /// ヘルスチェック内部電文処理
+        /// </summary>
+        protected abstract override void OnHelthCheck();
     }
 }
