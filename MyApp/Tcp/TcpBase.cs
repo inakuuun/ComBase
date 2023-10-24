@@ -27,7 +27,7 @@ namespace MyApp.Tcp
         protected abstract void HelthCheck();
 
         /// <summary>
-        /// ヘルスチェック内部電文
+        /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract void OnHelthCheck();
 

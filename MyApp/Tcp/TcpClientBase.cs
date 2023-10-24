@@ -130,7 +130,7 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
-        /// ヘルスチェック内部電文
+        /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract override void OnHelthCheck();
 
