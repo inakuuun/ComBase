@@ -23,6 +23,7 @@ namespace MyApp.Msg
         /// </summary>
         public MsgWriter(byte[] bytes) 
         {
+            // BinaryWriterクラスについて => https://learn.microsoft.com/ja-jp/dotnet/api/system.io.binarywriter.write?view=net-7.0
             _binWriter = new BinaryWriter(new MemoryStream(bytes));
         }
 

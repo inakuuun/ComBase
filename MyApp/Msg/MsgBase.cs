@@ -42,6 +42,7 @@ namespace MyApp.Msg
         /// </summary>
         public MsgBase() 
         {
+            // 派生クラスで定義している全てのサイズで初期化
             _buffer = new byte[GetLength()];
             MsgWriter = new MsgWriter(_buffer);
         }
@@ -61,12 +62,16 @@ namespace MyApp.Msg
         /// <returns>プロパティ値をbyte配列に変換した値</returns>
         public byte[] BytesRead()
         {
+            // メモリストリームからbyte配列を取得
+            // https://yuzutan-hnk.hatenablog.com/entry/2017/05/29/020348
             if (MsgWriter != null)
             {
+                // 0バイト目から派生クラスで定義している全てのサイズ分読み出す
                 MsgWriter.Writer.BaseStream.Position = 0;
                 _ = MsgWriter.Writer.BaseStream.Read(_buffer, 0, GetLength());
                 MsgWriter.Dispose();
             }
+            // 読み出したバイト配列を返却
             return _buffer;
         }
 
@@ -80,9 +85,11 @@ namespace MyApp.Msg
         {
             int calc = size;
             if (obj is string) return calc += 1024;
-            if (obj is int) return calc += sizeof(int);
-            if (obj is short) return calc += sizeof(short);
-            if (obj is bool) return calc += sizeof(bool);
+            else if (obj is bool) return calc += sizeof(bool);
+            else if (obj is short) return calc += sizeof(short);
+            else if (obj is int) return calc += sizeof(int);
+            else if (obj is long) return calc += sizeof(long);
+            else if (obj is byte) return calc += sizeof(byte);
             return calc;
         }
 
