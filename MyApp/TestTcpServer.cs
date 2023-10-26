@@ -65,7 +65,7 @@ namespace MyApp
         /// </summary>
         protected override void OnHelthCheck()
         {
-            Log.Trace(_logFileName, LOGLEVEL.INFO, $"ヘルスチェック応答送信");
+            Log.Trace(_logFileName, LOGLEVEL.INFO, $"ヘルスチェック要求受信");
         }
         
         /// <summary>

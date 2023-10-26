@@ -60,7 +60,8 @@ namespace MyApp.Msg
         /// </summary>
         public void Dispose()
         {
-
+            _reader.Close();
+            _reader.Dispose();
         }
     }
 }

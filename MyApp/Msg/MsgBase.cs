@@ -23,15 +23,52 @@ namespace MyApp.Msg
         public string Message { get; set; } = string.Empty;
 
         /// <summary>
+        /// メッセージ読み取りインスタンス
+        /// </summary>
+        protected MsgReader? MsgReader;
+
+        /// <summary>
+        /// メッセージ生成インスタンス
+        /// </summary>
+        protected MsgWriter? MsgWriter;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private byte[] _buffer;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MsgBase() { }
+        public MsgBase() 
+        {
+            _buffer = new byte[GetLength()];
+            MsgWriter = new MsgWriter(_buffer);
+        }
+        
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public MsgBase(byte[] bytesMessage) 
+        {
+            _buffer = bytesMessage;
+            MsgReader = new MsgReader(bytesMessage);
+        }
 
         /// <summary>
         /// 電文データ取得
         /// </summary>
         /// <returns>プロパティ値をbyte配列に変換した値</returns>
-        public abstract byte[] BytesRead();
+        public byte[] BytesRead()
+        {
+            if (MsgWriter != null)
+            {
+                MsgWriter.Writer.BaseStream.Position = 0;
+                _ = MsgWriter.Writer.BaseStream.Read(_buffer, 0, GetLength());
+                MsgWriter.Dispose();
+            }
+            return _buffer;
+        }
 
         /// <summary>
         /// 変数ごとに確保するサイズを取得
@@ -48,5 +85,11 @@ namespace MyApp.Msg
             if (obj is bool) return calc += sizeof(bool);
             return calc;
         }
+
+        /// <summary>
+        /// 電文長取得
+        /// </summary>
+        /// <returns>プロパティのサイズを全て加算した電文長</returns>
+        protected abstract int GetLength();
     }
 }

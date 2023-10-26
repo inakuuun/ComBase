@@ -18,37 +18,49 @@ namespace MyApp.Msg.Messages
         private short _messageId = MsgDef.MSG_HELTHCHECK_REQ;
 
         /// <summary>
-        /// コンストラクタ
+        /// メッセージ読み取りインスタンス
         /// </summary>
-        public HelthCheckReq()
-        {
-            byte[] result = new byte[GetLength()];
-        }
-        
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public HelthCheckReq(HelthCheckReq req)
-        {
-
+        private MsgReader? _msgReader
+        { 
+            get =>  base.MsgReader;
+            set => base.MsgReader = value;
         }
 
         /// <summary>
-        /// 電文データ取得
+        /// メッセージ生成インスタンス
         /// </summary>
-        /// <returns>プロパティ値をbyte配列に変換した値</returns>
-        public override byte[] BytesRead()
+        private MsgWriter? _msgWriter 
         {
-            var builder = new StringBuilder();
-            builder.Append(_messageId);
-            return Encoding.UTF8.GetBytes(builder.ToString());
+            get => base.MsgWriter; 
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public HelthCheckReq() : base()
+        {
+            if(_msgWriter != null)
+            {
+                _msgWriter.WtShort(_messageId);
+            }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public HelthCheckReq(byte[] bytesmessage) : base(bytesmessage)
+        {
+            if(_msgReader != null)
+            {
+                _messageId = _msgReader.RdShort();
+            }
         }
 
         /// <summary>
         /// 電文長取得
         /// </summary>
         /// <returns>プロパティのサイズを全て加算した電文長</returns>
-        private int GetLength()
+        protected override sealed int GetLength()
         {
             int size = 0;
             size = base.GetSize(_messageId, size);

@@ -66,14 +66,14 @@ namespace MyApp.Tcp
                 {
                     try
                     {
-                        // サーバーへ送信するデータ
-                        HelthCheckReq req = new();
                         // TCP受信電文取得処理
                         byte[]? receivedData = _tcpServer?.TcpRead();
-                        // TCP電文送信処理
-                        _tcpServer?.TcpSend(req);
                         // ヘルスチェック内部電文処理
                         this.OnHelthCheck();
+                        // サーバーへ送信するデータ
+                        HelthCheckReq req = new();
+                        // TCP電文送信処理
+                        _tcpServer?.TcpSend(req);
                     }
                     catch (Exception ex)
                     {
