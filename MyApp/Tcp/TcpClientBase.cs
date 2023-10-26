@@ -69,26 +69,33 @@ namespace MyApp.Tcp
                     // 通信異常がない間ループ処理を実施
                     while (true)
                     {
-                        // 遅延が必要な場合
-                        // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
-                        if (needDelay)
+                        try
                         {
-                            // サーバーへデータを送信する時間を指定時間遅らせる
-                            System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
+                            // 遅延が必要な場合
+                            // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
+                            if (needDelay)
+                            {
+                                // サーバーへデータを送信する時間を指定時間遅らせる
+                                System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
+                            }
+                            // サーバーへ送信するデータ
+                            HelthCheckReq req = new();
+                            // TCP電文送信処理
+                            _tcpClient?.TcpSend(req);
+                            // TCP受信電文取得処理
+                            byte[]? receivedData = _tcpClient?.TcpRead();
+                            // ヘルスチェック内部電文処理
+                            this.OnHelthCheck();
+                            // エラーからの復帰の場合にフラグを更新する必要あり
+                            // ※while文中の処理が正常の場合は「true」を維持
+                            if (!needDelay)
+                            {
+                                needDelay = true;
+                            }
                         }
-                        // サーバーへ送信するデータ
-                        HelthCheckReq req = new();
-                        // TCP電文送信処理
-                        _tcpClient?.TcpSend(req);
-                        // TCP受信電文取得処理
-                        byte[]? receivedData = _tcpClient?.TcpRead();
-                        // ヘルスチェック内部電文処理
-                        this.OnHelthCheck();
-                        // エラーからの復帰の場合にフラグを更新する必要あり
-                        // ※while文中の処理が正常の場合は「true」を維持
-                        if (!needDelay)
+                        catch
                         {
-                            needDelay = true;
+                            throw;
                         }
                     }
                 }
