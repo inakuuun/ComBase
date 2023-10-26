@@ -90,9 +90,12 @@ namespace MyApp.Tcp
         {
             try
             {
-                var msg = (MsgBase)msgObj;
-                byte[] sendBytes = msg.BytesRead();
-                _stream?.Write(sendBytes, 0, sendBytes.Length);
+                // 型判定とキャスト
+                if (msgObj is MsgBase msg)
+                {
+                    byte[] sendBytes = msg.BytesRead();
+                    _stream?.Write(sendBytes, 0, sendBytes.Length);
+                }
             }
             catch
             {

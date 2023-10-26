@@ -34,6 +34,11 @@ namespace MyApp.Tcp
         private TcpController? _tcpClient;
 
         /// <summary>
+        /// ヘルスチェック要求メッセージクラス
+        /// </summary>
+        private HelthCheckReq _helthCheckReq = new();
+
+        /// <summary>
         /// 接続開始
         /// </summary>
         /// <param name="connectInfo">TCP接続情報インスタンス</param>
@@ -79,9 +84,9 @@ namespace MyApp.Tcp
                                 System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
                             }
                             // サーバーへ送信するデータ
-                            HelthCheckReq req = new();
+                            _helthCheckReq = new();
                             // TCP電文送信処理
-                            _tcpClient?.TcpSend(req);
+                            _tcpClient?.TcpSend(_helthCheckReq);
                             // TCP受信電文取得処理
                             byte[]? receivedData = _tcpClient?.TcpRead();
                             // ヘルスチェック内部電文処理

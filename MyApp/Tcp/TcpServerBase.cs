@@ -36,6 +36,11 @@ namespace MyApp.Tcp
         private TcpConnectInfo _connectInfo = new();
 
         /// <summary>
+        /// ヘルスチェック要求メッセージクラス
+        /// </summary>
+        private HelthCheckReq _helthCheckReq = new();
+
+        /// <summary>
         /// 接続開始
         /// </summary>
         /// <param name="connectInfo">TCP接続情報インスタンス</param>
@@ -71,9 +76,9 @@ namespace MyApp.Tcp
                         // ヘルスチェック内部電文処理
                         this.OnHelthCheck();
                         // サーバーへ送信するデータ
-                        HelthCheckReq req = new();
+                        _helthCheckReq = new HelthCheckReq();
                         // TCP電文送信処理
-                        _tcpServer?.TcpSend(req);
+                        _tcpServer?.TcpSend(_helthCheckReq);
                     }
                     catch (Exception ex)
                     {
