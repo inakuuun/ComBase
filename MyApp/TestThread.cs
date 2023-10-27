@@ -55,7 +55,6 @@ namespace MyApp
         {
             if (e.MessageId == MsgDef.MSG_HELTHCHECK_REQ)
             {
-                var ab = "";
             }
         }
     }
