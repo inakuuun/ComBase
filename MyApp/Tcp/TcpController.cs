@@ -20,25 +20,9 @@ namespace MyApp.Tcp
     public class TcpController
     {
         /// <summary>
-        /// TCPリスナー
+        /// TCPコントローラー情報インスタンス
         /// </summary>
-        private TcpListener? _listener;
-
-        /// <summary>
-        /// TCPクライアント
-        /// </summary>
-        /// <remarks>電文の送信に利用</remarks>
-        private TcpClient? _client;
-
-        /// <summary>
-        /// 電文送受信用変数
-        /// </summary>
-        private NetworkStream? _stream;
-
-        /// <summary>
-        /// 受信データ読み取りバッファ設定変数
-        /// </summary>
-        private byte[]? _buffer;
+        private TcpControllerInfo _controllerInfo = new();
 
         /// <summary>
         /// TCPコントローラー取得用デリゲート
@@ -94,7 +78,7 @@ namespace MyApp.Tcp
                 if (msgObj is MsgBase msg)
                 {
                     byte[] sendBytes = msg.BytesRead();
-                    _stream?.Write(sendBytes, 0, sendBytes.Length);
+                    _controllerInfo.NetStream?.Write(sendBytes, 0, sendBytes.Length);
                 }
             }
             catch
@@ -111,10 +95,10 @@ namespace MyApp.Tcp
         {
             try
             {
-                if (_stream != null && _buffer != null)
+                if (_controllerInfo.NetStream != null && _controllerInfo.Buffer != null)
                 {
                     // サーバからデータの送信があるまで処理を待機
-                    int bytesRead = _stream.Read(_buffer, 0, _buffer.Length);
+                    int bytesRead = _controllerInfo.NetStream.Read(_controllerInfo.Buffer, 0, _controllerInfo.Buffer.Length);
                     if (bytesRead == 0)
                     {
                         throw new Exception("クライアントが切断しました。");
@@ -130,7 +114,7 @@ namespace MyApp.Tcp
                 // エラーハンドリングは呼び出し元で実装
                 throw;
             }
-            return _buffer;
+            return _controllerInfo.Buffer;
         }
 
         /// <summary>
@@ -161,19 +145,19 @@ namespace MyApp.Tcp
             // TCP/IPリスナーポートを使用していない場合にリッスンする
             if (!isUsePort)
             {
-                _listener = new TcpListener(connectInfo.IpAddress, connectInfo.Port);
-                _listener.Start();
+                _controllerInfo.Listener = new TcpListener(connectInfo.IpAddress, connectInfo.Port);
+                _controllerInfo.Listener.Start();
             }
 
-            if(_listener != null)
+            if(_controllerInfo.Listener != null)
             {
                 Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
                 // クライアントからの接続要求待ち
-                _client = _listener.AcceptTcpClient();
+                _controllerInfo.Client = _controllerInfo.Listener.AcceptTcpClient();
                 // データを読み書きするインスタンスを取得
-                _stream = _client.GetStream();
+                _controllerInfo.NetStream = _controllerInfo.Client.GetStream();
                 // 受信するデータのバッファサイズを指定して初期化
-                _buffer = new byte[_client.ReceiveBufferSize];
+                _controllerInfo.Buffer = new byte[_controllerInfo.Client.ReceiveBufferSize];
             }
         }
 
@@ -183,19 +167,19 @@ namespace MyApp.Tcp
         /// <param name="connectInfo">TCP接続情報格納インスタンス</param>
         private void TcpClientConnect(TcpConnectInfo connectInfo)
         {
-            if (_client == null || !_client.Connected)
+            if (_controllerInfo.Client == null || !_controllerInfo.Client.Connected)
             {
                 // サーバーへの接続要求
-                _client = new TcpClient();
-                _client.Connect(connectInfo.IpAddress, connectInfo.Port);;
+                _controllerInfo.Client = new TcpClient();
+                _controllerInfo.Client.Connect(connectInfo.IpAddress, connectInfo.Port);;
             }
 
-            if (_client != null)
+            if (_controllerInfo.Client != null)
             {
                 // データを読み書きするインスタンスを取得
-                _stream = _client.GetStream();
+                _controllerInfo.NetStream = _controllerInfo.Client.GetStream();
                 // 受信するデータのバッファサイズを指定して初期化
-                _buffer = new byte[_client.ReceiveBufferSize];
+                _controllerInfo.Buffer = new byte[_controllerInfo.Client.ReceiveBufferSize];
             }
             Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"Server is listening on {connectInfo.IpAddress}:{connectInfo.Port}");
         }
@@ -206,8 +190,7 @@ namespace MyApp.Tcp
         /// <remarks>異常終了などによって電文送受信用変数のメモリを開放する必要がある場合に実行</remarks>
         public void Close()
         {
-            _stream?.Close();
-            _stream?.Dispose();
+            _controllerInfo.Close();
         }
     }
 }

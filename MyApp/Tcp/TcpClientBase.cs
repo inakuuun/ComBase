@@ -133,6 +133,11 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
+        /// ヘルスチェック内部電文処理
+        /// </summary>
+        protected abstract override void OnHelthCheck();
+
+        /// <summary>
         /// 接続解除
         /// </summary>
         protected override void Close()
@@ -140,11 +145,5 @@ namespace MyApp.Tcp
             // TODO：不要な処理であれば後で削除
             // 現状呼び出し元から接続解除する予定はないが、念のため残しておく
         }
-
-        /// <summary>
-        /// ヘルスチェック内部電文処理
-        /// </summary>
-        protected abstract override void OnHelthCheck();
-
     }
 }
