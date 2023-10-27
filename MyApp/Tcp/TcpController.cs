@@ -28,7 +28,7 @@ namespace MyApp.Tcp
         /// TCPコントローラー取得用デリゲート
         /// </summary>
         /// <returns></returns>
-        private CommonDef.TcpControllerDelegate _Connect;
+        private FunctionDef.TcpControllerDelegate _Connect;
 
         /// <summary>
         /// コンストラクタ

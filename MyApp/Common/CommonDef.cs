@@ -14,18 +14,6 @@ namespace MyApp.Common
     public static class CommonDef
     {
         /// <summary>
-        /// DBコントローラー取得用デリゲート
-        /// </summary>
-        /// <returns></returns>
-        public delegate IDbControl DbControlDelegate();
-
-        /// <summary>
-        /// TCPコントローラー取得用デリゲート
-        /// </summary>
-        /// <returns></returns>
-        public delegate void TcpControllerDelegate(TcpConnectInfo connectInfo);
-
-        /// <summary>
         /// DBロジッククラス
         /// </summary>
         /// <returns></returns>

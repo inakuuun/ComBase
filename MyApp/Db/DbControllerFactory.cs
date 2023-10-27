@@ -25,7 +25,7 @@ namespace MyApp.Db
         /// <summary>
         /// DBコントローラー取得用デリゲート
         /// </summary>
-        private static CommonDef.DbControlDelegate _GetDbControl;
+        private static FunctionDef.DbControlDelegate _GetDbControl;
 
         /// <summary>
         /// コンストラクタ
