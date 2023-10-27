@@ -134,6 +134,7 @@ namespace MyApp.Tcp
             // アクティブなTCPリスナーポートの情報を取得
             IPEndPoint[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpListeners();
             // 指定したポート番号がTCP/IPリスナーポートとして使用されているかチェック
+            // ※通信異常から復帰したタイミングでリスナーポートの競合が起きてしまうためチェックが必要
             foreach (IPEndPoint endpoint in tcpConnInfoArray)
             {
                 // 使用しているポートがある場合ONを設定
@@ -149,15 +150,30 @@ namespace MyApp.Tcp
                 _controllerInfo.Listener.Start();
             }
 
-            if(_controllerInfo.Listener != null)
+            try
             {
-                Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
-                // クライアントからの接続要求待ち
-                _controllerInfo.Client = _controllerInfo.Listener.AcceptTcpClient();
-                // データを読み書きするインスタンスを取得
-                _controllerInfo.NetStream = _controllerInfo.Client.GetStream();
-                // 受信するデータのバッファサイズを指定して初期化
-                _controllerInfo.Buffer = new byte[_controllerInfo.Client.ReceiveBufferSize];
+                // 初回起動時に別サーバーで同じリスナーポートを使用していると、TCPリスナーを初期化するタイミングと
+                // 呼び出し元でサーバーを落とすタイミングがないことによって無限ループになってしまうため、こちらの方で明示的にサーバーを落とす
+                // ※初回起動時にリスナーポートが被るとTCPリスナーがnull値で検出される
+                if (_controllerInfo.Listener == null)
+                {
+                    throw new Exception("TCPリスナーがnull値で検出されました。");
+                }
+                else
+                {
+                    Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
+                    // クライアントからの接続要求待ち
+                    _controllerInfo.Client = _controllerInfo.Listener.AcceptTcpClient();
+                    // データを読み書きするインスタンスを取得
+                    _controllerInfo.NetStream = _controllerInfo.Client.GetStream();
+                    // 受信するデータのバッファサイズを指定して初期化
+                    _controllerInfo.Buffer = new byte[_controllerInfo.Client.ReceiveBufferSize];
+                }
+            }
+            catch
+            {
+                // 明示的にサーバーを落とす
+                throw;
             }
         }
 
