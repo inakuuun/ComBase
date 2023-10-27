@@ -23,11 +23,11 @@ namespace MyApp.Threads
         /// <summary>
         /// メッセージイベント
         /// </summary>
-        /// <remarks>内部電文生成イベント</remarks>
-        /// メモ => クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnReceive処理が走る
+        /// <remarks>
+        /// 内部電文生成用イベント
+        /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnReceive処理が走る
+        /// </remarks>
         private static event EventHandler<MessageEventArgs>? _msgEvent;
-
-
 
         /// <summary>
         /// スレッドの実行
