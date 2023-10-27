@@ -108,9 +108,8 @@ namespace MyApp.Db
         /// <remarks>デリゲートで取得したDBコントローラーインスタンスを返却</remarks>
         public static IDbControl GetControl()
         {
-            // コントローラー
-            IDbControl control = _GetDbControl();
-            return control;
+            // DBコントローラーを返却
+            return _GetDbControl();
         }
     }
 }
