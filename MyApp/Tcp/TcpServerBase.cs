@@ -82,14 +82,11 @@ namespace MyApp.Tcp
                     try
                     {
                         // コネクションを維持
-                        byte[]? receivedData = _tcpServer?.TcpRead();
-                        if(receivedData is not null)
+                        byte[]? message = _tcpServer?.TcpRead();
+                        // 内部電文処理
+                        if (message is not null)
                         {
-                            var msg = new MsgReader(receivedData);
-                            // TODO：
-                            // マップに電文IDをキーにしたメッセージクラスを用意しておき、取得した電文から識別子を取得して、
-                            // 紐づくメッセージクラスを取得し後インスタンス化。内部電文として分配
-                            var aaa = msg.RdShort();
+                            this.Send(new MsgBase(message));
                         }
                     }
                     catch (Exception ex)
@@ -146,9 +143,22 @@ namespace MyApp.Tcp
         protected void TcpSend(object msgObj)
         {
             // 型判定とキャスト
-            if (msgObj is MsgBase req)
+            if (msgObj is MsgBase msg)
             {
-                _tcpServer?.TcpSend(req);
+                _tcpServer?.TcpSend(msg);
+            }
+        }
+
+        /// <summary>
+        /// 内部電文送信処理
+        /// </summary>
+        private new void Send(object msgObj)
+        {
+            // 型判定とキャスト
+            if (msgObj is MsgBase msg)
+            {
+                // 基底クラスの内部電文イベントを実行させる
+                base.Send(msg);
             }
         }
 
@@ -164,12 +174,5 @@ namespace MyApp.Tcp
         /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract override void OnHelthCheck();
-
-        /// <summary>
-        /// 内部電文受信処理
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected abstract override void OnReceive(object? sender, MessageEventArgs e);
     }
 }

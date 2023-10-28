@@ -31,6 +31,8 @@ namespace MyApp
                 IpAddress = IPAddress.Parse("127.0.0.1"),
                 // 宛先ポート
                 Port = 50000,
+                // ヘルスチェック無し
+                IsHelthCheck = false,
                 // ヘルスチェック間隔(ミリ秒)
                 HelthCheckInterval = 10000
             };

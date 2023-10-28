@@ -33,7 +33,9 @@ namespace MyApp
                     // 接続先IPアドレス
                     IpAddress = IPAddress.Parse("127.0.0.1"),
                     // 待受けポート番号
-                    Port = 50000
+                    Port = 50000,
+                    // ヘルスチェック無し
+                    IsHelthCheck = false
                 };
                 this.ConnectStart(_connectInfo);
             }

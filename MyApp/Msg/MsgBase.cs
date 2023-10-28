@@ -10,17 +10,17 @@ namespace MyApp.Msg
     /// <summary>
     /// メッセージ基底クラス
     /// </summary>
-    public abstract class MsgBase : System.EventArgs
+    public class MsgBase : System.EventArgs
     {
         /// <summary>
         /// 電文ID
         /// </summary>
-        public abstract short MessageId { get; }
+        public virtual short MessageId { get; }
 
         /// <summary>
         /// 電文メッセージ
         /// </summary>
-        public string Message { get; set; } = string.Empty;
+        public byte[] Message { get; set; }
 
         /// <summary>
         /// メッセージ読み取りインスタンス
@@ -33,27 +33,22 @@ namespace MyApp.Msg
         protected MsgWriter? MsgWriter;
 
         /// <summary>
-        /// 
-        /// </summary>
-        private byte[] _buffer;
-
-        /// <summary>
         /// コンストラクタ
         /// </summary>
         public MsgBase() 
         {
             // 派生クラスで定義している全てのサイズで初期化
-            _buffer = new byte[GetLength()];
-            MsgWriter = new MsgWriter(_buffer);
+            Message = new byte[GetLength()];
+            MsgWriter = new MsgWriter(Message);
         }
         
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MsgBase(byte[] bytesMessage) 
+        public MsgBase(byte[] message) 
         {
-            _buffer = bytesMessage;
-            MsgReader = new MsgReader(bytesMessage);
+            Message = message;
+            MsgReader = new MsgReader(message);
         }
 
         /// <summary>
@@ -68,11 +63,11 @@ namespace MyApp.Msg
             {
                 // 0バイト目から派生クラスで定義している全てのサイズ分読み出す
                 MsgWriter.Writer.BaseStream.Position = 0;
-                _ = MsgWriter.Writer.BaseStream.Read(_buffer, 0, GetLength());
+                _ = MsgWriter.Writer.BaseStream.Read(Message, 0, GetLength());
                 MsgWriter.Dispose();
             }
             // 読み出したバイト配列を返却
-            return _buffer;
+            return Message;
         }
 
         /// <summary>
@@ -97,6 +92,6 @@ namespace MyApp.Msg
         /// 電文長取得
         /// </summary>
         /// <returns>プロパティのサイズを全て加算した電文長</returns>
-        protected abstract int GetLength();
+        protected virtual int GetLength(){ return default; }
     }
 }

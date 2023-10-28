@@ -77,12 +77,13 @@ namespace MyApp.Tcp
                 {
                     // TCPコネクション確立
                     _tcpClient?.Connect(_connectInfo);
-                    // サーバーへ送信するデータ
-                    _helthCheckReq = new();
-                    // TCP電文送信処理
-                    _tcpClient?.TcpSend(_helthCheckReq);
                     // TCP受信電文取得処理
-                    _ = _tcpClient?.TcpRead();
+                    byte[]? message = _tcpClient?.TcpRead();
+                    // 内部電文処理
+                    if (message is not null)
+                    {
+                        this.Send(new MsgBase(message));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -122,33 +123,26 @@ namespace MyApp.Tcp
                     // 通信異常がない間ループ処理を実施
                     while (true)
                     {
-                        try
+                        // 遅延が必要な場合
+                        // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
+                        if (needDelay)
                         {
-                            // 遅延が必要な場合
-                            // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
-                            if (needDelay)
-                            {
-                                // サーバーへデータを送信する時間を指定時間遅らせる
-                                System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
-                            }
-                            // サーバーへ送信するデータ
-                            _helthCheckReq = new();
-                            // TCP電文送信処理
-                            _tcpClient?.TcpSend(_helthCheckReq);
-                            // TCP受信電文取得処理
-                            byte[]? receivedData = _tcpClient?.TcpRead();
-                            // ヘルスチェック内部電文処理
-                            this.OnHelthCheck();
-                            // エラーからの復帰の場合にフラグを更新する必要あり
-                            // ※while文中の処理が正常の場合は「true」を維持
-                            if (!needDelay)
-                            {
-                                needDelay = true;
-                            }
+                            // サーバーへデータを送信する時間を指定時間遅らせる
+                            System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval);
                         }
-                        catch
+                        // サーバーへ送信するデータ
+                        _helthCheckReq = new();
+                        // TCP電文送信処理
+                        _tcpClient?.TcpSend(_helthCheckReq);
+                        // TCP受信電文取得処理
+                        byte[]? receivedData = _tcpClient?.TcpRead();
+                        // ヘルスチェック内部電文処理
+                        this.OnHelthCheck();
+                        // エラーからの復帰の場合にフラグを更新する必要あり
+                        // ※while文中の処理が正常の場合は「true」を維持
+                        if (!needDelay)
                         {
-                            throw;
+                            needDelay = true;
                         }
                     }
                 }
@@ -181,11 +175,6 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
-        /// ヘルスチェック内部電文処理
-        /// </summary>
-        protected abstract override void OnHelthCheck();
-
-        /// <summary>
         /// 接続解除
         /// </summary>
         protected override void Close()
@@ -193,5 +182,11 @@ namespace MyApp.Tcp
             // TODO：不要な処理であれば後で削除
             // 現状呼び出し元から接続解除する予定はないが、念のため残しておく
         }
+
+        /// <summary>
+        /// ヘルスチェック内部電文処理
+        /// </summary>
+        protected abstract override void OnHelthCheck();
+
     }
 }
