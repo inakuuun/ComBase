@@ -15,7 +15,7 @@ namespace MyApp.Events
         /// <summary>
         /// 電文ID
         /// </summary>
-        public short MessageId { get; set; }
+        public virtual short MessageId { get; set; }
 
         /// <summary>
         /// コンストラクタ

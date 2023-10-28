@@ -12,6 +12,7 @@ using System.Net.NetworkInformation;
 using MyApp.Msg.Messages;
 using MyApp.Msg;
 using System.Net.Http;
+using MyApp.Events;
 
 namespace MyApp.Tcp
 {
@@ -56,14 +57,47 @@ namespace MyApp.Tcp
             }
             else
             {
-                // サーバーコントローラーを生成
-                _tcpServer = new TcpController(TCP.SERVER);
+                // TCPコネクション確立
+                this.Connection();
+            }
+        }
+
+        /// <summary>
+        /// TCPコネクション確立
+        /// </summary>
+        protected void Connection()
+        {
+            // -------------------------------------------------
+            // クライアントとTCP接続確立
+            // クライアントから接続があるまで待機
+            // -------------------------------------------------
+            // サーバーコントローラーを生成
+            _tcpServer = new TcpController(TCP.SERVER);
+            while (true)
+            {
+                // TCPコネクション初期処理
+                _tcpServer?.Connect(_connectInfo);
                 while (true)
                 {
-                    // TCPコネクション確立
-                    _tcpServer?.Connect(_connectInfo);
-                    // TCP受信電文取得処理
-                    _ = _tcpServer?.TcpRead();
+                    try
+                    {
+                        // コネクションを維持
+                        byte[]? receivedData = _tcpServer?.TcpRead();
+                        if(receivedData is not null)
+                        {
+                            var msg = new MsgReader(receivedData);
+                            // TODO：
+                            // マップに電文IDをキーにしたメッセージクラスを用意しておき、取得した電文から識別子を取得して、
+                            // 紐づくメッセージクラスを取得し後インスタンス化。内部電文として分配
+                            var aaa = msg.RdShort();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _tcpServer?.Close();
+                        Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
+                        break;
+                    }
                 }
             }
         }
@@ -74,7 +108,7 @@ namespace MyApp.Tcp
         protected override sealed void HelthCheck()
         {
             // -------------------------------------------------
-            // クライアントとTCP接続確立
+            // クライアントとTCP接続確立＆ヘルスチェック
             // クライアントから接続があるまで待機
             // -------------------------------------------------
             // サーバーコントローラーを生成
@@ -130,5 +164,12 @@ namespace MyApp.Tcp
         /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract override void OnHelthCheck();
+
+        /// <summary>
+        /// 内部電文受信処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected abstract override void OnReceive(object? sender, MessageEventArgs e);
     }
 }
