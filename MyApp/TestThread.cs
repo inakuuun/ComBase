@@ -31,9 +31,6 @@ namespace MyApp
             _dbLogic = CommonDef.DbLogic;
             //_dbLogic.ChatDaoAccess.ChatInsert();
             Log.Trace(_logFileName, LOGLEVEL.INFO, "呼び出し元が合っているかテスト");
-
-            var req = new HelthCheckReq();
-            this.Send(req);
             return true;
         }
 
