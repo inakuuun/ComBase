@@ -48,8 +48,24 @@ namespace MyApp.Tcp
         {
             // 接続情報インスタンスを設定
             _connectInfo = connectInfo;
-            // ヘルスチェック処理
-            this.HelthCheck();
+            // ヘルスチェックが必要な場合
+            if (_connectInfo.IsHelthCheck)
+            {
+                // ヘルスチェック処理
+                this.HelthCheck();
+            }
+            else
+            {
+                // サーバーコントローラーを生成
+                _tcpServer = new TcpController(TCP.SERVER);
+                while (true)
+                {
+                    // TCPコネクション確立
+                    _tcpServer?.Connect(_connectInfo);
+                    // TCP受信電文取得処理
+                    _ = _tcpServer?.TcpRead();
+                }
+            }
         }
 
         /// <summary>
@@ -75,7 +91,7 @@ namespace MyApp.Tcp
                         byte[]? receivedData = _tcpServer?.TcpRead();
                         // ヘルスチェック内部電文処理
                         this.OnHelthCheck();
-                        // サーバーへ送信するデータ
+                        // クライアントへ送信するデータ
                         _helthCheckReq = new HelthCheckReq();
                         // TCP電文送信処理
                         _tcpServer?.TcpSend(_helthCheckReq);

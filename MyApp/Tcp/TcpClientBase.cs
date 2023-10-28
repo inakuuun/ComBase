@@ -46,8 +46,23 @@ namespace MyApp.Tcp
         {
             // 接続情報インスタンスを設定
             _connectInfo = connectInfo;
-            // ヘルスチェック処理
-            this.HelthCheck();
+            // ヘルスチェックが必要な場合
+            if (_connectInfo.IsHelthCheck)
+            {
+                // ヘルスチェック処理
+                this.HelthCheck();
+            }
+            else
+            {
+                // クライアントコントローラーを生成
+                _tcpClient = new TcpController(TCP.CLIENT);
+                while (true)
+                {
+                    // TCPコネクション確立
+                    _tcpClient?.Connect(_connectInfo); 
+                    _ = _tcpClient?.TcpRead();
+                }
+            }
         }
 
         /// <summary>

@@ -28,6 +28,11 @@ namespace MyApp.Tcp
         public int DestPort;
 
         /// <summary>
+        /// ヘルスチェック有無
+        /// </summary>
+        public bool IsHelthCheck;
+
+        /// <summary>
         /// ヘルスチェック間隔(ミリ秒)
         /// </summary>
         public int HelthCheckInterval;
