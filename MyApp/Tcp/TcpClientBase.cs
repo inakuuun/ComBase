@@ -54,13 +54,46 @@ namespace MyApp.Tcp
             }
             else
             {
-                // クライアントコントローラーを生成
-                _tcpClient = new TcpController(TCP.CLIENT);
-                while (true)
+                // TCPコネクション確立
+                this.Connection();
+            }
+        }
+
+        /// <summary>
+        /// TCPコネクション確立
+        /// </summary>
+        protected void Connection()
+        {
+            // -------------------------------------------------
+            // サーバーとTCP接続
+            // サーバーへ接続要求を送信する
+            // -------------------------------------------------
+            // クライアントコントローラーを生成
+            _tcpClient = new TcpController(TCP.CLIENT);
+            // 接続を維持するためにwhile文が必要そう
+            while (true)
+            {
+                try
                 {
                     // TCPコネクション確立
-                    _tcpClient?.Connect(_connectInfo); 
+                    _tcpClient?.Connect(_connectInfo);
+                    // サーバーへ送信するデータ
+                    _helthCheckReq = new();
+                    // TCP電文送信処理
+                    _tcpClient?.TcpSend(_helthCheckReq);
+                    // TCP受信電文取得処理
                     _ = _tcpClient?.TcpRead();
+                }
+                catch (Exception ex)
+                {
+                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
+                    // 電文送受信用インスタンスを開放
+                    _tcpClient?.Close();
+                    // サーバーへデータを送信する時間を指定時間遅らせる
+                    // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
+                    // ※エラー発生時、待機時間が平均的に2秒遅いため「インターバル - 2秒」を設定
+                    //_ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
+                    System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval - 2000);
                 }
             }
         }
@@ -71,7 +104,7 @@ namespace MyApp.Tcp
         protected override sealed void HelthCheck()
         {
             // -------------------------------------------------
-            // サーバーとTCP接続
+            // サーバーとTCP接続＆ヘルスチェック
             // サーバーへ接続要求を送信する
             // -------------------------------------------------
             // 遅延判定フラグ
