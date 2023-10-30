@@ -7,7 +7,7 @@
 - 開発環境
   - Windows 10 Pro
   - Visual Studio 2022(v17.4)
-  - .NET 7.0.2
+  - .NET 7.0.2 => https://dotnet.microsoft.com/ja-jp/download/dotnet/7.0
      - Visual Studio 17.4.4
      - SDK 7.0.102
      - ASP.NET Core ランタイム 7.0.2
