@@ -87,9 +87,10 @@ namespace MyApp.Tcp
                 }
                 catch (Exception ex)
                 {
-                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
                     // 電文送受信用インスタンスを開放
+                    // ※NetStreamのみ開放し、コネクションは開放しない。
                     _tcpClient?.Close();
+                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
                     // サーバーへデータを送信する時間を指定時間遅らせる
                     // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
                     // ※エラー発生時、待機時間が平均的に2秒遅いため「インターバル - 2秒」を設定
@@ -152,6 +153,7 @@ namespace MyApp.Tcp
                     // 正常処理の遅延処理を実施しないようにfalseを設定
                     needDelay = false;
                     // 電文送受信用インスタンスを開放
+                    // ※NetStreamのみ開放し、コネクションは開放しない。
                     _tcpClient?.Close();
                     // サーバーへデータを送信する時間を指定時間遅らせる
                     // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
@@ -175,6 +177,20 @@ namespace MyApp.Tcp
         }
 
         /// <summary>
+        /// 内部電文送信処理
+        /// </summary>
+        /// <param name="msgObj"></param>
+        private new void Send(object msgObj)
+        {
+            // 型判定とキャスト
+            if (msgObj is MsgBase req)
+            {
+                // 基底クラスの内部電文イベントを実行させる
+                base.Send(req);
+            }
+        }
+
+        /// <summary>
         /// 接続解除
         /// </summary>
         protected override void Close()
@@ -187,6 +203,5 @@ namespace MyApp.Tcp
         /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract override void OnHelthCheck();
-
     }
 }

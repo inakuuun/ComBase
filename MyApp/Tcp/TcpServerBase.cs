@@ -91,6 +91,8 @@ namespace MyApp.Tcp
                     }
                     catch (Exception ex)
                     {
+                        // 電文送受信用インスタンスを開放
+                        // ※NetStreamのみ開放し、コネクションは開放しない。
                         _tcpServer?.Close();
                         Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
                         break;
