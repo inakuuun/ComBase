@@ -38,6 +38,7 @@ namespace MyApp.Udp
 
             while (true)
             {
+                System.Threading.Thread.Sleep(10000);
                 // 送信データを生成
                 byte[] data = Encoding.UTF8.GetBytes("Hello");
                 // サーバーへUDP送信
@@ -46,7 +47,8 @@ namespace MyApp.Udp
                 // サーバーからの受信を待機
                 var serverEndPoint = new IPEndPoint(IPAddress.Parse(_udpConnectInfo.IpAddress), _udpConnectInfo.Port);
                 byte[] message = udpClient.Receive(ref serverEndPoint);
-
+                string receivedMessage = Encoding.UTF8.GetString(message);
+                Console.WriteLine(receivedMessage);
                 // 内部電文送信処理
                 if (message is not null)
                 {
