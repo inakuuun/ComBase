@@ -43,11 +43,14 @@ namespace MyApp.Udp
             {
                 var clientEndPoint = new IPEndPoint(IPAddress.Any, _connectInfo.Port);
                 byte[] message = udpListener.Receive(ref clientEndPoint);
-                if(message is not null)
+                string receivedMessage = Encoding.UTF8.GetString(message);
+                if (message is not null)
                 {
                     this.Send(new MsgBase(message));
                 }
-                string responseMessage = "サーバーからの応答：" + message;
+                Console.WriteLine("クライアントからのメッセージ: " + receivedMessage);
+
+                string responseMessage = "サーバーからの応答：" + receivedMessage;
                 byte[] responseData = Encoding.UTF8.GetBytes(responseMessage);
                 udpListener.Send(responseData, responseData.Length, clientEndPoint);
             }
