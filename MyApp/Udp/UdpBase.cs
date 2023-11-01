@@ -1,0 +1,22 @@
+﻿using MyApp.Tcp;
+using MyApp.Threads;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp.Udp
+{
+    /// <summary>
+    /// UDP基底クラス
+    /// </summary>
+    public abstract class UdpBase : ThreadManager
+    {
+        /// <summary>
+        /// 接続開始
+        /// </summary>
+        /// <param name="connectInfo">UDP接続情報インスタンス</param>
+        protected abstract void ConnectStart(UdpConnectInfo connectInfo);
+    }
+}

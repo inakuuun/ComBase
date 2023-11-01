@@ -23,6 +23,10 @@ namespace MyApp
         /// </summary>
         private TcpConnectInfo _connectInfo = new();
 
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        /// <returns></returns>
         protected override bool RunInit()
         {
             _connectInfo = new TcpConnectInfo()
@@ -43,7 +47,7 @@ namespace MyApp
         /// <summary>
         /// TCP接続開始
         /// </summary>
-        public new void ConnectStart(TcpConnectInfo connectInfo)
+        protected sealed override void ConnectStart(TcpConnectInfo connectInfo)
         {
             try
             {

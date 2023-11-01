@@ -17,7 +17,11 @@ namespace MyApp
         /// </summary>
         private string _logFileName { get => base.ThreadName ?? string.Empty; }
 
-        protected override bool RunInit()
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        /// <returns></returns>
+        protected sealed override bool RunInit()
         {
             Log.Trace(_logFileName, LOGLEVEL.INFO, "呼び出し元が合っているかテスト2");
             return true;

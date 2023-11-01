@@ -26,7 +26,11 @@ namespace MyApp
         /// </summary>
         private DbLogic? _dbLogic;
 
-        protected override bool RunInit()
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        /// <returns></returns>
+        protected sealed override bool RunInit()
         {
             _dbLogic = CommonDef.DbLogic;
             //_dbLogic.ChatDaoAccess.ChatInsert();

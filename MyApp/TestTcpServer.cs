@@ -24,6 +24,10 @@ namespace MyApp
         /// </summary>
         private TcpConnectInfo _connectInfo { get; set; } = new();
 
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        /// <returns></returns>
         protected override bool RunInit()
         {
             try
