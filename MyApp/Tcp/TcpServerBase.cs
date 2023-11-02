@@ -77,26 +77,37 @@ namespace MyApp.Tcp
             {
                 // TCPコネクション初期処理
                 _tcpServer?.Connect(_connectInfo);
-                while (true)
+                Task.Run(() => HandleClient());
+            }
+        }
+
+        /// <summary>
+        /// ハンドルクライアント
+        /// </summary>
+        private void HandleClient()
+        {
+            while (true)
+            {
+                try
                 {
-                    try
+                    // コネクションを維持
+                    byte[]? message = _tcpServer?.TcpRead();
+                    // 内部電文処理
+                    if (message is not null)
                     {
-                        // コネクションを維持
-                        byte[]? message = _tcpServer?.TcpRead();
-                        // 内部電文処理
-                        if (message is not null)
-                        {
-                            this.Send(new MsgBase(message));
-                        }
+                        this.Send(new MsgBase(message));
+                        // 確認用出力
+                        string data = Encoding.UTF8.GetString(message);
+                        Console.WriteLine(data);
                     }
-                    catch (Exception ex)
-                    {
-                        // 電文送受信用インスタンスを開放
-                        // ※NetStreamのみ開放し、コネクションは開放しない。
-                        _tcpServer?.Close();
-                        Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
-                        break;
-                    }
+                }
+                catch (Exception ex)
+                {
+                    // 電文送受信用インスタンスを開放
+                    // ※NetStreamのみ開放し、コネクションは開放しない。
+                    _tcpServer?.Close();
+                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
+                    break;
                 }
             }
         }
