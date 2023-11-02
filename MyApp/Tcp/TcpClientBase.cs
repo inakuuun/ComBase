@@ -77,6 +77,7 @@ namespace MyApp.Tcp
                 {
                     // TCPコネクション確立
                     _tcpClient?.Connect(_connectInfo);
+                    // メッセージの送受信を別スレッドで実行
                     Task.Run(() => HandleClient());
                 }
                 catch (Exception ex)

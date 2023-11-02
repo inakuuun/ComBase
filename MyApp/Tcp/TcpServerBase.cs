@@ -77,6 +77,7 @@ namespace MyApp.Tcp
             {
                 // TCPコネクション初期処理
                 _tcpServer?.Connect(_connectInfo);
+                // メッセージの送受信を別スレッドで実行
                 Task.Run(() => HandleClient());
             }
         }
