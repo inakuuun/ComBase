@@ -63,7 +63,7 @@ namespace MyApp.Msg
             {
                 // 0バイト目から派生クラスで定義している全てのサイズ分読み出す
                 MsgWriter.Writer.BaseStream.Position = 0;
-                _ = MsgWriter.Writer.BaseStream.Read(Message, 0, GetLength());
+                _ = MsgWriter.Writer.BaseStream.Read(Message, 0, Message.Length);
                 MsgWriter.Dispose();
             }
             // 読み出したバイト配列を返却
