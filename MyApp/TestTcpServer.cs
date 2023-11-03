@@ -81,9 +81,20 @@ namespace MyApp
         /// <exception cref="NotImplementedException"></exception>
         protected override void OnReceive(object? sender, MessageEventArgs e)
         {
-            // ヘルスチェックの場合
+            // ヘルスチェック要求
             if (e.MessageId == MsgDef.MSG_HELTHCHECK_REQ)
             {
+            }
+            // 初期起動通知要求
+            else if (e.MessageId == MsgDef.MSG_BOOTSTART_REQ)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.INFO, $"初期起動通知要求受信");
+            }
+            else
+            {
+                // 確認用出力
+                string data = Encoding.UTF8.GetString(e.Message);
+                Log.Trace(_logFileName, LOGLEVEL.INFO, data);
             }
         }
 

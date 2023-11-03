@@ -60,13 +60,10 @@ namespace MyApp.Threads
         /// メッセージ送信
         /// </summary>
         /// <param name="msgObj">送信メッセージ情報</param>
-        protected void Send(object msgObj)
+        protected void Send(MsgBase msg)
         {
-            if (msgObj is MsgBase msg)
-            {
-                // イベントを発生させる
-                _msgEvent?.Invoke(this, new MessageEventArgs(msg));
-            }
+            // イベントを発生させる
+            _msgEvent?.Invoke(this, new MessageEventArgs(msg));
         }
 
         /// <summary>
