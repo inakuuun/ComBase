@@ -85,6 +85,9 @@ namespace MyApp.Msg.Messages
         {
             int size = 0;
             size = base.GetSize(_messageId, size);
+            size = base.GetSize(UserId, size);
+            size = base.GetSize(UserName, size);
+            size = base.GetSize(UserIp, size);
             return size;
         }
     }
