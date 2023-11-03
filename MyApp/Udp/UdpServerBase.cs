@@ -40,7 +40,7 @@ namespace MyApp.Udp
         protected override void ConnectStart(UdpConnectInfo connectInfo)
         {
             _connectInfo = connectInfo;
-            Connection();
+            Task.Run(() => this.Connection());
         }
 
         /// <summary>

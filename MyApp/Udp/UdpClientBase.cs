@@ -40,7 +40,7 @@ namespace MyApp.Udp
         protected override void ConnectStart(UdpConnectInfo connectInfo)
         {
             _udpConnectInfo = connectInfo;
-            this.Connection();
+            Task.Run(() => this.Connection());
         }
 
         /// <summary>
@@ -56,11 +56,6 @@ namespace MyApp.Udp
             {
                 while (true)
                 {
-                    Task.Delay(5000).Wait();
-                    // 送信データを生成
-                    byte[] data = Encoding.UTF8.GetBytes("Hello");
-                    this.UdpSend(new MsgBase(data));
-
                     // サーバーからの受信を待機
                     byte[] message = _udpClient.Receive();
                     // 内部電文送信処理
