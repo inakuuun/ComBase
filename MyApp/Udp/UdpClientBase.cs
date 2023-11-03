@@ -43,18 +43,21 @@ namespace MyApp.Udp
         /// </summary>
         protected void Connection()
         {
-            var udpClient = new UdpClient();
-            var serverEndPoint = new IPEndPoint(IPAddress.Parse(_udpConnectInfo.IpAddress), _udpConnectInfo.Port);
+            var udpClient = new UdpClient(_udpConnectInfo.Port);
+            var serverEndPoint = new IPEndPoint(IPAddress.Parse(_udpConnectInfo.IpAddress), _udpConnectInfo.ServerPort);
             try
             {
                 while (true)
                 {
-                    System.Threading.Thread.Sleep(5000);
-                    // 送信データを生成
-                    byte[] data = Encoding.UTF8.GetBytes("Hello");
-                    // サーバーへUDP送信
-                    udpClient.Send(data, data.Length, serverEndPoint);
+                    Task.Run(() =>
+                    {
+                        Task.Delay(5000).Wait();
+                        // 送信データを生成
+                        byte[] data = Encoding.UTF8.GetBytes("Hello");
+                        // サーバーへUDP送信
+                        udpClient.Send(data, data.Length, serverEndPoint);
 
+                    });
                     // サーバーからの受信を待機
                     byte[] message = udpClient.Receive(ref serverEndPoint);
                     string receivedMessage = Encoding.UTF8.GetString(message);

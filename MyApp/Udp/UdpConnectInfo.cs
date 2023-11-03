@@ -17,6 +17,11 @@ namespace MyApp.Udp
         public string IpAddress { get; set; } = string.Empty;
 
         /// <summary>
+        /// サーバーポート
+        /// </summary>
+        public short ServerPort { get; set; }
+
+        /// <summary>
         /// ポート
         /// </summary>
         public short Port { get; set; }
