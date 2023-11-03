@@ -53,18 +53,13 @@ namespace MyApp.Udp
             {
                 while (true)
                 {
-                    Task.Run(() =>
-                    {
-                        Task.Delay(5000).Wait();
-                        // 送信データを生成
-                        byte[] data = Encoding.UTF8.GetBytes("Hello");
-                        // サーバーへUDP送信
-                        _udpClient.UdpSend(new MsgBase(data));
+                    Task.Delay(5000).Wait();
+                    // 送信データを生成
+                    byte[] data = Encoding.UTF8.GetBytes("Hello");
+                    this.UdpSend(new MsgBase(data));
 
-                    });
                     // サーバーからの受信を待機
                     byte[] message = _udpClient.Receive();
-                    string receivedMessage = Encoding.UTF8.GetString(message);
                     // 内部電文送信処理
                     if (message is not null)
                     {
@@ -83,7 +78,8 @@ namespace MyApp.Udp
         /// </summary>
         protected void UdpSend(MsgBase msg)
         {
-
+            // サーバーへUDP送信
+            _udpClient?.UdpSend(msg);
         }
 
         /// <summary>
