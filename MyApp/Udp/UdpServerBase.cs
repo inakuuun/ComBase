@@ -55,11 +55,11 @@ namespace MyApp.Udp
                 {
                     byte[] message = udpListener.Receive(ref clientEndPoint);
                     string receivedMessage = Encoding.UTF8.GetString(message);
+                    // 内部電文送信処理
                     if (message is not null)
                     {
-                        this.Send(new MsgBase(message));
+                        this.UdpReceivedSend(new MsgBase(message));
                     }
-                    Console.WriteLine("クライアントからのメッセージ: " + receivedMessage);
 
                     System.Threading.Thread.Sleep(10000);
                     string responseMessage = "サーバーからの応答：";
