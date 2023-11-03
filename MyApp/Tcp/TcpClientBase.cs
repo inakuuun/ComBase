@@ -186,7 +186,6 @@ namespace MyApp.Tcp
         /// <param name="msg">TCP電文送信メッセージ</param>
         protected void TcpSend(MsgBase msg)
         {
-            msg.MsgWrite();
             _tcpClient?.TcpSend(msg);
         }
 

@@ -74,7 +74,11 @@ namespace MyApp.Tcp
         {
             try
             {
+                // 送信電文情報をメモリストリームに書き込み
+                msg.MsgWrite();
+                // 書き込んだメモリ情報をbyte配列で取得
                 byte[] sendBytes = msg.BytesRead();
+                // TCPエンドポイントにメッセージとして送信
                 _controllerInfo.NetStream?.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
