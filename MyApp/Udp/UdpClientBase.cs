@@ -49,7 +49,7 @@ namespace MyApp.Udp
             {
                 while (true)
                 {
-                    System.Threading.Thread.Sleep(10000);
+                    System.Threading.Thread.Sleep(5000);
                     // 送信データを生成
                     byte[] data = Encoding.UTF8.GetBytes("Hello");
                     // サーバーへUDP送信
