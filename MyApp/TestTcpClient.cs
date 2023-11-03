@@ -8,6 +8,7 @@ using System.Text;
 using static MyApp.Common.StractDef;
 using MyApp.Events;
 using MyApp.Msg.Deffine;
+using MyApp.Msg.Messages;
 
 namespace MyApp
 {
@@ -41,6 +42,8 @@ namespace MyApp
                 HelthCheckInterval = 10000
             };
             this.ConnectStart(_connectInfo);
+            var bootStartReq = new BootStartReq();
+            base.TcpSend(bootStartReq);
             return true;
         }
 

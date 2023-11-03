@@ -70,16 +70,13 @@ namespace MyApp.Tcp
         /// TCP電文送信処理
         /// </summary>
         /// <param name="msgObj">送信要求メッセージオブジェクト</param>
-        public void TcpSend(object msgObj)
+        public void TcpSend(MsgBase msg)
         {
             try
             {
                 // 型判定とキャスト
-                if (msgObj is MsgBase msg)
-                {
-                    byte[] sendBytes = msg.BytesRead();
-                    _controllerInfo.NetStream?.Write(sendBytes, 0, sendBytes.Length);
-                }
+                byte[] sendBytes = msg.BytesRead();
+                _controllerInfo.NetStream?.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
             {
