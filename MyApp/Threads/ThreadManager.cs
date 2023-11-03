@@ -77,9 +77,13 @@ namespace MyApp.Threads
         }
 
         /// <summary>
-        /// TCP受信時処理
+        /// TCP内部電文送信処理
         /// </summary>
-        protected void TcpReceive(MsgBase msg)
+        /// <remarks>
+        /// TCPで受信したメッセージを内部電文として派生クラスに分配
+        /// </remarks>
+        /// <param name="msg">TCP内部電文送信メッセージ</param>
+        protected void TcpReceivedSend(MsgBase msg)
         {
             _msgTcpEvent?.Invoke(msg, new MessageEventArgs(msg));
         }
