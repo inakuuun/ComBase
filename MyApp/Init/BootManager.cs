@@ -11,7 +11,7 @@ using System.Xml.XPath;
 namespace MyApp.Init
 {
     /// <summary>
-    /// スレッド起動クラス
+    /// スレッド起動管理クラス
     /// </summary>
     public class BootManager
     {

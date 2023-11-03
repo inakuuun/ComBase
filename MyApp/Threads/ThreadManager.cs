@@ -30,6 +30,15 @@ namespace MyApp.Threads
         private static event EventHandler<MessageEventArgs>? _msgEvent;
 
         /// <summary>
+        /// メッセージイベント
+        /// </summary>
+        /// <remarks>
+        /// TCP内部電文生成用イベント
+        /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnTcpReceive処理が走る
+        /// </remarks>
+        private static event EventHandler<MessageEventArgs>? _msgTcpEvent;
+
+        /// <summary>
         /// スレッドの実行
         /// </summary>
         /// <remarks>下位クラスのメソッド呼び出し</remarks>
@@ -40,6 +49,7 @@ namespace MyApp.Threads
             {
                 // 初期処理時にイベントの登録
                 _msgEvent += OnReceive;
+                _msgTcpEvent += OnTcpReceive;
 
                 if (RunInit())
                 {
@@ -59,17 +69,30 @@ namespace MyApp.Threads
         /// <summary>
         /// メッセージ送信
         /// </summary>
-        /// <param name="msgObj">送信メッセージ情報</param>
+        /// <param name="msg">内部電文送信メッセージ</param>
         protected void Send(MsgBase msg)
         {
             // イベントを発生させる
-            _msgEvent?.Invoke(this, new MessageEventArgs(msg));
+            _msgEvent?.Invoke(msg, new MessageEventArgs(msg));
+        }
+
+        /// <summary>
+        /// TCP受信時処理
+        /// </summary>
+        protected void TcpReceive(MsgBase msg)
+        {
+            _msgTcpEvent?.Invoke(msg, new MessageEventArgs(msg));
         }
 
         /// <summary>
         /// 初期処理
         /// </summary>
         protected abstract bool RunInit();
+
+        /// <summary>
+        /// TCP内部電文受信処理
+        /// </summary>
+        protected virtual void OnTcpReceive(object? sender, MessageEventArgs e) { }
 
         /// <summary>
         /// 内部電文受信処理

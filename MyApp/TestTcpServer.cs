@@ -9,6 +9,7 @@ using MyApp.Logs;
 using static MyApp.Common.StractDef;
 using MyApp.Events;
 using MyApp.Msg.Deffine;
+using MyApp.Msg.Messages;
 
 namespace MyApp
 {
@@ -45,7 +46,9 @@ namespace MyApp
             }
             catch(Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => {_logFileName} {ex}");
+                // サーバーのTCP接続異常時はシステムを終了させる
+                // ※初回起動時にリスナーポートが被るとTCPリスナーがnull値で検出され、無限ループに陥るため
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"初期処理異常終了 => {_logFileName} {ex}");
                 return false;
             }
             return true;
@@ -81,20 +84,27 @@ namespace MyApp
         /// <exception cref="NotImplementedException"></exception>
         protected override void OnReceive(object? sender, MessageEventArgs e)
         {
-            // ヘルスチェック要求
-            if (e.MessageId == MsgDef.MSG_HELTHCHECK_REQ)
+            try
             {
+                // システム起動完了通知
+                if (e.MessageId == MsgDef.MSG_SYSTEMBOOT_NOTICE)
+                {
+                }
             }
+            catch(Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"内部電文受信処理異常終了 => {ex}");
+            }
+        }
+
+        protected override void OnTcpReceive(object? sender, MessageEventArgs e)
+        {
             // 初期起動通知要求
-            else if (e.MessageId == MsgDef.MSG_BOOTSTART_REQ)
+            if (e.MessageId == MsgDef.MSG_BOOTSTART_REQ)
             {
+                var req = new BootStartReq(e.Message);
+                Log.Trace(_logFileName, LOGLEVEL.INFO, $"{req.UserId},{req.UserName},{req.UserIp}");
                 Log.Trace(_logFileName, LOGLEVEL.INFO, $"初期起動通知要求受信");
-            }
-            else
-            {
-                // 確認用出力
-                string data = Encoding.UTF8.GetString(e.Message);
-                Log.Trace(_logFileName, LOGLEVEL.INFO, data);
             }
         }
 

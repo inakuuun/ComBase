@@ -1,5 +1,6 @@
 ﻿using MyApp.Events;
 using MyApp.Logs;
+using MyApp.Msg.Deffine;
 using MyApp.Udp;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace MyApp
             }
             catch (Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"異常終了 => {ex}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"UDP接続開始異常終了 => {ex}");
             }
         }
 
@@ -60,7 +61,17 @@ namespace MyApp
         /// <param name="e"></param>
         protected sealed override void OnReceive(object? sender, MessageEventArgs e)
         {
-
+            try
+            {
+                // システム起動完了通知
+                if (e.MessageId == MsgDef.MSG_SYSTEMBOOT_NOTICE)
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"内部電文受信処理異常終了 => {ex}");
+            }
         }
     }
 }

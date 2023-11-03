@@ -69,12 +69,11 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP電文送信処理
         /// </summary>
-        /// <param name="msgObj">送信要求メッセージオブジェクト</param>
+        /// <param name="msg">TCP電文送信メッセージ</param>
         public void TcpSend(MsgBase msg)
         {
             try
             {
-                // 型判定とキャスト
                 byte[] sendBytes = msg.BytesRead();
                 _controllerInfo.NetStream?.Write(sendBytes, 0, sendBytes.Length);
             }
