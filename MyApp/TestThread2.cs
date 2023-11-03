@@ -43,9 +43,16 @@ namespace MyApp
         /// <exception cref="NotImplementedException"></exception>
         protected override void OnReceive(object? sender, MessageEventArgs e)
         {
-            if(e.MessageId == MsgDef.MSG_HELTHCHECK_REQ)
+            try
             {
-
+                // システム起動完了通知
+                if (e.MessageId == MsgDef.MSG_SYSTEMBOOT_NOTICE)
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"内部電文受信処理異常終了 => {ex}");
             }
         }
     }

@@ -96,7 +96,7 @@ namespace MyApp.Tcp
                     // 内部電文処理
                     if (message is not null)
                     {
-                        this.Send(new MsgBase(message));
+                        this.TcpReceive(new MsgBase(message));
                     }
                 }
                 catch (Exception ex)
@@ -151,6 +151,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP電文送信処理
         /// </summary>
+        /// <param name="msg">TCP電文送信メッセージ</param>
         protected void TcpSend(MsgBase msg)
         {
             _tcpServer?.TcpSend(msg);
@@ -159,10 +160,11 @@ namespace MyApp.Tcp
         /// <summary>
         /// 内部電文送信処理
         /// </summary>
-        private new void Send(MsgBase msg)
+        /// <param name="msg">内部電文送信メッセージ</param>
+        private new void TcpReceive(MsgBase msg)
         {
-            // 基底クラスの内部電文イベントを実行させる
-            base.Send(msg);
+            // 基底クラスのTCP内部電文受信イベントを実行させる
+            base.TcpReceive(msg);
         }
 
         /// <summary>
