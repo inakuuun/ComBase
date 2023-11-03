@@ -52,7 +52,7 @@ namespace MyApp.Threads
         /// </summary>
         /// <remarks>下位クラスのメソッド呼び出し</remarks>
         /// <exception cref="NotImplementedException"></exception>
-        protected sealed override void ThreadRun()
+        sealed protected override void ThreadRun()
         {
             try
             {

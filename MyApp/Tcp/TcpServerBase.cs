@@ -113,7 +113,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// ヘルスチェック処理
         /// </summary>
-        protected override sealed void HelthCheck()
+        sealed protected override void HelthCheck()
         {
             // -------------------------------------------------
             // クライアントとTCP接続確立＆ヘルスチェック

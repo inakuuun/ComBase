@@ -27,7 +27,7 @@ namespace MyApp
         /// 初期処理
         /// </summary>
         /// <returns></returns>
-        protected sealed override bool RunInit()
+        sealed protected override bool RunInit()
         {
             _connectInfo = new()
             {
@@ -42,7 +42,7 @@ namespace MyApp
         /// UDP接続開始
         /// </summary>
         /// <param name="connectInfo"></param>
-        protected sealed override void ConnectStart(UdpConnectInfo connectInfo)
+        sealed protected override void ConnectStart(UdpConnectInfo connectInfo)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected sealed override void OnUdpReceive(object? sender, MessageEventArgs e)
+        sealed protected override void OnUdpReceive(object? sender, MessageEventArgs e)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected sealed override void OnReceive(object? sender, MessageEventArgs e)
+        sealed protected override void OnReceive(object? sender, MessageEventArgs e)
         {
             try
             {

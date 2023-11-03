@@ -65,7 +65,7 @@ namespace MyApp.Msg.Messages
         /// 電文長取得
         /// </summary>
         /// <returns>プロパティのサイズを全て加算した電文長</returns>
-        protected override sealed int GetLength()
+        sealed protected override int GetLength()
         {
             int size = 0;
             size = base.GetSize(_messageId, size);

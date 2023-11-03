@@ -60,7 +60,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected sealed override void OnReceive(object? sender, MessageEventArgs e)
+        sealed protected override void OnReceive(object? sender, MessageEventArgs e)
         {
             try
             {

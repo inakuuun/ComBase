@@ -28,7 +28,7 @@ namespace MyApp
         /// 初期処理
         /// </summary>
         /// <returns></returns>
-        protected sealed override bool RunInit()
+        sealed protected override bool RunInit()
         {
             _connectInfo = new TcpConnectInfo()
             {
@@ -61,7 +61,7 @@ namespace MyApp
         /// <summary>
         /// TCP接続開始
         /// </summary>
-        protected sealed override void ConnectStart(TcpConnectInfo connectInfo)
+        sealed protected override void ConnectStart(TcpConnectInfo connectInfo)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace MyApp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        protected sealed override void OnHelthCheck()
+        sealed protected override void OnHelthCheck()
         {
             Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答受信");
         }
@@ -86,7 +86,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected sealed override void OnTcpReceive(object? sender, MessageEventArgs e)
+        sealed protected override void OnTcpReceive(object? sender, MessageEventArgs e)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected sealed override void OnReceive(object? sender, MessageEventArgs e)
+        sealed protected override void OnReceive(object? sender, MessageEventArgs e)
         {
             try
             {
