@@ -45,7 +45,12 @@ namespace MyApp
             {
                 // 10秒後に初期起動通知要求を送信
                 System.Threading.Thread.Sleep(10000);
-                var bootStartReq = new BootStartReq();
+                var bootStartReq = new BootStartReq()
+                {
+                    UserId = "W0001",
+                    UserName = "user",
+                    UserIp = "127.0.0.1",
+                };
                 base.TcpSend(bootStartReq);
             });
             // コネクションの維持を行うため、ConnectStartメソッドより下で処理を実行できない
