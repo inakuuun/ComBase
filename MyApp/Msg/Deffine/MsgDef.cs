@@ -13,5 +13,7 @@ namespace MyApp.Msg.Deffine
     {
         /// <summary>ヘルスチェック要求</summary>
         public const short MSG_HELTHCHECK_REQ = 0;
+        /// <summary>初期起動通知要求</summary>
+        public const short MSG_BOOTSTART_REQ = 1;
     }
 }

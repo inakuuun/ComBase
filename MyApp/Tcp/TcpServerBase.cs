@@ -154,13 +154,9 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCP電文送信処理
         /// </summary>
-        protected void TcpSend(object msgObj)
+        protected void TcpSend(MsgBase msg)
         {
-            // 型判定とキャスト
-            if (msgObj is MsgBase msg)
-            {
-                _tcpServer?.TcpSend(msg);
-            }
+            _tcpServer?.TcpSend(msg);
         }
 
         /// <summary>

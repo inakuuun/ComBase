@@ -4,6 +4,6 @@
         <Item threadName="TestThread" className="MyApp.TestThread" />
         <Item threadName="TestThread2" className="MyApp.TestThread2" />
         <Item threadName="TestTcpServer" className="MyApp.TestTcpServer" />
-        <Item threadName="TestUdppServer" className="MyApp.TestUdpServer" />
+        <Item threadName="TestUdpServer" className="MyApp.TestUdpServer" />
     </Threads>
 </ProgramInfo>
