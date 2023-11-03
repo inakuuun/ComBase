@@ -1,5 +1,6 @@
 ﻿using MyApp.Events;
 using MyApp.Logs;
+using MyApp.Msg;
 using MyApp.Msg.Deffine;
 using MyApp.Udp;
 using System;
@@ -36,6 +37,17 @@ namespace MyApp
                 Port = 30001,
             };
             this.ConnectStart(_connectInfo);
+            // 5秒間隔でサーバー側に「Hello」をUDP送信
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(5000);
+                    // 送信データを生成
+                    byte[] data = Encoding.UTF8.GetBytes("Hello");
+                    this.UdpSend(new MsgBase(data));
+                }
+            });
             return true;
         }
 
