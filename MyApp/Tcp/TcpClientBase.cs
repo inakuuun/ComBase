@@ -77,8 +77,31 @@ namespace MyApp.Tcp
                 {
                     // TCPコネクション確立
                     _tcpClient?.Connect(_connectInfo);
-                    // メッセージの送受信を別スレッドで実行
-                    Task.Run(() => HandleClient());
+                    // クライアントはリッスンしないため、別スレッドでメッセージの受信を制御することができない
+                    while (true)
+                    {
+                        try
+                        {
+                            // コネクションを維持
+                            byte[]? message = _tcpClient?.TcpRead();
+                            // 内部電文処理
+                            if (message is not null)
+                            {
+                                this.Send(new MsgBase(message));
+                                // 確認用出力
+                                string data = Encoding.UTF8.GetString(message);
+                                Console.WriteLine(data);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // 電文送受信用インスタンスを開放
+                            // ※NetStreamのみ開放し、コネクションは開放しない。
+                            _tcpClient?.Close();
+                            Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
+                            break;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -91,37 +114,6 @@ namespace MyApp.Tcp
                     // ※エラー発生時、待機時間が平均的に2秒遅いため「インターバル - 2秒」を設定
                     //_ = new Timer(new TimerCallback(ReConnect), null, 10000, Timeout.Infinite);
                     System.Threading.Thread.Sleep(_connectInfo.HelthCheckInterval - 2000);
-                }
-            }
-        }
-
-        /// <summary>
-        /// ハンドルクライアント
-        /// </summary>
-        private void HandleClient()
-        {
-            while (true)
-            {
-                try
-                {
-                    // コネクションを維持
-                    byte[]? message = _tcpClient?.TcpRead();
-                    // 内部電文処理
-                    if (message is not null)
-                    {
-                        this.Send(new MsgBase(message));
-                        // 確認用出力
-                        string data = Encoding.UTF8.GetString(message);
-                        Console.WriteLine(data);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // 電文送受信用インスタンスを開放
-                    // ※NetStreamのみ開放し、コネクションは開放しない。
-                    _tcpClient?.Close();
-                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
-                    break;
                 }
             }
         }

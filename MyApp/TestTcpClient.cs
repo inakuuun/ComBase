@@ -41,9 +41,15 @@ namespace MyApp
                 // ヘルスチェック間隔(ミリ秒)
                 HelthCheckInterval = 10000
             };
+            Task.Run(() =>
+            {
+                // 10秒後に初期起動通知要求を送信
+                System.Threading.Thread.Sleep(10000);
+                var bootStartReq = new BootStartReq();
+                base.TcpSend(bootStartReq);
+            });
+            // コネクションの維持を行うため、ConnectStartメソッドより下で処理を実行できない
             this.ConnectStart(_connectInfo);
-            var bootStartReq = new BootStartReq();
-            base.TcpSend(bootStartReq);
             return true;
         }
 
