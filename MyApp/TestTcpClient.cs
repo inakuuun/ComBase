@@ -76,7 +76,7 @@ namespace MyApp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        protected override void OnHelthCheck()
+        protected sealed override void OnHelthCheck()
         {
             Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック応答受信");
         }
@@ -86,7 +86,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected override void OnTcpReceive(object? sender, MessageEventArgs e)
+        protected sealed override void OnTcpReceive(object? sender, MessageEventArgs e)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace MyApp
         /// </summary>
         /// <param name="sender">内部電文メッセージクラス</param>
         /// <param name="e">メッセージイベント生成クラス</param>
-        protected override void OnReceive(object? sender, MessageEventArgs e)
+        protected sealed override void OnReceive(object? sender, MessageEventArgs e)
         {
             try
             {
