@@ -65,7 +65,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// TCPコネクション確立
         /// </summary>
-        protected void Connection()
+        sealed protected override void Connection()
         {
             // -------------------------------------------------
             // クライアントとTCP接続確立

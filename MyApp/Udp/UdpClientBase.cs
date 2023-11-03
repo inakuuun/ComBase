@@ -36,7 +36,7 @@ namespace MyApp.Udp
         /// <summary>
         /// 接続開始
         /// </summary>
-        /// <param name="connectInfo"></param>
+        /// <param name="connectInfo">UDP接続情報インスタンス</param>
         protected override void ConnectStart(UdpConnectInfo connectInfo)
         {
             _udpConnectInfo = connectInfo;
@@ -44,9 +44,9 @@ namespace MyApp.Udp
         }
 
         /// <summary>
-        /// コネクション確立
+        /// UDPコネクション確立
         /// </summary>
-        protected void Connection()
+        sealed protected override void Connection()
         {
             // -------------------------------------------------
             // サーバーとUDP接続

@@ -22,6 +22,11 @@ namespace MyApp.Tcp
         protected abstract void ConnectStart(TcpConnectInfo connectInfo);
 
         /// <summary>
+        /// TCPコネクション確立
+        /// </summary>
+        protected abstract void Connection();
+        
+        /// <summary>
         /// ヘルスチェック処理
         /// </summary>
         protected abstract void HelthCheck();

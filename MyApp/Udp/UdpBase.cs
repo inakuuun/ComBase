@@ -18,5 +18,10 @@ namespace MyApp.Udp
         /// </summary>
         /// <param name="connectInfo">UDP接続情報インスタンス</param>
         protected abstract void ConnectStart(UdpConnectInfo connectInfo);
+
+        /// <summary>
+        /// UDPコネクション確立
+        /// </summary>
+        protected abstract void Connection();
     }
 }
