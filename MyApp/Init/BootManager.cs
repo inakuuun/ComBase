@@ -18,7 +18,7 @@ namespace MyApp.Init
         /// <summary>
         /// ProgramInfo.xml情報格納用ディクショナリ
         /// </summary>
-        private static Dictionary<string, ThreadBase> _programInfoDic = new();
+        private static Dictionary<string, ThreadManager> _programInfoDic = new();
 
         /// <summary>
         /// コンストラクタ
@@ -55,7 +55,7 @@ namespace MyApp.Init
                         {
                             // Typeオブジェクトを使用してクラスのインスタンスを生成
                             object? instance = Activator.CreateInstance(threadClass);
-                            if (instance != null && instance is ThreadBase obj)
+                            if (instance != null && instance is ThreadManager obj)
                             {
                                 // 同じキーが存在しない場合
                                 if (!_programInfoDic.ContainsKey(threadName))
@@ -79,7 +79,7 @@ namespace MyApp.Init
         public void SystemStart()
         {
             // スレッドを実行するインスタンス分ループ処理
-            foreach (ThreadBase instance in _programInfoDic.Values)
+            foreach (ThreadManager instance in _programInfoDic.Values)
             {
                 // スレッドを実行
                 instance.ThreadStart();
