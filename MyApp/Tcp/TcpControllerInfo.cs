@@ -30,7 +30,7 @@ namespace MyApp.Tcp
         public NetworkStream? NetStream;
 
         /// <summary>
-        /// 受信データ読み取りバッファ設定変数
+        /// 受信データ読み取り用バッファ
         /// </summary>
         public byte[]? Buffer;
 

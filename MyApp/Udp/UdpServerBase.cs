@@ -1,5 +1,7 @@
 ﻿using MyApp.Events;
+using MyApp.Logs;
 using MyApp.Msg;
+using MyApp.Tcp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Common.StractDef;
 
 namespace MyApp.Udp
 {
@@ -15,6 +18,11 @@ namespace MyApp.Udp
     /// </summary>
     public abstract class UdpServerBase : UdpBase
     {
+        /// <summary>
+        /// ログファイル名
+        /// </summary>
+        private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
+
         /// <summary>
         /// UDP接続情報
         /// </summary>
@@ -40,20 +48,28 @@ namespace MyApp.Udp
             // クライアントから接続があるまで待機
             // -------------------------------------------------
             var udpListener = new UdpClient(_connectInfo.Port);
-            while (true)
+            var clientEndPoint = new IPEndPoint(IPAddress.Any, _connectInfo.Port);
+            try
             {
-                var clientEndPoint = new IPEndPoint(IPAddress.Any, _connectInfo.Port);
-                byte[] message = udpListener.Receive(ref clientEndPoint);
-                string receivedMessage = Encoding.UTF8.GetString(message);
-                if (message is not null)
+                while (true)
                 {
-                    this.Send(new MsgBase(message));
-                }
-                Console.WriteLine("クライアントからのメッセージ: " + receivedMessage);
+                    byte[] message = udpListener.Receive(ref clientEndPoint);
+                    string receivedMessage = Encoding.UTF8.GetString(message);
+                    if (message is not null)
+                    {
+                        this.Send(new MsgBase(message));
+                    }
+                    Console.WriteLine("クライアントからのメッセージ: " + receivedMessage);
 
-                string responseMessage = "サーバーからの応答：" + receivedMessage;
-                byte[] responseData = Encoding.UTF8.GetBytes(responseMessage);
-                udpListener.Send(responseData, responseData.Length, clientEndPoint);
+                    System.Threading.Thread.Sleep(10000);
+                    string responseMessage = "サーバーからの応答：";
+                    byte[] responseData = Encoding.UTF8.GetBytes(responseMessage);
+                    udpListener.Send(responseData, responseData.Length, clientEndPoint);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {ex}");
             }
         }
 
