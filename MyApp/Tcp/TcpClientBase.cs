@@ -88,9 +88,6 @@ namespace MyApp.Tcp
                             if (message is not null)
                             {
                                 this.TcpReceivedSend(new MsgBase(message));
-                                // 確認用出力
-                                string data = Encoding.UTF8.GetString(message);
-                                Console.WriteLine(data);
                             }
                         }
                         catch (Exception ex)

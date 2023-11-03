@@ -82,6 +82,26 @@ namespace MyApp
         }
 
         /// <summary>
+        /// TCP内部電文受信処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected override void OnTcpReceive(object? sender, MessageEventArgs e)
+        {
+            // 初期起動通知応答
+            if (e.MessageId == MsgDef.MSG_BOOTSTART_RES)
+            {
+
+            }
+            else
+            {
+                // 確認用出力
+                string data = Encoding.UTF8.GetString(e.Message);
+                Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"確認用出力 => {data}");
+            }
+        }
+
+        /// <summary>
         /// 内部電文受信処理
         /// </summary>
         /// <param name="e"></param>

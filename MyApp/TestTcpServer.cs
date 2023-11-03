@@ -76,7 +76,28 @@ namespace MyApp
         {
             Log.Trace(_logFileName, LOGLEVEL.INFO, $"ヘルスチェック要求受信");
         }
-        
+
+        /// <summary>
+        /// TCP内部電文受信処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected override void OnTcpReceive(object? sender, MessageEventArgs e)
+        {
+            // 初期起動通知要求
+            if (e.MessageId == MsgDef.MSG_BOOTSTART_REQ)
+            {
+                var req = new BootStartReq(e.Message);
+                Log.Trace(_logFileName, LOGLEVEL.INFO, $"初期起動通知要求 => {req.UserId},{req.UserName},{req.UserIp}");
+            }
+            else
+            {
+                // 確認用出力
+                string data = Encoding.UTF8.GetString(e.Message);
+                Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"確認用出力 => {data}");
+            }
+        }
+
         /// <summary>
         /// 内部電文受信処理
         /// </summary>
@@ -94,17 +115,6 @@ namespace MyApp
             catch(Exception ex)
             {
                 Log.Trace(_logFileName, LOGLEVEL.ERROR, $"内部電文受信処理異常終了 => {ex}");
-            }
-        }
-
-        protected override void OnTcpReceive(object? sender, MessageEventArgs e)
-        {
-            // 初期起動通知要求
-            if (e.MessageId == MsgDef.MSG_BOOTSTART_REQ)
-            {
-                var req = new BootStartReq(e.Message);
-                Log.Trace(_logFileName, LOGLEVEL.INFO, $"{req.UserId},{req.UserName},{req.UserIp}");
-                Log.Trace(_logFileName, LOGLEVEL.INFO, $"初期起動通知要求受信");
             }
         }
 
