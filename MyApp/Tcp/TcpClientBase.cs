@@ -187,6 +187,7 @@ namespace MyApp.Tcp
         /// </summary>
         protected void TcpSend(MsgBase msg)
         {
+            msg.MsgWrite();
             _tcpClient?.TcpSend(msg);
         }
 

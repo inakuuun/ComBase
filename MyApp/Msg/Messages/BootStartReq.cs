@@ -52,16 +52,7 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public BootStartReq() : base()
-        {
-            if(_msgWriter != null)
-            {
-                _msgWriter.WtShort(_messageId);
-                _msgWriter.WtStr(UserId);
-                _msgWriter.WtStr(UserName);
-                _msgWriter.WtStr(UserIp);
-            }
-        }
+        public BootStartReq() : base() { }
 
         /// <summary>
         /// コンストラクタ
@@ -70,10 +61,23 @@ namespace MyApp.Msg.Messages
         {
             if(_msgReader != null)
             {
-                _messageId = _msgReader.RdShort();
                 UserId = _msgReader.RdStr();
                 UserName = _msgReader.RdStr();
                 UserIp = _msgReader.RdStr();
+            }
+        }
+
+        /// <summary>
+        /// 送信メッセージをメモリストリームに書き込み
+        /// </summary>
+        public override void MsgWrite()
+        {
+            if (_msgWriter != null)
+            {
+                _msgWriter.WtShort(_messageId);
+                _msgWriter.WtStr(UserId);
+                _msgWriter.WtStr(UserName);
+                _msgWriter.WtStr(UserIp);
             }
         }
 

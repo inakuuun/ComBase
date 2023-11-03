@@ -37,13 +37,7 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public HelthCheckReq() : base()
-        {
-            if(_msgWriter != null)
-            {
-                _msgWriter.WtShort(_messageId);
-            }
-        }
+        public HelthCheckReq() : base() { }
 
         /// <summary>
         /// コンストラクタ
@@ -53,6 +47,17 @@ namespace MyApp.Msg.Messages
             if(_msgReader != null)
             {
                 _messageId = _msgReader.RdShort();
+            }
+        }
+
+        /// <summary>
+        /// 送信メッセージをメモリストリームに書き込み
+        /// </summary>
+        public override void MsgWrite()
+        {
+            if (_msgWriter != null)
+            {
+                _msgWriter.WtShort(_messageId);
             }
         }
 

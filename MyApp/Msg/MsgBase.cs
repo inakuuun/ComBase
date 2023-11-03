@@ -47,14 +47,17 @@ namespace MyApp.Msg
         /// </summary>
         public MsgBase(byte[] message) 
         {
-            Message = message;
             MsgReader = new MsgReader(message);
             MessageId = MsgReader.RdShort();
+            Message = message;
         }
 
         /// <summary>
         /// 電文データ取得
         /// </summary>
+        /// <remarks>
+        /// 送信するメッセージのbyte情報を全て取得する
+        /// </remarks>
         /// <returns>プロパティ値をbyte配列に変換した値</returns>
         public byte[] BytesRead()
         {
@@ -88,6 +91,11 @@ namespace MyApp.Msg
             else if (obj is byte) return calc += sizeof(byte);
             return calc;
         }
+
+        /// <summary>
+        /// 送信メッセージをメモリストリームに書き込み
+        /// </summary>
+        public virtual void MsgWrite(){}
 
         /// <summary>
         /// 電文長取得
