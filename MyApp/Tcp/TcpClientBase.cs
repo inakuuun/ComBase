@@ -194,14 +194,10 @@ namespace MyApp.Tcp
         /// 内部電文送信処理
         /// </summary>
         /// <param name="msgObj"></param>
-        private new void Send(object msgObj)
+        private new void Send(MsgBase msg)
         {
-            // 型判定とキャスト
-            if (msgObj is MsgBase req)
-            {
-                // 基底クラスの内部電文イベントを実行させる
-                base.Send(req);
-            }
+            // 基底クラスの内部電文イベントを実行させる
+            base.Send(msg);
         }
 
         /// <summary>

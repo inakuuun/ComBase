@@ -1,5 +1,6 @@
 ﻿using MyApp.Events;
 using MyApp.Logs;
+using MyApp.Msg;
 using MyApp.Msg.Deffine;
 using MyApp.Threads;
 using System;
@@ -30,7 +31,7 @@ namespace MyApp
         /// <summary>
         /// 内部電文送信処理
         /// </summary>
-        public new void Send(object msg)
+        public new void Send(MsgBase msg)
         {
             base.Send(msg);
         }

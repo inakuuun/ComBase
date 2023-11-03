@@ -77,15 +77,15 @@ namespace MyApp.Tcp
             {
                 // TCPコネクション初期処理
                 _tcpServer?.Connect(_connectInfo);
-                // メッセージの送受信を別スレッドで実行
-                Task.Run(() => HandleClient());
+                // クライアントからのメッセージを別スレッドで受信
+                Task.Run(() => HandleCnnection());
             }
         }
 
         /// <summary>
-        /// ハンドルクライアント
+        /// ハンドルコネクション
         /// </summary>
-        private void HandleClient()
+        private void HandleCnnection()
         {
             while (true)
             {
@@ -97,9 +97,6 @@ namespace MyApp.Tcp
                     if (message is not null)
                     {
                         this.Send(new MsgBase(message));
-                        // 確認用出力
-                        string data = Encoding.UTF8.GetString(message);
-                        Console.WriteLine(data);
                     }
                 }
                 catch (Exception ex)
@@ -162,14 +159,10 @@ namespace MyApp.Tcp
         /// <summary>
         /// 内部電文送信処理
         /// </summary>
-        private new void Send(object msgObj)
+        private new void Send(MsgBase msg)
         {
-            // 型判定とキャスト
-            if (msgObj is MsgBase msg)
-            {
-                // 基底クラスの内部電文イベントを実行させる
-                base.Send(msg);
-            }
+            // 基底クラスの内部電文イベントを実行させる
+            base.Send(msg);
         }
 
         /// <summary>

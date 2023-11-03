@@ -145,6 +145,7 @@ namespace MyApp.Tcp
             {
                 _controllerInfo.Listener = new TcpListener(connectInfo.IpAddress, connectInfo.Port);
                 _controllerInfo.Listener.Start();
+                Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
             }
 
             try
@@ -158,7 +159,6 @@ namespace MyApp.Tcp
                 }
                 else
                 {
-                    Log.Trace(string.Empty, LOGLEVEL.DEBUG, "Waiting for connection...");
                     // クライアントからの接続要求待ち
                     _controllerInfo.Client = _controllerInfo.Listener.AcceptTcpClient();
                     // データを読み書きするインスタンスを取得

@@ -49,6 +49,7 @@ namespace MyApp.Msg
         {
             Message = message;
             MsgReader = new MsgReader(message);
+            MessageId = MsgReader.RdShort();
         }
 
         /// <summary>

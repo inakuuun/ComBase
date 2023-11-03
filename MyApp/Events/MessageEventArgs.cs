@@ -15,7 +15,12 @@ namespace MyApp.Events
         /// <summary>
         /// 電文ID
         /// </summary>
-        public virtual short MessageId { get; set; }
+        public short MessageId { get; set; }
+
+        /// <summary>
+        /// 電文メッセージ
+        /// </summary>
+        public byte[] Message { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -24,6 +29,7 @@ namespace MyApp.Events
         public MessageEventArgs(MsgBase msg)
         {
             MessageId = msg.MessageId;
+            Message = msg.Message;
         }
     }
 }
