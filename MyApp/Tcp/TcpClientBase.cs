@@ -30,7 +30,7 @@ namespace MyApp.Tcp
         private TcpConnectInfo _connectInfo = new();
         
         /// <summary>
-        /// クライアントコントローラー
+        /// TCPクライアントコントローラー
         /// </summary>
         private TcpController? _tcpClient;
 

@@ -37,7 +37,7 @@ namespace MyApp.Udp
             // UDPクライアント
             else
             {
-                _controllerInfo.IpEndPoint = new IPEndPoint(IPAddress.Parse(connectInfo.IpAddress), connectInfo.ServerPort);
+                _controllerInfo.IpEndPoint = new IPEndPoint(IPAddress.Parse(connectInfo.IpAddress), connectInfo.DestPort);
             }
             // UDPサービス識別子をセット
             _controllerInfo.Service = service;

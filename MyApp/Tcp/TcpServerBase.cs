@@ -27,7 +27,7 @@ namespace MyApp.Tcp
         private string _logFileName { get => typeof(TcpServerBase).Name ?? string.Empty; }
 
         /// <summary>
-        /// サーバーコントローラー
+        /// TCPサーバーコントローラー
         /// </summary>
         private TcpController? _tcpServer;
 

@@ -32,7 +32,7 @@ namespace MyApp
             _connectInfo = new()
             {
                 IpAddress = "127.0.0.1",
-                ServerPort = 30000,
+                DestPort = 30000,
                 Port = 30001,
             };
             this.ConnectStart(_connectInfo);

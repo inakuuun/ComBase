@@ -23,6 +23,9 @@ namespace MyApp.Udp
         /// </summary>
         private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
 
+        /// <summary>
+        /// UDPサーバーコントローラー
+        /// </summary>
         private UdpController? _ucpServer;
 
         /// <summary>
