@@ -55,10 +55,30 @@ namespace MyApp
         }
 
         /// <summary>
+        /// UDP内部電文受信処理
+        /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
+        protected sealed override void OnUdpReceive(object? sender, MessageEventArgs e)
+        {
+            try
+            {
+                // システム起動完了通知
+                if (e.MessageId == MsgDef.MSG_SYSTEMBOOT_NOTICE)
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"UDP内部電文受信処理異常終了 => {ex}");
+            }
+        }
+
+        /// <summary>
         /// 内部電文受信処理
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
         protected sealed override void OnReceive(object? sender, MessageEventArgs e)
         {
             try

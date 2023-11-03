@@ -1,4 +1,5 @@
-﻿using MyApp.Msg;
+﻿using MyApp.Events;
+using MyApp.Msg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,14 +60,17 @@ namespace MyApp.Udp
         /// <summary>
         /// 内部電文送信処理
         /// </summary>
-        private new void Send(object msgObj)
+        private new void Send(MsgBase msg)
         {
-            // 型判定とキャスト
-            if (msgObj is MsgBase msg)
-            {
-                // 基底クラスの内部電文イベントを実行させる
-                base.Send(msg);
-            }
+            // 基底クラスの内部電文イベントを実行させる
+            base.Send(msg);
         }
+
+        /// <summary>
+        /// UDP内部電文受信処理
+        /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
+        protected abstract override void OnUdpReceive(object? sender, MessageEventArgs e);
     }
 }

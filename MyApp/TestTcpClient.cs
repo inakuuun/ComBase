@@ -28,7 +28,7 @@ namespace MyApp
         /// 初期処理
         /// </summary>
         /// <returns></returns>
-        protected override bool RunInit()
+        protected sealed override bool RunInit()
         {
             _connectInfo = new TcpConnectInfo()
             {
@@ -84,28 +84,35 @@ namespace MyApp
         /// <summary>
         /// TCP内部電文受信処理
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
         protected override void OnTcpReceive(object? sender, MessageEventArgs e)
         {
-            // 初期起動通知応答
-            if (e.MessageId == MsgDef.MSG_BOOTSTART_RES)
+            try
             {
+                // 初期起動通知応答
+                if (e.MessageId == MsgDef.MSG_BOOTSTART_RES)
+                {
 
+                }
+                else
+                {
+                    // 確認用出力
+                    string data = Encoding.UTF8.GetString(e.Message);
+                    Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"確認用出力 => {data}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // 確認用出力
-                string data = Encoding.UTF8.GetString(e.Message);
-                Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"確認用出力 => {data}");
+                Log.Trace(_logFileName, LOGLEVEL.ERROR, $"TCP内部電文受信処理異常終了 => {ex}");
             }
         }
 
         /// <summary>
         /// 内部電文受信処理
         /// </summary>
-        /// <param name="e"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
         protected override void OnReceive(object? sender, MessageEventArgs e)
         {
             try

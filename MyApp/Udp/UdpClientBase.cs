@@ -1,4 +1,5 @@
-﻿using MyApp.Msg;
+﻿using MyApp.Events;
+using MyApp.Msg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace MyApp.Udp
                 // 内部電文送信処理
                 if (message is not null)
                 {
-                    this.Send(new MsgBase(message));
+                    this.UdpReceivedSend(new MsgBase(message));
                 }
             }
         }
@@ -60,7 +61,7 @@ namespace MyApp.Udp
         /// <summary>
         /// UDP送信処理
         /// </summary>
-        protected void UdpSend(object msgObj)
+        protected void UdpSend(MsgBase msg)
         {
 
         }
@@ -69,14 +70,17 @@ namespace MyApp.Udp
         /// 内部電文送信処理
         /// </summary>
         /// <param name="msg"></param>
-        private new void Send(object msgObj)
+        private new void UdpReceivedSend(MsgBase msg)
         {
-            // 型判定とキャスト
-            if (msgObj is MsgBase msg)
-            {
-                // 基底クラスの内部電文イベントを実行させる
-                base.Send(msg);
-            }
+            // 基底クラスの内部電文イベントを実行させる
+            base.UdpReceivedSend(msg);
         }
+
+        /// <summary>
+        /// UDP内部電文受信処理
+        /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
+        protected abstract override void OnUdpReceive(object? sender, MessageEventArgs e);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MyApp.Db.Dao;
+using MyApp.Events;
 using MyApp.Logs;
 using MyApp.Msg;
 using MyApp.Msg.Messages;
@@ -212,5 +213,12 @@ namespace MyApp.Tcp
         /// ヘルスチェック内部電文処理
         /// </summary>
         protected abstract override void OnHelthCheck();
+
+        /// <summary>
+        /// TCP内部電文受信処理
+        /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
+        protected abstract override void OnTcpReceive(object? sender, MessageEventArgs e);
     }
 }

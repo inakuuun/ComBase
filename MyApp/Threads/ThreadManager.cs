@@ -21,22 +21,31 @@ namespace MyApp.Threads
         private string _logFileName { get { return base.ThreadName ?? string.Empty; } }
 
         /// <summary>
-        /// メッセージイベント
-        /// </summary>
-        /// <remarks>
-        /// 内部電文生成用イベント
-        /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnReceive処理が走る
-        /// </remarks>
-        private static event EventHandler<MessageEventArgs>? _msgEvent;
-
-        /// <summary>
-        /// メッセージイベント
+        /// TCP内部電文メッセージイベント
         /// </summary>
         /// <remarks>
         /// TCP内部電文生成用イベント
         /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnTcpReceive処理が走る
         /// </remarks>
         private static event EventHandler<MessageEventArgs>? _msgTcpEvent;
+
+        /// <summary>
+        /// UDP内部電文メッセージイベント
+        /// </summary>
+        /// <remarks>
+        /// UDP内部電文生成用イベント
+        /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnUdpReceive処理が走る
+        /// </remarks>
+        private static event EventHandler<MessageEventArgs>? _msgUdpEvent;
+
+        /// <summary>
+        /// 内部電文メッセージイベント
+        /// </summary>
+        /// <remarks>
+        /// 内部電文生成用イベント
+        /// ※クラス変数とすることで、別スレッドでイベントを発行した際に全スレッドでOnReceive処理が走る
+        /// </remarks>
+        private static event EventHandler<MessageEventArgs>? _msgEvent;
 
         /// <summary>
         /// スレッドの実行
@@ -48,8 +57,9 @@ namespace MyApp.Threads
             try
             {
                 // 初期処理時にイベントの登録
-                _msgEvent += OnReceive;
                 _msgTcpEvent += OnTcpReceive;
+                _msgUdpEvent += OnUdpReceive;
+                _msgEvent += OnReceive;
 
                 if (RunInit())
                 {
@@ -67,16 +77,6 @@ namespace MyApp.Threads
         }
 
         /// <summary>
-        /// メッセージ送信
-        /// </summary>
-        /// <param name="msg">内部電文送信メッセージ</param>
-        protected void Send(MsgBase msg)
-        {
-            // イベントを発生させる
-            _msgEvent?.Invoke(msg, new MessageEventArgs(msg));
-        }
-
-        /// <summary>
         /// TCP内部電文送信処理
         /// </summary>
         /// <remarks>
@@ -89,6 +89,28 @@ namespace MyApp.Threads
         }
 
         /// <summary>
+        /// UDP内部電文送信処理
+        /// </summary>
+        /// <remarks>
+        /// UDPで受信したメッセージを内部電文として派生クラスに分配
+        /// </remarks>
+        /// <param name="msg">UDP内部電文送信メッセージ</param>
+        protected void UdpReceivedSend(MsgBase msg)
+        {
+            _msgUdpEvent?.Invoke(msg, new MessageEventArgs(msg));
+        }
+
+        /// <summary>
+        /// 内部電文送信
+        /// </summary>
+        /// <param name="msg">内部電文送信メッセージ</param>
+        protected void Send(MsgBase msg)
+        {
+            // イベントを発生させる
+            _msgEvent?.Invoke(msg, new MessageEventArgs(msg));
+        }
+
+        /// <summary>
         /// 初期処理
         /// </summary>
         protected abstract bool RunInit();
@@ -96,11 +118,22 @@ namespace MyApp.Threads
         /// <summary>
         /// TCP内部電文受信処理
         /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
         protected virtual void OnTcpReceive(object? sender, MessageEventArgs e) { }
+
+        /// <summary>
+        /// UDP内部電文受信処理
+        /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
+        protected virtual void OnUdpReceive(object? sender, MessageEventArgs e) { }
 
         /// <summary>
         /// 内部電文受信処理
         /// </summary>
+        /// <param name="sender">内部電文メッセージクラス</param>
+        /// <param name="e">メッセージイベント生成クラス</param>
         protected abstract void OnReceive(object? sender, MessageEventArgs e);
     }
 }
