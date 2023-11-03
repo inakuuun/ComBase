@@ -23,6 +23,8 @@ namespace MyApp.Udp
         /// </summary>
         private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
 
+        private UdpController? _udpClient;
+
         /// <summary>
         /// UDP接続情報
         /// </summary>
@@ -43,8 +45,10 @@ namespace MyApp.Udp
         /// </summary>
         protected void Connection()
         {
-            var udpClient = new UdpClient(_udpConnectInfo.Port);
-            var serverEndPoint = new IPEndPoint(IPAddress.Parse(_udpConnectInfo.IpAddress), _udpConnectInfo.ServerPort);
+            // -------------------------------------------------
+            // サーバーとUDP接続
+            // -------------------------------------------------
+            _udpClient = new UdpController(UDP.CLIENT, _udpConnectInfo);
             try
             {
                 while (true)
@@ -55,13 +59,12 @@ namespace MyApp.Udp
                         // 送信データを生成
                         byte[] data = Encoding.UTF8.GetBytes("Hello");
                         // サーバーへUDP送信
-                        udpClient.Send(data, data.Length, serverEndPoint);
+                        _udpClient.UdpSend(new MsgBase(data));
 
                     });
                     // サーバーからの受信を待機
-                    byte[] message = udpClient.Receive(ref serverEndPoint);
+                    byte[] message = _udpClient.Receive();
                     string receivedMessage = Encoding.UTF8.GetString(message);
-                    Console.WriteLine(receivedMessage);
                     // 内部電文送信処理
                     if (message is not null)
                     {
@@ -84,9 +87,9 @@ namespace MyApp.Udp
         }
 
         /// <summary>
-        /// 内部電文送信処理
+        /// UDP内部電文送信処理
         /// </summary>
-        /// <param name="msg"></param>
+        /// <param name="msg">UDP内部電文送信メッセージ</param>
         private new void UdpReceivedSend(MsgBase msg)
         {
             // 基底クラスの内部電文イベントを実行させる

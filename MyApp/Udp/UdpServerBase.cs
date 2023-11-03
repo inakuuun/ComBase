@@ -23,6 +23,8 @@ namespace MyApp.Udp
         /// </summary>
         private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
 
+        private UdpController? _ucpServer;
+
         /// <summary>
         /// UDP接続情報
         /// </summary>
@@ -47,24 +49,19 @@ namespace MyApp.Udp
             // クライアントとUDP接続確立
             // クライアントから接続があるまで待機
             // -------------------------------------------------
-            var udpListener = new UdpClient(_connectInfo.Port);
-            var clientEndPoint = new IPEndPoint(IPAddress.Any, _connectInfo.Port);
+            _ucpServer = new UdpController(UDP.SERVER, _connectInfo);
             try
             {
                 while (true)
                 {
-                    byte[] message = udpListener.Receive(ref clientEndPoint);
-                    string receivedMessage = Encoding.UTF8.GetString(message);
+                    byte[] message = _ucpServer.Receive();
                     // 内部電文送信処理
                     if (message is not null)
                     {
                         this.UdpReceivedSend(new MsgBase(message));
                     }
-
-                    System.Threading.Thread.Sleep(10000);
-                    string responseMessage = "サーバーからの応答：";
-                    byte[] responseData = Encoding.UTF8.GetBytes(responseMessage);
-                    udpListener.Send(responseData, responseData.Length, clientEndPoint);
+                    byte[] response = Encoding.UTF8.GetBytes("サーバーからの応答");
+                    UdpSend(new MsgBase(response));
                 }
             }
             catch (Exception ex)
@@ -74,12 +71,22 @@ namespace MyApp.Udp
         }
 
         /// <summary>
-        /// 内部電文送信処理
+        /// UDP内部電文送信処理
         /// </summary>
-        private new void Send(MsgBase msg)
+        /// <param name="msg">UDP内部電文送信メッセージ</param>
+        private new void UdpReceivedSend(MsgBase msg)
         {
             // 基底クラスの内部電文イベントを実行させる
-            base.Send(msg);
+            base.UdpReceivedSend(msg);
+        }
+
+        /// <summary>
+        /// TCP電文送信処理
+        /// </summary>
+        /// <param name="msg">TCP電文送信メッセージ</param>
+        protected void UdpSend(MsgBase msg)
+        {
+            _ucpServer?.UdpSend(msg);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace MyApp.Tcp
     public class TcpController
     {
         /// <summary>
-        /// TCPコントローラー情報インスタンス
+        /// TCPコントローラー情報
         /// </summary>
         private TcpControllerInfo _controllerInfo = new();
 

@@ -39,5 +39,14 @@ namespace MyApp.Common
             SERVER,
             CLIENT,
         }
+
+        /// <summary>
+        /// UDPサービス識別子
+        /// </summary>
+        public enum UDP
+        {
+            SERVER,
+            CLIENT,
+        }
     }
 }

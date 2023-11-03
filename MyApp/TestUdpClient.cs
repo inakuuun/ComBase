@@ -68,6 +68,12 @@ namespace MyApp
                 if (e.MessageId == MsgDef.MSG_SYSTEMBOOT_NOTICE)
                 {
                 }
+                else
+                {
+                    // 確認用出力
+                    string data = Encoding.UTF8.GetString(e.Message);
+                    Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"確認用出力 => {data}");
+                }
             }
             catch (Exception ex)
             {
