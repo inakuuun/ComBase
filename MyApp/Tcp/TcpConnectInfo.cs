@@ -15,7 +15,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// IPアドレス
         /// </summary>
-        public IPAddress IpAddress = IPAddress.Loopback;
+        public IPAddress IpAddress = IPAddress.Any;
 
         /// <summary>
         /// 接続先ポート番号

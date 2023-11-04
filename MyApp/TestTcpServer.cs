@@ -37,11 +37,11 @@ namespace MyApp
                 _connectInfo = new TcpConnectInfo()
                 {
                     // 接続先IPアドレス
-                    IpAddress = IPAddress.Parse("127.0.0.1"),
+                    IpAddress = IPAddress.Any,
                     // 待受けポート番号
                     Port = 50000,
                     // ヘルスチェック無し
-                    IsHelthCheck = false
+                    IsHelthCheck = true
                 };
                 this.ConnectStart(_connectInfo);
             }
