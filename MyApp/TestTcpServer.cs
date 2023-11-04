@@ -75,7 +75,7 @@ namespace MyApp
         /// </summary>
         sealed protected override void OnHelthCheck(MsgBase msg)
         {
-            Log.Trace(_logFileName, LOGLEVEL.INFO, $"ヘルスチェック要求受信");
+            Log.Trace(_logFileName, LOGLEVEL.DEBUG, $"ヘルスチェック要求受信 電文ID：{msg.MessageId}");
         }
 
         /// <summary>
