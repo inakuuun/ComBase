@@ -152,6 +152,8 @@ namespace MyApp.Tcp
                     // 通信異常がない間ループ処理を実施
                     while (true)
                     {
+                        // TCP接続状態をON
+                        CommonDef.IsTcpClientConnected = true;
                         // 遅延が必要な場合
                         // ※エラー発生時に遅延処理を入れるため、エラー発生後1回目の処理は遅延処理を実施しない
                         if (needDelay)
@@ -182,6 +184,8 @@ namespace MyApp.Tcp
                 catch (Exception ex)
                 {
                     Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
+                    // TCP接続状態をOFF
+                    CommonDef.IsTcpClientConnected = false;
                     // 正常処理の遅延処理を実施しないようにfalseを設定
                     needDelay = false;
                     // 電文送受信用インスタンスを開放
