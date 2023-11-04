@@ -1,5 +1,6 @@
 ﻿using MyApp.Events;
 using MyApp.Logs;
+using MyApp.Msg;
 using MyApp.Threads;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        protected abstract void OnHelthCheck();
+        protected abstract void OnHelthCheck(MsgBase msg);
 
         /// <summary>
         /// 接続解除

@@ -40,6 +40,11 @@ namespace MyApp.Tcp
         /// ヘルスチェック要求メッセージクラス
         /// </summary>
         private HelthCheckReq _helthCheckReq = new();
+        
+        /// <summary>
+        /// ヘルスチェック応答メッセージクラス
+        /// </summary>
+        private HelthCheckRes _helthCheckRes = new();
 
         /// <summary>
         /// 接続開始
@@ -122,12 +127,17 @@ namespace MyApp.Tcp
                     {
                         // TCP受信電文取得処理
                         byte[]? receivedData = _tcpServer?.TcpRead();
-                        // ヘルスチェック内部電文処理
-                        this.OnHelthCheck();
-                        // クライアントへ送信するデータ
-                        _helthCheckReq = new HelthCheckReq();
-                        // TCP電文送信処理
-                        _tcpServer?.TcpSend(_helthCheckReq);
+                        // TCP受信電文がnullではない場合
+                        if(receivedData is not null)
+                        {
+                            _helthCheckReq = new HelthCheckReq(receivedData);
+                            // ヘルスチェック内部電文処理
+                            this.OnHelthCheck(_helthCheckReq);
+                            // クライアントへ送信するデータ
+                            _helthCheckRes = new HelthCheckRes();
+                            // TCP電文送信処理
+                            _tcpServer?.TcpSend(_helthCheckRes);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -169,7 +179,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        protected abstract override void OnHelthCheck();
+        protected abstract override void OnHelthCheck(MsgBase msg);
 
         /// <summary>
         /// TCP内部電文受信処理

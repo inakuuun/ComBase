@@ -41,6 +41,11 @@ namespace MyApp.Tcp
         private HelthCheckReq _helthCheckReq = new();
 
         /// <summary>
+        /// ヘルスチェック応答メッセージクラス
+        /// </summary>
+        private HelthCheckRes _helthCheckRes = new();
+
+        /// <summary>
         /// 接続開始
         /// </summary>
         /// <param name="connectInfo">TCP接続情報インスタンス</param>
@@ -160,8 +165,12 @@ namespace MyApp.Tcp
                         _tcpClient?.TcpSend(_helthCheckReq);
                         // TCP受信電文取得処理
                         byte[]? receivedData = _tcpClient?.TcpRead();
-                        // ヘルスチェック内部電文処理
-                        this.OnHelthCheck();
+                        if(receivedData is not null)
+                        {
+                            _helthCheckRes = new HelthCheckRes(receivedData);
+                            // ヘルスチェック内部電文処理
+                            this.OnHelthCheck(_helthCheckRes);
+                        }
                         // エラーからの復帰の場合にフラグを更新する必要あり
                         // ※while文中の処理が正常の場合は「true」を維持
                         if (!needDelay)
@@ -218,7 +227,7 @@ namespace MyApp.Tcp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        protected abstract override void OnHelthCheck();
+        protected abstract override void OnHelthCheck(MsgBase msg);
 
         /// <summary>
         /// TCP内部電文受信処理

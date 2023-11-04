@@ -10,6 +10,7 @@ using static MyApp.Common.StractDef;
 using MyApp.Events;
 using MyApp.Msg.Deffine;
 using MyApp.Msg.Messages;
+using MyApp.Msg;
 
 namespace MyApp
 {
@@ -72,7 +73,7 @@ namespace MyApp
         /// <summary>
         /// ヘルスチェック内部電文処理
         /// </summary>
-        sealed protected override void OnHelthCheck()
+        sealed protected override void OnHelthCheck(MsgBase msg)
         {
             Log.Trace(_logFileName, LOGLEVEL.INFO, $"ヘルスチェック要求受信");
         }
