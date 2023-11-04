@@ -42,13 +42,7 @@ namespace MyApp.Msg.Messages
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public HelthCheckReq(byte[] bytesmessage) : base(bytesmessage)
-        {
-            if(_msgReader != null)
-            {
-                _messageId = _msgReader.RdShort();
-            }
-        }
+        public HelthCheckReq(byte[] bytesmessage) : base(bytesmessage) { }
 
         /// <summary>
         /// 送信メッセージをメモリストリームに書き込み
