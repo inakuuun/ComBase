@@ -187,7 +187,7 @@ namespace MyApp.Tcp
             {
                 // サーバーへの接続要求
                 _controllerInfo.Client = new TcpClient();
-                _controllerInfo.Client.Connect(connectInfo.IpAddress, connectInfo.Port);;
+                _controllerInfo.Client.Connect(connectInfo.IpAddress, connectInfo.DestPort);
             }
 
             if (_controllerInfo.Client != null)
@@ -197,7 +197,7 @@ namespace MyApp.Tcp
                 // 受信するデータのバッファサイズを指定して初期化
                 _controllerInfo.Buffer = new byte[_controllerInfo.Client.ReceiveBufferSize];
             }
-            Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"Server is listening on {connectInfo.IpAddress}:{connectInfo.Port}");
+            Log.Trace(string.Empty, LOGLEVEL.DEBUG, $"Server is listening on {connectInfo.IpAddress}:{connectInfo.DestPort}");
         }
 
         /// <summary>

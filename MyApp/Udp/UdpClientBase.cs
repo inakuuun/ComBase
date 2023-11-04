@@ -50,6 +50,7 @@ namespace MyApp.Udp
         {
             // -------------------------------------------------
             // サーバーとUDP接続
+            // サーバーから接続があるまで待機
             // -------------------------------------------------
             _udpClient = new UdpController(UDP.CLIENT, _udpConnectInfo);
             try
@@ -58,7 +59,7 @@ namespace MyApp.Udp
                 {
                     // サーバーからの受信を待機
                     byte[] message = _udpClient.Receive();
-                    // 内部電文送信処理
+                    // UDP内部電文送信処理
                     if (message is not null)
                     {
                         this.UdpReceivedSend(new MsgBase(message));
@@ -67,7 +68,7 @@ namespace MyApp.Udp
             }
             catch (Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {ex}");
+                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"UDPコネクション確立時異常（クライアント）=> {ex}");
             }
         }
 

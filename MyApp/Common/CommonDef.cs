@@ -16,7 +16,12 @@ namespace MyApp.Common
         /// <summary>
         /// DBロジッククラス
         /// </summary>
-        /// <returns></returns>
         public static DbLogic DbLogic { get; set; } = new DbLogic();
+
+        /// <summary>
+        /// TCPクライアント接続状態
+        /// </summary>
+        /// <remaeks>true:接続、false:未接続</remaeks>
+        public static bool IsTcpClientConnected { get; set; }
     }
 }

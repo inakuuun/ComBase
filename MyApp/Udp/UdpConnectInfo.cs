@@ -17,12 +17,12 @@ namespace MyApp.Udp
         public string IpAddress { get; set; } = string.Empty;
 
         /// <summary>
-        /// 接続先ポート
+        /// 接続先ポート番号
         /// </summary>
         public short DestPort { get; set; }
 
         /// <summary>
-        /// ポート
+        /// ポート番号
         /// </summary>
         public short Port { get; set; }
     }

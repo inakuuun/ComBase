@@ -77,35 +77,26 @@ namespace MyApp.Tcp
             {
                 // TCPコネクション初期処理
                 _tcpServer?.Connect(_connectInfo);
-                // クライアントからのメッセージを別スレッドで受信
-                Task.Run(() => HandleCnnection());
-            }
-        }
-
-        /// <summary>
-        /// ハンドルコネクション
-        /// </summary>
-        private void HandleCnnection()
-        {
-            while (true)
-            {
-                try
+                while (true)
                 {
-                    // コネクションを維持
-                    byte[]? message = _tcpServer?.TcpRead();
-                    // 内部電文処理
-                    if (message is not null)
+                    try
                     {
-                        this.TcpReceivedSend(new MsgBase(message));
+                        // クライアントからの受信を待機
+                        byte[]? message = _tcpServer?.TcpRead();
+                        // TCP内部電文処理
+                        if (message is not null)
+                        {
+                            this.TcpReceivedSend(new MsgBase(message));
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    // 電文送受信用インスタンスを開放
-                    // ※NetStreamのみ開放し、コネクションは開放しない。
-                    _tcpServer?.Close();
-                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"{ex.Message}");
-                    break;
+                    catch (Exception ex)
+                    {
+                        // 電文送受信用インスタンスを開放
+                        // ※NetStreamのみ開放し、コネクションは開放しない。
+                        _tcpServer?.Close();
+                        Log.Trace(_logFileName, LOGLEVEL.WARNING, $"TCPコネクション確立時異常（サーバー）{ex}");
+                        break;
+                    }
                 }
             }
         }

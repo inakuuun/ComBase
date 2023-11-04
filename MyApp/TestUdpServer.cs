@@ -31,7 +31,9 @@ namespace MyApp
         {
             _connectInfo = new UdpConnectInfo()
             {
+                // IPアドレス
                 IpAddress = "127.0.0.1",
+                // ポート番号
                 Port = 30000
             };
             ConnectStart(_connectInfo);

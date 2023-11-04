@@ -18,14 +18,14 @@ namespace MyApp.Tcp
         public IPAddress IpAddress = IPAddress.Loopback;
 
         /// <summary>
+        /// 接続先ポート番号
+        /// </summary>
+        public int DestPort;
+
+        /// <summary>
         /// ポート番号
         /// </summary>
         public int Port;
-
-        /// <summary>
-        /// 宛先ポート番号
-        /// </summary>
-        public int DestPort;
 
         /// <summary>
         /// ヘルスチェック有無

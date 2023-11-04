@@ -1,4 +1,5 @@
-﻿using MyApp.Db.Dao;
+﻿using MyApp.Common;
+using MyApp.Db.Dao;
 using MyApp.Events;
 using MyApp.Logs;
 using MyApp.Msg;
@@ -67,7 +68,7 @@ namespace MyApp.Tcp
         {
             // -------------------------------------------------
             // サーバーとTCP接続
-            // サーバーへ接続要求を送信する
+            // サーバーから接続があるまで待機
             // -------------------------------------------------
             // クライアントコントローラーを生成
             _tcpClient = new TcpController(TCP.CLIENT);
@@ -83,9 +84,11 @@ namespace MyApp.Tcp
                     {
                         try
                         {
-                            // コネクションを維持
+                            // TCP接続状態をON
+                            CommonDef.IsTcpClientConnected = true;
+                            // サーバーからの受信を待機
                             byte[]? message = _tcpClient?.TcpRead();
-                            // 内部電文処理
+                            // TCP内部電文処理
                             if (message is not null)
                             {
                                 this.TcpReceivedSend(new MsgBase(message));
@@ -93,6 +96,8 @@ namespace MyApp.Tcp
                         }
                         catch (Exception ex)
                         {
+                            // TCP接続状態をOFF
+                            CommonDef.IsTcpClientConnected = false;
                             // 電文送受信用インスタンスを開放
                             // ※NetStreamのみ開放し、コネクションは開放しない。
                             _tcpClient?.Close();
@@ -103,10 +108,12 @@ namespace MyApp.Tcp
                 }
                 catch (Exception ex)
                 {
+                    // TCP接続状態をOFF
+                    CommonDef.IsTcpClientConnected = false;
                     // 電文送受信用インスタンスを開放
                     // ※NetStreamのみ開放し、コネクションは開放しない。
                     _tcpClient?.Close();
-                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {_connectInfo.IpAddress}:{_connectInfo.Port} {ex}");
+                    Log.Trace(_logFileName, LOGLEVEL.WARNING, $"TCPコネクション確立時異常（クライアント）{ex}");
                     // サーバーへデータを送信する時間を指定時間遅らせる
                     // ※TCPコネクション確立処理で落ちる可能性もあるため、エラー時に指定秒数処理を遅延させる
                     // ※エラー発生時、待機時間が平均的に2秒遅いため「インターバル - 2秒」を設定

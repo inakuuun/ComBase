@@ -1,4 +1,5 @@
-﻿using MyApp.Events;
+﻿using MyApp.Common;
+using MyApp.Events;
 using MyApp.Logs;
 using MyApp.Msg;
 using MyApp.Msg.Deffine;
@@ -20,6 +21,11 @@ namespace MyApp
         private string _logFileName { get =>  base.ThreadName ?? string.Empty; }
 
         /// <summary>
+        /// TCPクライアント接続状態
+        /// </summary>
+        private bool _isTcpClientConnected { get => CommonDef.IsTcpClientConnected; }
+
+        /// <summary>
         /// UDP接続情報
         /// </summary>
         private UdpConnectInfo _connectInfo = new();
@@ -32,8 +38,11 @@ namespace MyApp
         {
             _connectInfo = new()
             {
+                // IPアドレス
                 IpAddress = "127.0.0.1",
+                // 接続先ポート番号
                 DestPort = 30000,
+                // ポート番号
                 Port = 30001,
             };
             this.ConnectStart(_connectInfo);
@@ -43,9 +52,13 @@ namespace MyApp
                 while (true)
                 {
                     System.Threading.Thread.Sleep(5000);
-                    // 送信データを生成
-                    byte[] data = Encoding.UTF8.GetBytes("Hello");
-                    this.UdpSend(new MsgBase(data));
+                    // TCPクライアントのコネクションが確立されている場合にのみUDP電文を送信
+                    if (_isTcpClientConnected)
+                    {
+                        // 送信データを生成
+                        byte[] data = Encoding.UTF8.GetBytes("Hello");
+                        this.UdpSend(new MsgBase(data));
+                    }
                 }
             });
             return true;

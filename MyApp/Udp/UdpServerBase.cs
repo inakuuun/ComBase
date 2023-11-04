@@ -1,4 +1,5 @@
-﻿using MyApp.Events;
+﻿using MyApp.Common;
+using MyApp.Events;
 using MyApp.Logs;
 using MyApp.Msg;
 using MyApp.Tcp;
@@ -57,8 +58,9 @@ namespace MyApp.Udp
             {
                 while (true)
                 {
+                    // クライアントからの受信を待機
                     byte[] message = _ucpServer.Receive();
-                    // 内部電文送信処理
+                    // UDP内部電文送信処理
                     if (message is not null)
                     {
                         this.UdpReceivedSend(new MsgBase(message));
@@ -69,7 +71,7 @@ namespace MyApp.Udp
             }
             catch (Exception ex)
             {
-                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"コネクション確立時異常 => {ex}");
+                Log.Trace(_logFileName, LOGLEVEL.WARNING, $"UDPコネクション確立時異常（サーバー） => {ex}");
             }
         }
 
@@ -84,9 +86,9 @@ namespace MyApp.Udp
         }
 
         /// <summary>
-        /// TCP電文送信処理
+        /// UDP電文送信処理
         /// </summary>
-        /// <param name="msg">TCP電文送信メッセージ</param>
+        /// <param name="msg">UDP電文送信メッセージ</param>
         protected void UdpSend(MsgBase msg)
         {
             _ucpServer?.UdpSend(msg);
