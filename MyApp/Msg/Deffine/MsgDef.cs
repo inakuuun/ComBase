@@ -11,17 +11,17 @@ namespace MyApp.Msg.Deffine
     /// </summary>
     public static class MsgDef
     {
+        /// <summary>システム起動完了通知</summary>
+        public const short MSG_SYSTEMBOOT_NOTICE = 0;
+
         /// <summary>ヘルスチェック要求</summary>
-        public const short MSG_HELTHCHECK_REQ = 0;
+        public const short MSG_HELTHCHECK_REQ = 20;
         /// <summary>初期起動通知要求</summary>
-        public const short MSG_BOOTSTART_REQ = 1;
+        public const short MSG_BOOTSTART_REQ = 21;
 
         /// <summary>ヘルスチェック応答</summary>
-        public const short MSG_HELTHCHECK_RES = 20;
+        public const short MSG_HELTHCHECK_RES = 40;
         /// <summary>初期起動通知応答</summary>
-        public const short MSG_BOOTSTART_RES = 21;
-
-        /// <summary>システム起動完了通知</summary>
-        public const short MSG_SYSTEMBOOT_NOTICE = 41;
+        public const short MSG_BOOTSTART_RES = 41;
     }
 }
