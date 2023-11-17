@@ -1,38 +1,78 @@
 #### ディレクトリ構成
-※作成途中のため変動
 ```
-App.cs
-├── Common
-│   ├── PropertyDef.cs
-│   └── StractDef.cs
-├── Config
-│   ├── DbProperties.xml
-│   └── ProgramInfo.xml
-├── Db
-│   ├── DbLogicBase.cs
-│   ├── DbControllerInfo.cs
-│   ├── DbFactory.cs
-│   └── IDbController.cs
-├── FileUtil
-│   ├── FileUtil.cs
-│   └── PropertyReader.cs
-├── Init
-│   ├── BootManager.cs
-│   └── SystemInit.cs
-├── Logs
-│   └── Log.cs
-├── MyApp.csproj
-├── Tcp
-│   ├── TcpBase.cs
-│   ├── TcpClientBase.cs
-│   └── TcpServerBase.cs
-├── TestTcpClient.cs
-├── TestTcpServer.cs
-├── TestThread.cs
-├── TestThread2.cs
-└── Threads
-    ├── ThreadBase.cs
-    └── ThreadManager.cs
+MyApp
+│   ├── App.cs
+│   ├── Common
+│   │   ├── CommonDef.cs
+│   │   ├── FunctionDef.cs
+│   │   ├── PropertyDef.cs
+│   │   └── StractDef.cs
+│   ├── Config
+│   │   ├── DbProperties.xml
+│   │   └── ProgramInfo.xml
+│   ├── Db
+│   │   ├── Dao
+│   │   │   └── ChatDaoAccess.cs
+│   │   ├── DbController.cs
+│   │   ├── DbControllerFactory.cs
+│   │   ├── DbControllerInfo.cs
+│   │   ├── DbLogic.cs
+│   │   ├── DbLogicBase.cs
+│   │   ├── IDbControl.cs
+│   │   ├── README.md
+│   │   ├── SqlBuilder.cs
+│   │   └── SqlReader.cs
+│   ├── Events
+│   │   └── MessageEventArgs.cs
+│   ├── FileUtil
+│   │   ├── FileUtil.cs
+│   │   ├── PropertyReader.cs
+│   │   └── README.md
+│   ├── Init
+│   │   ├── BootManager.cs
+│   │   ├── README.md
+│   │   └── SystemInit.cs
+│   ├── Logs
+│   │   ├── Log.cs
+│   │   └── README.md
+│   ├── Msg
+│   │   ├── Deffine
+│   │   │   └── MsgDef.cs
+│   │   ├── Messages
+│   │   │   ├── BootStartReq.cs
+│   │   │   ├── HelthCheckReq.cs
+│   │   │   └── HelthCheckRes.cs
+│   │   ├── MsgBase.cs
+│   │   ├── MsgReader.cs
+│   │   └── MsgWriter.cs
+│   ├── MyApp.csproj
+│   ├── Tcp
+│   │   ├── README.md
+│   │   ├── TcpBase.cs
+│   │   ├── TcpClientBase.cs
+│   │   ├── TcpConnectInfo.cs
+│   │   ├── TcpController.cs
+│   │   ├── TcpControllerInfo.cs
+│   │   └── TcpServerBase.cs
+│   ├── TestTcpClient.cs
+│   ├── TestTcpServer.cs
+│   ├── TestThread.cs
+│   ├── TestThread2.cs
+│   ├── TestUdpClient.cs
+│   ├── TestUdpServer.cs
+│   ├── Threads
+│   │   ├── README.md
+│   │   ├── ThreadBase.cs
+│   │   └── ThreadManager.cs
+│   └── Udp
+│       ├── UdpBase.cs
+│       ├── UdpClientBase.cs
+│       ├── UdpConnectInfo.cs
+│       ├── UdpController.cs
+│       ├── UdpControllerInfo.cs
+│       └── UdpServerBase.cs
+├── MyApp.sln
+└── README.md
 ```
 
 #### 機能の概要
