@@ -10,6 +10,9 @@
 - TcpController.cs
   - TCP接続を実行するコントローラークラス  
     => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpController.cs
+- TcpControllerInfo.cs
+  - TcpControllerで必要となる情報を定義したクラス  
+    => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpController.cs
 - TcpServerBase.cs
   - 待機サーバー側のTCP接続で必要な処理を用意した基底クラス  
     => https://github.com/inakuuun/MyApp/blob/main/MyApp/Tcp/TcpServerBase.cs
