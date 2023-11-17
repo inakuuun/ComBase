@@ -38,6 +38,8 @@ App.cs
 #### 機能の概要
 - Db（DB操作系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
+- Events（イベント系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Events  
 - FileUtil（ファイル操作系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
 - Init（初期処理系）
@@ -48,3 +50,5 @@ App.cs
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
 - Threads（スレッド系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Threads  
+- Udp（UDP通信系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Udp  
