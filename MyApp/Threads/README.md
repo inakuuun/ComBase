@@ -1,6 +1,6 @@
 - ThreadBase.cs
-  - スレッド処理に必要な処理を用意する抽象クラス  
+  - スレッド処理に必要な処理を用意す基底クラス  
     => https://github.com/inakuuun/MyApp/blob/main/MyApp/Threads/ThreadBase.cs
 - ThreadManager.cs
-  - 拡張可能なスレッド管理クラス  
+  - ThreadBaseを継承した拡張可能なスレッド管理用の基底クラス  
     => https://github.com/inakuuun/MyApp/blob/main/MyApp/Threads/ThreadManager.cs
