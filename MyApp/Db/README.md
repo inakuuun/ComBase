@@ -5,7 +5,7 @@
     - DB操作(接続、処理の実行、トランザクション)で必要なリソースを用意  
       => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbController.cs
   - DbControllerFactory.cs
-    - DBロジッククラスで利用する必要なリソースを用意  
+    - DBロジッククラスで利用する必要なリソースを生成  
       => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerFactory.cs
   - DbLogic.cs
     - Daoアクセスクラスの管理(Daoパターンにおけるデータアクセスロジッククラスを管理)  
