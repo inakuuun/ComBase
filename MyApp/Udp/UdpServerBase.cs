@@ -22,7 +22,7 @@ namespace MyApp.Udp
         /// <summary>
         /// ログファイル名
         /// </summary>
-        private string _logFileName { get => typeof(TcpClientBase).Name ?? string.Empty; }
+        private string _logFileName { get => typeof(UdpClientBase).Name ?? string.Empty; }
 
         /// <summary>
         /// UDPサーバーコントローラー
