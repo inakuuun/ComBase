@@ -35,7 +35,7 @@ namespace MyApp.Init
                 Logs.Log.CreateLogDirectory();
 
                 // DB定義ファイル設定
-                PropertyReader.SetPropertyAll("./Config/DbProperties.xml");
+                PropertyReader.SetPropertyAll(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config/DbProperties.xml"));
 
                 // データベース実行クラスを生成
                 // ※DB接続情報をDB定義ファイルから取得するため、DB定義ファイル取得後に実施
