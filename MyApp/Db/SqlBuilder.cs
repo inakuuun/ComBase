@@ -92,8 +92,8 @@ namespace MyApp.Db
                 // パラメーター設定処理
                 // パラメーターキー配列取得
                 string[] paramKeys = ExtractParam(sql);
-                // パラメーター配列分ループ処理を実施
-                for (int i = 0; i < objects.Length; i++)
+                // パラメーターキー配列分ループ処理を実施
+                for (int i = 0; i < paramKeys.Length; i++)
                 {
                     // コントローラーのパラメーターインスタンス取得
                     // ※パラメーターを設定する度にインスタンス化する必要あり
@@ -101,9 +101,19 @@ namespace MyApp.Db
                     // パラメーターが未設定の場合
                     if (!_control.DbParameters.Contains(paramKeys[i]))
                     {
-                        // パラメーターをセット
-                        param.ParameterName = paramKeys[i];
-                        param.Value = objects[i];
+                        // パラメータがnullの場合
+                        if (objects == null)
+                        {
+                            // パラメーターのValueにDBNullをセット
+                            param.ParameterName = paramKeys[i];
+                            param.Value = DBNull.Value;
+                        }
+                        else
+                        {
+                            // パラメーターをセット
+                            param.ParameterName = paramKeys[i];
+                            param.Value = objects[i];
+                        }
                         _control.DbParameters.Add(param);
                     }
                 }
