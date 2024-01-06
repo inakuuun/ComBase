@@ -4,7 +4,7 @@
 - 説明
   - アプリケーションで使う機能を汎用的に使えるように独自ライブラリ化
 
-#### 機能の概要
+#### 機能
 - Db（DB操作系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
 - Events（イベント系）
