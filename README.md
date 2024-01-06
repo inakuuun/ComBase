@@ -4,6 +4,24 @@
 - 説明
   - アプリケーションで使う機能を汎用的に使えるように独自ライブラリ化
 
+#### 機能の概要
+- Db（DB操作系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
+- Events（イベント系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Events  
+- FileUtil（ファイル操作系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
+- Init（初期処理系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
+- Logs（ログ機能系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
+- Tcp（TCP通信系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
+- Threads（スレッド系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Threads  
+- Udp（UDP通信系）
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Udp
+
 #### ディレクトリ構成
 ```
 MyApp
@@ -80,21 +98,3 @@ MyApp
 ├── MyApp.sln
 └── README.md
 ```
-
-#### 機能の概要
-- Db（DB操作系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Db  
-- Events（イベント系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Events  
-- FileUtil（ファイル操作系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
-- Init（初期処理系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
-- Logs（ログ機能系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
-- Tcp（TCP通信系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
-- Threads（スレッド系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Threads  
-- Udp（UDP通信系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Udp  
