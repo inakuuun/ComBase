@@ -1,4 +1,5 @@
-- DbControllerInfo.cs
+- Db
+  - DbControllerInfo.cs
     - DB接続時に必要な情報を保持するクラス  
       => https://github.com/inakuuun/MyApp/blob/main/MyApp/Db/DbControllerInfo.cs
   - DbController.cs
