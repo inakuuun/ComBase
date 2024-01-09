@@ -14,7 +14,9 @@
 - Init（初期処理系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
 - Logs（ログ出力機能系）
-  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
+  - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs 
+- Msg（メッセージ送受信用）
+  - https://github.com/inakuuun/ComBase/tree/main/MyApp/Msg   
 - Tcp（TCP通信系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
 - Threads（スレッド系）
