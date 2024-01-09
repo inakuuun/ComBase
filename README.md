@@ -13,7 +13,7 @@
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/FileUtil  
 - Init（初期処理系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Init  
-- Logs（ログ機能系）
+- Logs（ログ出力機能系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Logs  
 - Tcp（TCP通信系）
   - https://github.com/inakuuun/MyApp/tree/main/MyApp/Tcp  
